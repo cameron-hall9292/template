@@ -24,15 +24,15 @@ const apiData = ref([]);
    //});
 const todoId = ref(1)
 const todoData = ref([])
-  async function fetchData() {
-  todoData.value = null
-  const res = await fetch(
-    `http://localhost:3000/display?name=${searchString.value}`
-  )
-  todoData.value = await res.json()
+  //async function fetchData() {
+  //todoData.value = null
+  //const res = await fetch(
+    //`http://localhost:3000/display?name=${searchString.value}`
+  //)
+  //todoData.value = await res.json()
 
-  console.log(`searchString.value: ${searchString.value}`)
-}
+  //console.log(`searchString.value: ${searchString.value}`)
+//}
 
 fetchData();
 
@@ -48,7 +48,6 @@ const exampleText = "test string"
   <button @click="fetchData" >Fetch next todo</button>
   <div>{{ searchString }}</div>
 
-  <div>{{ todoData.rows[0].name }}</div>
   <button @click="count++">Add 1</button>
   <p>Count is: {{ count }}</p>
 </template>
