@@ -7,9 +7,13 @@ import { ref, onMounted, onServerPrefetch , watch} from 'vue'
 
 
 //let searchString: String = ref("cam"); 
-let searchString: String = ref('cam');
+//let searchString: any = ref('cam');
 
-let textInput: String = ref("");
+let searchString = ref<string>("cam");
+
+//let textInput: any = ref("");
+
+let textInput = ref<string>("");
 
 const count = ref(0);
 
@@ -23,20 +27,27 @@ const apiData = ref([]);
        //});
    //});
 const todoId = ref(1)
-const todoData = ref([])
-  //async function fetchData() {
-  //todoData.value = null
-  //const res = await fetch(
-    //`http://localhost:3000/display?name=${searchString.value}`
-  //)
-  //todoData.value = await res.json()
 
-  //console.log(`searchString.value: ${searchString.value}`)
-//}
+  async function fetchData() {
+  const res = await fetch(
+    `http://localhost:3000/display?name=${searchString.value}`
+  )
+  await console.log("fetch func called")
+  apiData.value = await res.json()
 
-fetchData();
+  console.log(`searchString.value: ${searchString.value}`)
+  console.log(apiData);
 
-const exampleText = "test string"
+}
+
+//fetchData();
+
+const testButtonFunc = () =>
+{
+  console.log(searchString)
+}
+
+
 
 //watch(searchString, fetchData)
   
@@ -45,13 +56,18 @@ const exampleText = "test string"
 <template>
   <input v-model="searchString" placeholder="type text here">
   <p>{{ textInput }}</p>
-  <button @click="fetchData" >Fetch next todo</button>
+  <button class="button" @click="fetchData" >Fetch next todo</button>
   <div>{{ searchString }}</div>
 
-  <button @click="count++">Add 1</button>
-  <p>Count is: {{ count }}</p>
+  <button class="button" @click="count++">Add 1</button>
+  <p>apiData.value: {{ apiData.rows}}</p>
 </template>
 
 <style scoped>
+
+.button
+{
+  color:white;
+}
 
 </style>
