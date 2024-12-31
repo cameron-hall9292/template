@@ -17,7 +17,12 @@ let textInput = ref<string>("");
 
 const count = ref(0);
 
-const apiData = ref([]);
+const apiData: string[] = ref([]);
+
+
+let recipeName: string = "";
+let recipeIngredients: string = "";
+let recipeInstructions: string = "";
 
    //onMounted(() => {
      //fetch(`http://localhost:3000/display?name=${searchString}`)
@@ -28,16 +33,33 @@ const apiData = ref([]);
    //});
 const todoId = ref(1)
 
-  async function fetchData() {
-  const res = await fetch(
-    `http://localhost:3000/display?name=${searchString.value}`
-  )
-  await console.log("fetch func called")
-  apiData.value = await res.json()
 
-  console.log(`searchString.value: ${searchString.value}`)
-  console.log(apiData);
+async function fetchData() 
+{
+  try 
+  {
+  
+    //searchString.value = "test"
+    const res = await fetch(
+      `http://localhost:3000/display?name=${searchString.value}`
+    )
+  
+    apiData.value = await res.json()
+  
 
+    recipeName = apiData.value.rows[0].name;
+    recipeIngredients= apiData.value.rows[0].ingredients;
+    recipeInstructions= apiData.value.rows[0].instructions;
+
+    console.log("api func called")
+  } 
+  catch (error) 
+  {
+    recipeName = null;
+    recipeIngredients = null;
+    recipeInstructions = null;
+    console.error(error);
+  }
 }
 
 //fetchData();
@@ -55,11 +77,15 @@ const testButtonFunc = () =>
 
 <template>
   <input v-model="searchString" placeholder="type text here">
-  <p>{{ textInput }}</p>
+  <p>{{ searchString }}</p>
   <button class="button" @click="fetchData" >Fetch next todo</button>
-  <div>{{ searchString }}</div>
-
-  <button class="button" @click="count++">Add 1</button>
+  <p v-if="recipeName">recipeName: {{ recipeName }}</p>
+  <p v-else>Oh no!!!!</p>
+  <p v-if="recipeIngredients">recipeIngredients: {{ recipeIngredients}}</p>
+  <p v-else>Oh no!!!!</p>
+  <p v-if="recipeInstructions">recipeInstructions: {{ recipeInstructions }}</p>
+  <p v-else>Oh no!!!!</p>
+  <p> {{ recipeName }}</p>
   <p>apiData.value: {{ apiData.rows}}</p>
 </template>
 

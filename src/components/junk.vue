@@ -3,3 +3,4 @@
   <Title :titleHeader="apiData.name" />
   <ingredients :Ingredients="apiData.ingredients" />
   <instructions :Instructions="apiData.instructions" />
+  <div>{{ todoData.rows[0].name }}</div>
