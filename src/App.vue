@@ -34,6 +34,14 @@ let recipeInstructions: string = "";
 const todoId = ref(1)
 
 
+let testArr = ["data", "more data", "even more data", "zzzzz"];
+
+function filteredList() {
+  return testArr.filter((item) =>
+    item.toLowerCase().includes(searchString.value.toLowerCase())
+  );
+}
+
 async function fetchData() 
 {
   try 
@@ -77,6 +85,12 @@ const testButtonFunc = () =>
 
 <template>
   <input v-model="searchString" placeholder="type text here">
+  <div v-for="item in filteredList()" :key="item">
+    <p>{{ item }}</p>
+  </div>
+  <div class="item error" v-if="searchString&&!filteredList().length">
+     <p>No results found!</p>
+  </div>
   <p>{{ searchString }}</p>
   <button class="button" @click="fetchData" >Fetch next todo</button>
   <p v-if="recipeName">recipeName: {{ recipeName }}</p>
