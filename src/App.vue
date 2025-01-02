@@ -36,6 +36,7 @@ const todoId = ref(1)
 
 let testArr = ["data", "more data", "even more data", "zzzzz"];
 
+
 function filteredList() {
   return testArr.filter((item) =>
     item.toLowerCase().includes(searchString.value.toLowerCase())
@@ -71,6 +72,64 @@ async function fetchData()
 }
 
 //fetchData();
+
+let filteredApiDataArr: string[] = [];
+
+async function filterData(search: string) 
+{
+  try 
+  {
+    //searchString.value = "test"
+    const res = await fetch(
+      `http://localhost:3000/recipeNames?name=${search}`
+    )
+  
+    apiData.value = await res.json()
+    
+
+    const filteredData: string[] = [];
+  
+    for (let i of apiData.value.rows)
+      {
+        filteredData.push(i.name);
+        //console.log(i.name)
+      }
+
+    console.log("in func")
+    console.log(`filteredData ${filteredData}`)
+    console.log(filteredData)
+
+    console.log("filterData api func called")
+
+    filteredApiDataArr = filteredData;
+
+  } 
+  catch (error) 
+  {
+    console.error(error);
+  }
+}
+
+
+filterData("test")
+.then(() => 
+{
+  console.log("outside func")
+  console.log(filteredApiDataArr)
+})
+
+//const testString: string[] = filterData("test");
+
+//console.log(testString);
+
+//console.log(`testString: ${testString}`)
+
+//filteredApiDataArr = [...testString]
+
+//console.log(`filteredApiDataArr ${filteredApiDataArr}`)
+
+
+
 
 const testButtonFunc = () =>
 {
