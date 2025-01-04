@@ -31,14 +31,13 @@ let recipeInstructions: string = "";
          //apiData.value = data.rows[0];
        //});
    //});
-const todoId = ref(1)
 
 
 let testArr = ["data", "more data", "even more data", "zzzzz"];
 
 
 function filteredList() {
-  return testArr.filter((item) =>
+  return filteredApiDataArr.filter((item) =>
     item.toLowerCase().includes(searchString.value.toLowerCase())
   );
 }
@@ -64,71 +63,56 @@ async function fetchData()
   } 
   catch (error) 
   {
-    recipeName = null;
+   recipeName = null;
     recipeIngredients = null;
     recipeInstructions = null;
     console.error(error);
   }
 }
 
-//fetchData();
+const baseUrl = `http://localhost:3000`;
 
-let filteredApiDataArr: string[] = [];
 
-async function filterData(search: string) 
+
+
+const postData = async () =>
 {
+
+const fakeData = 
+{
+  name: searchString.value,
+  ingredients: "tomato sauce",
+  instructions: "cut tomatos",
+  type: "soup",
+}
   try 
   {
-    //searchString.value = "test"
-    const res = await fetch(
-      `http://localhost:3000/recipeNames?name=${search}`
-    )
-  
-    apiData.value = await res.json()
-    
 
-    const filteredData: string[] = [];
-  
-    for (let i of apiData.value.rows)
+    await fetch(baseUrl + `/display`, 
+
+    {
+      method: "POST",
+      headers: 
       {
-        filteredData.push(i.name);
-        //console.log(i.name)
-      }
 
-    console.log("in func")
-    console.log(`filteredData ${filteredData}`)
-    console.log(filteredData)
+        "Content-Type" : "application/json",
+      },
 
-    console.log("filterData api func called")
+      body: JSON.stringify(fakeData),
 
-    filteredApiDataArr = filteredData;
+    });
 
-  } 
-  catch (error) 
-  {
+   }
+   catch(error)
+   {
     console.error(error);
-  }
-}
+   }
+} 
 
 
-filterData("test")
-.then(() => 
-{
-  console.log("outside func")
-  console.log(filteredApiDataArr)
-})
-
-//const testString: string[] = filterData("test");
-
-//console.log(testString);
-
-//console.log(`testString: ${testString}`)
-
-//filteredApiDataArr = [...testString]
-
-//console.log(`filteredApiDataArr ${filteredApiDataArr}`)
 
 
+let filteredApiDataArr: string[] = [];
 
 
 const testButtonFunc = () =>
@@ -136,9 +120,49 @@ const testButtonFunc = () =>
   console.log(searchString)
 }
 
+const testWatch = () =>
+{
+  console.log("watch func param called")
+}
 
+//watch(searchString, testWatch)
 
-//watch(searchString, fetchData)
+watch(searchString, async () => 
+{
+
+  try 
+  {
+    console.log(`searchString: ${searchString.value}`)
+    //searchString.value = "test"
+    const res = await fetch(
+      `http://localhost:3000/recipeNames?name=${searchString.value}`
+    )
+
+  
+    const response = await res.json();
+    console.log(response)
+    const filteredData: string[] = [];
+  
+    for (let i of response.rows)
+      {
+        filteredData.push(i.name);
+        //console.log(i.name)
+      }
+
+    console.log(`filteredData ${filteredData}`)
+    console.log(filteredData)
+
+    console.log("filterData api func called")
+
+    filteredApiDataArr = filteredData;
+      
+
+  } 
+  catch (error) 
+  {
+    console.error(error);
+  }
+})
   
 </script>
 
@@ -159,7 +183,7 @@ const testButtonFunc = () =>
   <p v-if="recipeInstructions">recipeInstructions: {{ recipeInstructions }}</p>
   <p v-else>Oh no!!!!</p>
   <p> {{ recipeName }}</p>
-  <p>apiData.value: {{ apiData.rows}}</p>
+  <button class="button" @click="postData" >Post Data</button>
 </template>
 
 <style scoped>
