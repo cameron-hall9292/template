@@ -5,11 +5,15 @@ import ingredients from './components/ingredients.vue'
 import instructions from './components/instructions.vue'
 import { ref, onMounted, onServerPrefetch , watch} from 'vue'
 
+import FetchRecipe from './components/FetchRecipe.vue'
+
 
 //let searchString: String = ref("cam"); 
 //let searchString: any = ref('cam');
 
-let searchString = ref<string>("cam");
+const baseUrl = `http://localhost:3000`;
+
+let searchString = ref<string>("testing, testing");
 
 //let textInput: any = ref("");
 
@@ -17,23 +21,13 @@ let textInput = ref<string>("");
 
 const count = ref(0);
 
-const apiData: string[] = ref([]);
+let apiData: string[] = ref([]);
 
 
-let recipeName: string = "";
-let recipeIngredients: string = "";
-let recipeInstructions: string = "";
+let recipeName = ref<string>("");
+let recipeIngredients = ref<string>("");
+let recipeInstructions = ref<string>("");
 
-   //onMounted(() => {
-     //fetch(`http://localhost:3000/display?name=${searchString}`)
-       //.then(response => response.json())
-       //.then(data => {
-         //apiData.value = data.rows[0];
-       //});
-   //});
-
-
-let testArr = ["data", "more data", "even more data", "zzzzz"];
 
 
 function filteredList() {
@@ -52,12 +46,15 @@ async function fetchData()
       `http://localhost:3000/display?name=${searchString.value}`
     )
   
-    apiData.value = await res.json()
-  
+    //apiData.value = await res.json()
+    apiData = await res.json()
 
-    recipeName = apiData.value.rows[0].name;
-    recipeIngredients= apiData.value.rows[0].ingredients;
-    recipeInstructions= apiData.value.rows[0].instructions;
+
+    recipeName = await apiData.rows[0].name;
+    recipeIngredients = await apiData.rows[0].ingredients;
+    recipeInstructions = await apiData.rows[0].instructions;
+
+    console.log(recipeName);
 
     console.log("api func called")
   } 
@@ -70,7 +67,6 @@ async function fetchData()
   }
 }
 
-const baseUrl = `http://localhost:3000`;
 
 
 
@@ -115,17 +111,6 @@ const fakeData =
 let filteredApiDataArr: string[] = [];
 
 
-const testButtonFunc = () =>
-{
-  console.log(searchString)
-}
-
-const testWatch = () =>
-{
-  console.log("watch func param called")
-}
-
-//watch(searchString, testWatch)
 
 watch(searchString, async () => 
 {
@@ -162,11 +147,16 @@ watch(searchString, async () =>
   {
     console.error(error);
   }
-})
+});
+
+let stringVar = "I am a var"
   
 </script>
 
 <template>
+  <FetchRecipe :recipeName = "searchString"    />
+
+
   <input v-model="searchString" placeholder="type text here">
   <div v-for="item in filteredList()" :key="item">
     <p>{{ item }}</p>
@@ -174,15 +164,7 @@ watch(searchString, async () =>
   <div class="item error" v-if="searchString&&!filteredList().length">
      <p>No results found!</p>
   </div>
-  <p>{{ searchString }}</p>
-  <button class="button" @click="fetchData" >Fetch next todo</button>
-  <p v-if="recipeName">recipeName: {{ recipeName }}</p>
-  <p v-else>Oh no!!!!</p>
-  <p v-if="recipeIngredients">recipeIngredients: {{ recipeIngredients}}</p>
-  <p v-else>Oh no!!!!</p>
-  <p v-if="recipeInstructions">recipeInstructions: {{ recipeInstructions }}</p>
-  <p v-else>Oh no!!!!</p>
-  <p> {{ recipeName }}</p>
+  <p>searchString: {{ searchString }}</p>
   <button class="button" @click="postData" >Post Data</button>
 </template>
 
