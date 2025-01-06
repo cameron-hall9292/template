@@ -40,7 +40,10 @@ let recipe: Recipe = reactive(
 
 
 
+
 let apiData: string[] = ref([]);
+
+let ingredientsList: string[];
 
 async function fetchData(value: (string | null)) 
 {
@@ -60,6 +63,15 @@ async function fetchData(value: (string | null))
     recipe.name = await apiData.rows[0].name;
     recipe.ingredients = await apiData.rows[0].ingredients;
     recipe.instructions = await apiData.rows[0].instructions;
+
+
+    //split ingredients by comma
+
+    console.log(recipe.ingredients);
+
+    ingredientsList = recipe.ingredients?.split(',');
+
+    console.log(ingredientsList);
 
     console.log(recipe.name);
 
@@ -135,11 +147,14 @@ watch(searchString, async () =>
   <div class="item error" v-if="searchString&&!filteredList().length">
      <p>No results found!</p>
   </div>
-  <p v-if="recipe.name"> recipe name: {{ recipe.name }}</p>
+  <h2 v-if="recipe.name">{{ recipe.name }}</h2>
   <p v-else>"oh no"</p>
-  <p v-if="recipe.ingredients"> recipe ingredients: {{ recipe.ingredients}}</p>
-  <p v-else>"oh no"</p>
-  <p v-if="recipe.instructions"> recipe instructions: {{ recipe.instructions}}</p>
+  <div class="unordered_list">
+    <li  v-if="recipe.ingredients" v-for="(item) in ingredientsList"> 
+      {{ item }}
+    </li>
+  </div>
+  <p v-if="recipe.instructions"> {{ recipe.instructions}}</p>
   <p v-else>"oh no"</p>
 </template>
 
@@ -156,5 +171,16 @@ watch(searchString, async () =>
   background-color: #FFFAA0;
   margin: 2px;
 }
+.ingredientList
+{
+  list-style-position: inside;
+}
+.unordered_list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  list-style: none;
+  border: 2px solid black;
+}
+
 
 </style>

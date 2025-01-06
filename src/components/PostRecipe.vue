@@ -52,6 +52,8 @@ const postData = async (value: RecipePostData) =>
 
     });
 
+    alert(`recipe for ${value.name} added successfully`)
+
    }
    catch(error)
    {
@@ -65,10 +67,10 @@ const postData = async (value: RecipePostData) =>
 
 
 <template>
-  <input v-model="recipePost.name" placeholder="enter recipe name">
-  <textarea v-model="recipePost.ingredients" placeholder="enter ingredients"></textarea>
-  <textarea v-model="recipePost.instructions" placeholder="enter instructions"></textarea>
-  <input v-model="recipePost.type" placeholder="enter recipe type">
+  <input class="longForm" v-model="recipePost.name" placeholder="enter recipe name">
+  <textarea class="longForm" id="ingredients" v-model="recipePost.ingredients" placeholder="enter ingredients"></textarea>
+  <textarea class="longForm" id="instructions" v-model="recipePost.instructions" placeholder="enter instructions"></textarea>
+  <input class="longForm" v-model="recipePost.type" placeholder="enter recipe type">
   <p>{{ recipePost.name }}</p>
   <p>{{ recipePost.ingredients}}</p>
   <p>{{ recipePost.instructions}}</p>
@@ -83,5 +85,11 @@ const postData = async (value: RecipePostData) =>
 .button
 {
     color: white; 
+}
+.longForm
+{
+    display:block;
+    width: 20vw;
+    height: 10vh;
 }
 </style>
