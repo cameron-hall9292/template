@@ -4,6 +4,7 @@ import { ref, reactive, watch} from 'vue'
 
 import FetchRecipe from './components/FetchRecipe.vue'
 
+import PostRecipe from './components/PostRecipe.vue';
 
 const baseUrl = `http://localhost:3000`;
 
@@ -37,6 +38,18 @@ let recipe: Recipe = reactive(
     instructions: null,
   }
 )
+
+
+let mode = reactive(
+  {
+    add: false,
+  }
+)
+
+const toggleAdd = (): boolean =>
+{
+  return mode.add = !mode.add;
+}
 
 
 let apiData: string[] = ref([]);
@@ -80,39 +93,6 @@ async function fetchData(value: (string | null))
   }
 }
 
-const postData = async () =>
-{
-
-const fakeData = 
-{
-  name: searchString.value,
-  ingredients: "tomato sauce",
-  instructions: "cut tomatos",
-  type: "soup",
-}
-  try 
-  {
-
-    await fetch(baseUrl + `/display`, 
-
-    {
-      method: "POST",
-      headers: 
-      {
-
-        "Content-Type" : "application/json",
-      },
-
-      body: JSON.stringify(fakeData),
-
-    });
-
-   }
-   catch(error)
-   {
-    console.error(error);
-   }
-} 
 
 
 
@@ -166,6 +146,8 @@ const setSearchStringVal = (value: (string | null)) =>
 
 <template>
 
+  <button class="button" @click="toggleAdd">add recipe</button>
+  <div></div>
   <input v-model="searchString" placeholder="type text here">
   <div v-for="item in filteredList()" :key="item">
     <button class="listButton" @click="fetchData(item)">{{ item }}</button>
@@ -173,14 +155,14 @@ const setSearchStringVal = (value: (string | null)) =>
   <div class="item error" v-if="searchString&&!filteredList().length">
      <p>No results found!</p>
   </div>
-  <p>searchString: {{ searchString }}</p>
   <p v-if="recipe.name"> recipe name: {{ recipe.name }}</p>
   <p v-else>"oh no"</p>
   <p v-if="recipe.ingredients"> recipe ingredients: {{ recipe.ingredients}}</p>
   <p v-else>"oh no"</p>
   <p v-if="recipe.instructions"> recipe instructions: {{ recipe.instructions}}</p>
   <p v-else>"oh no"</p>
-  <button class="button" @click="postData" >Post Data</button>
+
+  <PostRecipe v-if="mode.add" />
 </template>
 
 <style scoped>
@@ -188,6 +170,7 @@ const setSearchStringVal = (value: (string | null)) =>
 .button
 {
   color:white;
+  margin: 5px;
 }
 .listButton
 {
