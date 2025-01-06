@@ -11,3 +11,37 @@
   <p v-else>Oh no!!!!</p>
   <p v-if="recipeInstructions">recipeInstructions: {{ recipeInstructions }}</p>
   <p v-else>Oh no!!!!</p>
+
+
+
+async function fetchData(value: (string | null)) 
+{
+  try 
+  {
+  
+    //searchString.value = "test"
+    const res = await fetch(
+      `http://localhost:3000/display?name=${value}`
+    )
+  
+    //apiData.value = await res.json()
+    apiData = await res.json()
+
+
+    recipeName = await apiData.rows[0].name;
+    recipeIngredients = await apiData.rows[0].ingredients;
+    recipeInstructions = await apiData.rows[0].instructions;
+
+    console.log(recipeName);
+
+    console.log("api func called")
+  } 
+  catch (error) 
+  {
+   recipeName = null;
+    recipeIngredients = null;
+    recipeInstructions = null;
+    console.error(error);
+  }
+}
+

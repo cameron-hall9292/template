@@ -1,34 +1,19 @@
 <script setup lang="ts">
-import search from './components/search.vue'
-import Title from './components/Title.vue'
-import ingredients from './components/ingredients.vue'
-import instructions from './components/instructions.vue'
-import { ref, onMounted, onServerPrefetch , watch} from 'vue'
+
+import { ref, reactive, watch} from 'vue'
 
 import FetchRecipe from './components/FetchRecipe.vue'
 
 
-//let searchString: String = ref("cam"); 
-//let searchString: any = ref('cam');
-
 const baseUrl = `http://localhost:3000`;
 
-let searchString = ref<string>("testing, testing");
+let searchString = ref<string | null>("testing, testing");
 
-//let textInput: any = ref("");
+//let searchString = reactive({
+  //value: "testing"
+//})
 
-let textInput = ref<string>("");
-
-const count = ref(0);
-
-let apiData: string[] = ref([]);
-
-
-let recipeName = ref<string>("");
-let recipeIngredients = ref<string>("");
-let recipeInstructions = ref<string>("");
-
-
+let filteredApiDataArr: string[] = [];
 
 function filteredList() {
   return filteredApiDataArr.filter((item) =>
@@ -36,40 +21,64 @@ function filteredList() {
   );
 }
 
-async function fetchData() 
+interface Recipe 
+{
+  name: string | null,
+  ingredients: string | null,
+  instructions: string | null,
+}
+
+//let recipeName = ref<string>("");
+
+let recipe: Recipe = reactive(
+  {
+    name: null,
+    ingredients: null,
+    instructions: null,
+  }
+)
+
+
+let apiData: string[] = ref([]);
+
+async function fetchData(value: (string | null)) 
 {
   try 
   {
-  
+    console.log(`recipeName: ${value}`)
+    console.log(value)
     //searchString.value = "test"
     const res = await fetch(
-      `http://localhost:3000/display?name=${searchString.value}`
+      `http://localhost:3000/display?name=${value}`
     )
   
     //apiData.value = await res.json()
     apiData = await res.json()
 
 
-    recipeName = await apiData.rows[0].name;
-    recipeIngredients = await apiData.rows[0].ingredients;
-    recipeInstructions = await apiData.rows[0].instructions;
+    recipe.name = await apiData.rows[0].name;
+    recipe.ingredients = await apiData.rows[0].ingredients;
+    recipe.instructions = await apiData.rows[0].instructions;
 
-    console.log(recipeName);
+    console.log(recipe.name);
 
     console.log("api func called")
+
+    //reset searchString to null
+
+    searchString.value = "";
+
+    //reset search array
+    filteredApiDataArr = [];
   } 
   catch (error) 
   {
-   recipeName = null;
-    recipeIngredients = null;
-    recipeInstructions = null;
-    console.error(error);
+   recipe.name = null;
+   recipe.ingredients = null;
+   recipe.instructions = null;
+   console.error(error);
   }
 }
-
-
-
-
 
 const postData = async () =>
 {
@@ -106,9 +115,6 @@ const fakeData =
 } 
 
 
-
-
-let filteredApiDataArr: string[] = [];
 
 
 
@@ -150,21 +156,30 @@ watch(searchString, async () =>
 });
 
 let stringVar = "I am a var"
+
+const setSearchStringVal = (value: (string | null)) =>
+{
+  searchString.value = value;
+}
   
 </script>
 
 <template>
-  <FetchRecipe :recipeName = "searchString"    />
-
 
   <input v-model="searchString" placeholder="type text here">
   <div v-for="item in filteredList()" :key="item">
-    <p>{{ item }}</p>
+    <button class="listButton" @click="fetchData(item)">{{ item }}</button>
   </div>
   <div class="item error" v-if="searchString&&!filteredList().length">
      <p>No results found!</p>
   </div>
   <p>searchString: {{ searchString }}</p>
+  <p v-if="recipe.name"> recipe name: {{ recipe.name }}</p>
+  <p v-else>"oh no"</p>
+  <p v-if="recipe.ingredients"> recipe ingredients: {{ recipe.ingredients}}</p>
+  <p v-else>"oh no"</p>
+  <p v-if="recipe.instructions"> recipe instructions: {{ recipe.instructions}}</p>
+  <p v-else>"oh no"</p>
   <button class="button" @click="postData" >Post Data</button>
 </template>
 
@@ -173,6 +188,12 @@ let stringVar = "I am a var"
 .button
 {
   color:white;
+}
+.listButton
+{
+  color: black;
+  background-color: #FFFAA0;
+  margin: 2px;
 }
 
 </style>
