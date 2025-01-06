@@ -13,6 +13,14 @@
   <p v-else>Oh no!!!!</p>
 
 
+  <div></div>
+  <input v-model="searchString" placeholder="type text here">
+  <div v-for="item in filteredList()" :key="item">
+    <button class="listButton" @click="fetchData(item)">{{ item }}</button>
+  </div>
+  <div class="item error" v-if="searchString&&!filteredList().length">
+     <p>No results found!</p>
+  </div>
 
 async function fetchData(value: (string | null)) 
 {

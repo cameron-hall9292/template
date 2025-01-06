@@ -3,15 +3,9 @@
 
 import { ref, reactive, watch} from 'vue'
 
-
-
 const baseUrl = `http://localhost:3000`;
 
 let searchString = ref<string | null>("testing, testing");
-
-//let searchString = reactive({
-  //value: "testing"
-//})
 
 let filteredApiDataArr: string[] = [];
 
@@ -21,68 +15,33 @@ function filteredList() {
   );
 }
 
-interface Recipe 
-{
-  name: string | null,
-  ingredients: string | null,
-  instructions: string | null,
-}
-
-//let recipeName = ref<string>("");
-
-let recipe: Recipe = reactive(
-  {
-    name: null,
-    ingredients: null,
-    instructions: null,
-  }
-)
-
-
-
-let apiData: string[] = ref([]);
-
-async function fetchData(value: (string | null)) 
+async function deleteRecipe(value: (string | null)) 
 {
   try 
   {
     console.log(`recipeName: ${value}`)
     console.log(value)
     //searchString.value = "test"
-    const res = await fetch(
-      `http://localhost:3000/display?name=${value}`
-    )
+    await fetch(baseUrl + `/display?name=${value}`,
+    {
+
+      method: "DELETE",
+
+    })
   
-    //apiData.value = await res.json()
-    apiData = await res.json()
-
-
-    recipe.name = await apiData.rows[0].name;
-    recipe.ingredients = await apiData.rows[0].ingredients;
-    recipe.instructions = await apiData.rows[0].instructions;
-
-    console.log(recipe.name);
-
-    console.log("api func called")
-
-    //reset searchString to null
-
+    //reset searchString value
     searchString.value = "";
 
     //reset search array
     filteredApiDataArr = [];
+
+    alert(`recipe for ${value} was successfully deleted`)
   } 
   catch (error) 
   {
-   recipe.name = null;
-   recipe.ingredients = null;
-   recipe.instructions = null;
    console.error(error);
   }
 }
-
-
-
 
 
 
@@ -130,17 +89,11 @@ watch(searchString, async () =>
 
   <input v-model="searchString" placeholder="type text here">
   <div v-for="item in filteredList()" :key="item">
-    <button class="listButton" @click="fetchData(item)">{{ item }}</button>
+    <button class="listButton" @click="deleteRecipe(item)">{{ item }}</button>
   </div>
   <div class="item error" v-if="searchString&&!filteredList().length">
      <p>No results found!</p>
   </div>
-  <p v-if="recipe.name"> recipe name: {{ recipe.name }}</p>
-  <p v-else>"oh no"</p>
-  <p v-if="recipe.ingredients"> recipe ingredients: {{ recipe.ingredients}}</p>
-  <p v-else>"oh no"</p>
-  <p v-if="recipe.instructions"> recipe instructions: {{ recipe.instructions}}</p>
-  <p v-else>"oh no"</p>
 </template>
 
 <style scoped>
