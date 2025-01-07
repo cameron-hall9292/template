@@ -3,7 +3,8 @@
 
 import { ref, reactive, watch} from 'vue'
 
-
+import UpdateRecipe2 from './UpdateRecipe2.vue';
+import type Instructions from './instructions.vue';
 
 const baseUrl = `http://localhost:3000`;
 
@@ -12,6 +13,8 @@ let searchString = ref<string | null>("testing, testing");
 //let searchString = reactive({
   //value: "testing"
 //})
+
+let myBool = ref<boolean>(false);
 
 let filteredApiDataArr: string[] = [];
 
@@ -26,6 +29,7 @@ interface Recipe
   name: string | null,
   ingredients: string | null,
   instructions: string | null,
+  type: string | null,
 }
 
 //let recipeName = ref<string>("");
@@ -35,6 +39,7 @@ let recipe: Recipe = reactive(
     name: null,
     ingredients: null,
     instructions: null,
+    type: null,
   }
 )
 
@@ -63,6 +68,7 @@ async function fetchData(value: (string | null))
     recipe.name = await apiData.rows[0].name;
     recipe.ingredients = await apiData.rows[0].ingredients;
     recipe.instructions = await apiData.rows[0].instructions;
+    recipe.type = await apiData.rows[0].type;
 
 
     //split ingredients by comma
@@ -70,12 +76,6 @@ async function fetchData(value: (string | null))
     console.log(recipe.ingredients);
 
     ingredientsList = recipe.ingredients?.split(',');
-
-    console.log(ingredientsList);
-
-    console.log(recipe.name);
-
-    console.log("api func called")
 
     //reset searchString to null
 
@@ -140,6 +140,7 @@ watch(searchString, async () =>
 
 <template>
 
+  <button class="button" @click="myBool = !myBool" >edit recipe</button>
   <input v-model="searchString" placeholder="type text here">
   <div v-for="item in filteredList()" :key="item">
     <button class="listButton" @click="fetchData(item)">{{ item }}</button>
@@ -156,6 +157,12 @@ watch(searchString, async () =>
   </div>
   <p v-if="recipe.instructions"> {{ recipe.instructions}}</p>
   <p v-else>"oh no"</p>
+  <div>some space</div>  
+  <UpdateRecipe2 v-if="myBool" :name="recipe.name" 
+  :ingredients="recipe.ingredients" 
+  :instructions="recipe.instructions" 
+  :type="recipe.type"/>
+  <div v-else>some div</div>
 </template>
 
 <style scoped>
