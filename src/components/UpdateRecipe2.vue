@@ -19,6 +19,15 @@ interface RecipePutData
 
 const props = defineProps<RecipePutData>();
 
+const emit = defineEmits<{
+  (e: 'cancel-edit', payload: { editOn: boolean }): void
+}>()
+
+
+const cancelEditRecipe = () => {
+  emit('cancel-edit', { editOn: false})
+}
+
 
 
 const recipePut: RecipePutData = reactive
@@ -118,6 +127,7 @@ onMounted(() => {
   <textarea id="formInstructions" class="longForm" v-model="recipePut.instructions" placeholder="enter instructions"></textarea>
   <input id="formType" class="longForm" v-model="recipePut.type" placeholder="enter recipe type">
   <button class="button" @click="updateRecipe(recipePut)">submit update</button>
+  <button class="button" @click="cancelEditRecipe" >cancel</button>
 </template>
 
 <style scoped>

@@ -62,7 +62,6 @@ const changeMode = (modeVal: string): void =>
   <h1>{{ appMode.mode }}</h1>
   <button v-if="appMode.mode !== appModes.create" class="button" @click="changeMode(appModes.create)">add recipe</button>
   <button v-if="appMode.mode !== appModes.find" class="button" @click="changeMode(appModes.find)">find recipe</button>
-  <button v-if="appMode.mode !== appModes.delete" class="button" @click="changeMode(appModes.delete)">delete recipe</button>
 
   <FilterRecipes v-if="appMode.mode === appModes.find || appMode.mode === appModes.update"/>
 

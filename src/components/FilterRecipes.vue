@@ -3,18 +3,29 @@
 
 import { ref, reactive, watch} from 'vue'
 
+import deleteRecipe from '../api/delete';
+
+import { fetchData } from '../api/get';
+
+
+//import { recipe } from '../api/get';
+
+
+
 import UpdateRecipe2 from './UpdateRecipe2.vue';
 import type Instructions from './instructions.vue';
 
+
 const baseUrl = `http://localhost:3000`;
 
-let searchString = ref<string | null>("testing, testing");
+
+let searchString = ref<string | null>(null);
 
 //let searchString = reactive({
   //value: "testing"
 //})
 
-let myBool = ref<boolean>(false);
+let editOn = ref<boolean>(false);
 
 let filteredApiDataArr: string[] = [];
 
@@ -32,7 +43,6 @@ interface Recipe
   type: string | null,
 }
 
-//let recipeName = ref<string>("");
 
 let recipe: Recipe = reactive(
   {
@@ -44,45 +54,31 @@ let recipe: Recipe = reactive(
 )
 
 
+//let recipe = ref<Recipe>(
+  //{
+    //name: null,
+    //ingredients: null,
+    //instructions: null,
+    //type: null,
+  //}
+//)
 
 
-let apiData: string[] = ref([]);
-
-let ingredientsList: string[];
 
 async function fetchData(value: (string | null)) 
 {
   try 
   {
-    console.log(`recipeName: ${value}`)
-    console.log(value)
-    //searchString.value = "test"
     const res = await fetch(
-      `http://localhost:3000/display?name=${value}`
+      `${baseUrl}/display?name=${value}`
     )
   
-    //apiData.value = await res.json()
-    apiData = await res.json()
+    await res.json()
 
+    .then(data => recipe = data.rows[0])
 
-    recipe.name = await apiData.rows[0].name;
-    recipe.ingredients = await apiData.rows[0].ingredients;
-    recipe.instructions = await apiData.rows[0].instructions;
-    recipe.type = await apiData.rows[0].type;
-
-
-    //split ingredients by comma
-
-    console.log(recipe.ingredients);
-
-    ingredientsList = recipe.ingredients?.split(',');
-
-    //reset searchString to null
-
-    searchString.value = "";
-
-    //reset search array
-    filteredApiDataArr = [];
+    //reset after data fetch
+    resetAfterFetch();
   } 
   catch (error) 
   {
@@ -94,6 +90,22 @@ async function fetchData(value: (string | null))
 }
 
 
+
+const resetAfterFetch = () =>
+{
+    //reset searchString to null
+    searchString.value = null;
+
+    //reset search array
+    filteredApiDataArr = [];
+
+    editOn.value = false;
+}
+
+const testCb = () =>
+{
+  console.log("testing")
+}
 
 
 
@@ -135,12 +147,18 @@ watch(searchString, async () =>
   }
 });
 
+const exitEdit = (payload: object) =>
+{
+  console.log(payload);
+  editOn.value = payload.editOn;
+  console.log(editOn)
+}
+
   
 </script>
 
 <template>
 
-  <button class="button" @click="myBool = !myBool" >edit recipe</button>
   <input v-model="searchString" placeholder="type text here">
   <div v-for="item in filteredList()" :key="item">
     <button class="listButton" @click="fetchData(item)">{{ item }}</button>
@@ -151,17 +169,19 @@ watch(searchString, async () =>
   <h2 v-if="recipe.name">{{ recipe.name }}</h2>
   <p v-else>"oh no"</p>
   <div class="unordered_list">
-    <li  v-if="recipe.ingredients" v-for="(item) in ingredientsList"> 
+    <li  v-if="recipe.ingredients" v-for="(item) in recipe.ingredients.split(',')"> 
       {{ item }}
     </li>
   </div>
   <p v-if="recipe.instructions"> {{ recipe.instructions}}</p>
   <p v-else>"oh no"</p>
   <div>some space</div>  
-  <UpdateRecipe2 v-if="myBool" :name="recipe.name" 
+  <button class="button" v-if="editOn == false && recipe.name" @click="editOn = true" >edit recipe</button>
+  <button class="button" v-if="recipe.name" @click="deleteRecipe(recipe.name, baseUrl)" >delete recipe</button>
+  <UpdateRecipe2 v-if="editOn" :name="recipe.name" 
   :ingredients="recipe.ingredients" 
   :instructions="recipe.instructions" 
-  :type="recipe.type"/>
+  :type="recipe.type" @cancel-edit="exitEdit"/>
   <div v-else>some div</div>
 </template>
 
