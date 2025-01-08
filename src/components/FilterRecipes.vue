@@ -1,7 +1,7 @@
 
 <script setup lang="ts">
 
-import { ref, reactive, watch} from 'vue'
+import { ref, reactive, watch, inject} from 'vue'
 
 import deleteRecipe from '../api/delete';
 
@@ -10,12 +10,32 @@ import { fetchData } from '../api/get';
 
 //import { recipe } from '../api/get';
 
+import { appModes } from '../appModes';
 
 
 import UpdateRecipe2 from './UpdateRecipe2.vue';
 import type Instructions from './instructions.vue';
 
+const { appMode, updateMode } = inject("appMode");
 
+let editOn = ref<boolean>(false);
+
+const emit = defineEmits<{
+  (e: 'app-reset', payload: { mode: string }): void
+  (e: 'app-edit', payload: { mode: string }): void
+}>()
+
+
+const resetApp = () => 
+{
+  emit('app-reset', { mode: appModes.find });
+}
+
+const enterEditMode = () =>
+{
+  emit('app-edit', { mode: appModes.update});
+  editOn.value = true;
+}
 const baseUrl = `http://localhost:3000`;
 
 
@@ -25,7 +45,6 @@ let searchString = ref<string | null>(null);
   //value: "testing"
 //})
 
-let editOn = ref<boolean>(false);
 
 let filteredApiDataArr: string[] = [];
 
@@ -154,10 +173,17 @@ const exitEdit = (payload: object) =>
   console.log(editOn)
 }
 
+const appReset = (payload: object) =>
+{
+  console.log(payload.mode)
+  resetApp();
+}
   
 </script>
 
 <template>
+
+  <button class="button" @click="updateMode('update')">{{ appMode.mode }}</button>
 
   <input v-model="searchString" placeholder="type text here">
   <div v-for="item in filteredList()" :key="item">
@@ -167,25 +193,29 @@ const exitEdit = (payload: object) =>
      <p>No results found!</p>
   </div>
   <h2 v-if="recipe.name">{{ recipe.name }}</h2>
-  <p v-else>"oh no"</p>
   <div class="unordered_list">
     <li  v-if="recipe.ingredients" v-for="(item) in recipe.ingredients.split(',')"> 
       {{ item }}
     </li>
   </div>
   <p v-if="recipe.instructions"> {{ recipe.instructions}}</p>
-  <p v-else>"oh no"</p>
-  <div>some space</div>  
-  <button class="button" v-if="editOn == false && recipe.name" @click="editOn = true" >edit recipe</button>
-  <button class="button" v-if="recipe.name" @click="deleteRecipe(recipe.name, baseUrl)" >delete recipe</button>
+  <div id="buttonWrapper">
+    <button class="button" v-if="editOn == false && recipe.name" @click="enterEditMode" >edit recipe</button>
+    <button class="button" v-if="recipe.name" @click="deleteRecipe(recipe.name, baseUrl)" >delete recipe</button>
+  </div>
   <UpdateRecipe2 v-if="editOn" :name="recipe.name" 
   :ingredients="recipe.ingredients" 
   :instructions="recipe.instructions" 
-  :type="recipe.type" @cancel-edit="exitEdit"/>
-  <div v-else>some div</div>
+  :type="recipe.type" @cancel-edit="exitEdit"
+  @app-reset="appReset"/>
 </template>
 
 <style scoped>
+
+#buttonWrapper
+{
+  border: 2px solid black;
+}
 
 .button
 {

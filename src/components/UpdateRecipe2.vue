@@ -3,6 +3,8 @@
 
 import { ref, reactive, watch, onMounted, onUpdated, onUnmounted, onBeforeUpdate, onActivated} from 'vue'
 
+import { appModes } from '../appModes';
+
 const baseUrl = `http://localhost:3000`;
 
 let searchString = ref<string | null>("testing, testing");
@@ -21,6 +23,7 @@ const props = defineProps<RecipePutData>();
 
 const emit = defineEmits<{
   (e: 'cancel-edit', payload: { editOn: boolean }): void
+  (e: 'app-reset', payload: { mode: string }): void
 }>()
 
 
@@ -28,6 +31,10 @@ const cancelEditRecipe = () => {
   emit('cancel-edit', { editOn: false})
 }
 
+const resetApp = () => 
+{
+  emit('app-reset', { mode: appModes.find });
+}
 
 
 const recipePut: RecipePutData = reactive
@@ -70,6 +77,9 @@ async function updateRecipe(value: RecipePutData)
     console.log(value);
 
     alert(`recipe for ${value.name} was successfully updated`)
+    
+    //reset app so it goes back to find recipe mode
+    resetApp();
   } 
   catch (error) 
   {
