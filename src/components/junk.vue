@@ -11,6 +11,12 @@
   <p v-else>Oh no!!!!</p>
   <p v-if="recipeInstructions">recipeInstructions: {{ recipeInstructions }}</p>
   <p v-else>Oh no!!!!</p>
+      
+
+
+      <datalist id="ice-cream-flavors" v-for="item in filteredApiDataArr" :key="item">
+        <option value={{ item }}></option>
+      </datalist>
 
 
   <div></div>

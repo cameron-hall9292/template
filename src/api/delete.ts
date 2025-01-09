@@ -6,18 +6,26 @@ export default async function deleteRecipe(value: (string | null), baseUrl: stri
 {
   try 
   {
-    await fetch(baseUrl + `/display?name=${value}`,
+
+    if (confirm("Are you sure you want to delete this recipe?"))
     {
 
-      method: "DELETE",
+      await fetch(baseUrl + `/display?name=${value}`,
+      {
 
-    })
+        method: "DELETE",
 
-    //reset everything
-    //resetAfterFetch();
-  
+      })
 
-    alert(`recipe for ${value} was successfully deleted`)
+      alert(`recipe for ${value} was successfully deleted`)
+
+    }
+
+    else 
+    {
+      return;
+    }
+    
   } 
   catch (error) 
   {

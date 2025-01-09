@@ -107,6 +107,8 @@ const resetAfterFetch = () =>
 
     //reset search array
     filteredApiDataArr.value = [];
+    
+    updateMode(appModes.read);
 
 }
 
@@ -168,18 +170,29 @@ watch(searchString, async () =>
 <template>
 
 
+    <div v-if="appMode.mode === appModes.find" id="searchWrapper">
+      <div>filteredApiDataArr: {{ filteredApiDataArr }}</div>
+      <input v-model="searchString" id="searchbar" type="search" name="q"  placeholder="search recipe" list="ice-cream-flavors">
 
-    <div>{{ filteredApiDataArr }}</div>
-    <input v-model="searchString" placeholder="type text here">
-    <div v-for="item in filteredApiDataArr" :key="item">
-      <button class="listButton" @click="fetchData(item) && updateMode(appModes.read)">{{ item }}</button>
-    </div>
-    <div class="item error" v-if="searchString&&!filteredList().length">
-      <p>{{ filteredList().length }}</p>
-    </div>
-    <div >
-    </div>
-  <div v-if="appMode.mode === appModes.read">
+
+
+   
+
+      <datalist id="ice-cream-flavors" >
+        <option v-for="item in filteredApiDataArr" :key="item" :value="item">{{ item }}</option>
+      </datalist>
+
+      <input v-model="searchString" placeholder="type text here">
+      <div v-for="item in filteredApiDataArr" :key="item">
+        <button class="listButton" @click="fetchData(item)">{{ item }}</button>
+      </div>
+      <div class="item error" v-if="searchString&&!filteredApiDataArr.length">
+        <p>{{ filteredApiDataArr.length }}</p>
+      </div>
+      <div >
+      </div>
+      </div>
+  <div v-else-if="appMode.mode === appModes.read">
     <h2 v-if="recipe.name">{{ recipe.name }}</h2>
       <ul class="unordered_list">
         <li  v-if="recipe.ingredients" v-for="(item) in recipe.ingredients.split(',')"> 
@@ -189,7 +202,7 @@ watch(searchString, async () =>
     <p v-if="recipe.instructions"> {{ recipe.instructions}}</p>
     <div id="buttonWrapper">
       <button class="button" v-if="appMode.mode === appModes.read && recipe.name" @click="updateMode('update')" >edit recipe</button>
-      <Buttons class="button" v-if="appMode.mode === appModes.read && recipe.name"  name="delete" @click="updateMode('delete')"/>
+      <Buttons class="button" v-if="appMode.mode === appModes.read && recipe.name"  name="delete recipe" @click="updateMode('delete')"/>
     </div>
   </div>
   <div v-else-if="appMode.mode === appModes.delete">
