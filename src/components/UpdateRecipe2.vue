@@ -1,7 +1,7 @@
 
 <script setup lang="ts">
 
-import { ref, reactive, watch, onMounted, onUpdated, onUnmounted, onBeforeUpdate, onActivated} from 'vue'
+import { inject, ref, reactive, watch, onMounted, onUpdated, onUnmounted, onBeforeUpdate, onActivated} from 'vue'
 
 import { appModes } from '../appModes';
 
@@ -9,6 +9,8 @@ const baseUrl = `http://localhost:3000`;
 
 let searchString = ref<string | null>("testing, testing");
 
+
+const { appMode, updateMode } = inject("appMode");
 
 
 interface RecipePutData 
@@ -21,20 +23,6 @@ interface RecipePutData
 
 const props = defineProps<RecipePutData>();
 
-const emit = defineEmits<{
-  (e: 'cancel-edit', payload: { editOn: boolean }): void
-  (e: 'app-reset', payload: { mode: string }): void
-}>()
-
-
-const cancelEditRecipe = () => {
-  emit('cancel-edit', { editOn: false})
-}
-
-const resetApp = () => 
-{
-  emit('app-reset', { mode: appModes.find });
-}
 
 
 const recipePut: RecipePutData = reactive
@@ -78,8 +66,6 @@ async function updateRecipe(value: RecipePutData)
 
     alert(`recipe for ${value.name} was successfully updated`)
     
-    //reset app so it goes back to find recipe mode
-    resetApp();
   } 
   catch (error) 
   {
@@ -137,7 +123,7 @@ onMounted(() => {
   <textarea id="formInstructions" class="longForm" v-model="recipePut.instructions" placeholder="enter instructions"></textarea>
   <input id="formType" class="longForm" v-model="recipePut.type" placeholder="enter recipe type">
   <button class="button" @click="updateRecipe(recipePut)">submit update</button>
-  <button class="button" @click="cancelEditRecipe" >cancel</button>
+  <button class="button" @click="updateMode('find')" >cancel</button>
 </template>
 
 <style scoped>

@@ -9,6 +9,8 @@ let searchString = ref<string | null>("testing, testing");
 
 let filteredApiDataArr: string[] = [];
 
+
+
 function filteredList() {
   return filteredApiDataArr.filter((item) =>
     item.toLowerCase().includes(searchString.value.toLowerCase())
@@ -147,6 +149,9 @@ watch(searchString, async () =>
 <template>
 
   <input v-model="searchString" placeholder="search recipe">
+  <div>
+
+  </div>
   <input class="longForm" v-model="recipePut.name" placeholder="enter recipe name">
   <textarea class="longForm" v-model="recipePut.ingredients" placeholder="enter ingredients"></textarea>
   <textarea class="longForm" v-model="recipePut.instructions" placeholder="enter instructions"></textarea>

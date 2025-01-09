@@ -1,9 +1,12 @@
 
 <script setup lang="ts">
-import { reactive } from 'vue';
+import { reactive, inject} from 'vue';
 import type Ingredients from './ingredients.vue';
 
 
+import { appModes } from '../appModes';
+
+const { appMode, updateMode } = inject("appMode");
 const baseUrl = `http://localhost:3000`;
 
 interface RecipePostData 
@@ -76,7 +79,8 @@ const postData = async (value: RecipePostData) =>
   <p>{{ recipePost.instructions}}</p>
   <p>{{ recipePost.type}}</p>
     
-  <button class="button" @click="postData(recipePost)" >Post Data</button>
+  <button class="button" @click="postData(recipePost) && updateMode('find')" >Post Data</button>
+  <button class="button" @click="updateMode('find')" >cancel</button>
 </template>
 
 

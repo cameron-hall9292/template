@@ -12,21 +12,9 @@ import UpdateRecipe from './components/UpdateRecipe.vue';
 
 import { appModes } from './appModes';
 
-import { getCurrentInstance } from 'vue'
-const instance = getCurrentInstance();
-
 const baseUrl = `http://localhost:3000`;
 
 const count = ref(0);
-
-//enum appModes 
-//{
-  //find = "find",
-  //create = "create",
-  //delete = "delete",
-  //update = "update"
-
-//}
 
 let appMode = reactive(
   {
@@ -89,17 +77,15 @@ const enterEditMode = (): void =>
 
 <template>
 
-<h1>The current count is: {{ count }}</h1>
-  <h1>{{ appMode.mode }}</h1>
+  <h1>appMode.mode = {{ appMode.mode }}</h1>
   <button v-if="appMode.mode !== appModes.create" class="button" @click="changeMode(appModes.create)">add recipe</button>
   <button v-if="appMode.mode !== appModes.find" class="button" @click="changeMode(appModes.find)">find recipe</button>
 
-  <FilterRecipes v-if="appMode.mode === appModes.find || appMode.mode === appModes.update"
-    @app-reset="appReset" @app-edit="enterEditMode" />
+  <FilterRecipes />
 
-  <PostRecipe v-else-if="appMode.mode === appModes.create" />
+  <PostRecipe v-if="appMode.mode === appModes.create" />
 
-  <DeleteRecipe v-else-if="appMode.mode === appModes.delete" />
+  <!-- <DeleteRecipe v-else-if="appMode.mode === appModes.delete" /> -->
 
 
 </template>

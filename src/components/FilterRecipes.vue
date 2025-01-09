@@ -8,34 +8,22 @@ import deleteRecipe from '../api/delete';
 import { fetchData } from '../api/get';
 
 
+import UpdateRecipe2 from './UpdateRecipe2.vue';
+
+import Buttons from './Buttons.vue';
+
+
+
 //import { recipe } from '../api/get';
 
 import { appModes } from '../appModes';
 
-
-import UpdateRecipe2 from './UpdateRecipe2.vue';
-import type Instructions from './instructions.vue';
-
 const { appMode, updateMode } = inject("appMode");
+
+
 
 let editOn = ref<boolean>(false);
 
-const emit = defineEmits<{
-  (e: 'app-reset', payload: { mode: string }): void
-  (e: 'app-edit', payload: { mode: string }): void
-}>()
-
-
-const resetApp = () => 
-{
-  emit('app-reset', { mode: appModes.find });
-}
-
-const enterEditMode = () =>
-{
-  emit('app-edit', { mode: appModes.update});
-  editOn.value = true;
-}
 const baseUrl = `http://localhost:3000`;
 
 
@@ -46,10 +34,11 @@ let searchString = ref<string | null>(null);
 //})
 
 
-let filteredApiDataArr: string[] = [];
+
+let filteredApiDataArr = ref<string[]>([]) 
 
 function filteredList() {
-  return filteredApiDataArr.filter((item) =>
+  return filteredApiDataArr.value.filter((item) =>
     item.toLowerCase().includes(searchString.value.toLowerCase())
   );
 }
@@ -98,6 +87,7 @@ async function fetchData(value: (string | null))
 
     //reset after data fetch
     resetAfterFetch();
+    console.log("fetchData func called")
   } 
   catch (error) 
   {
@@ -116,9 +106,8 @@ const resetAfterFetch = () =>
     searchString.value = null;
 
     //reset search array
-    filteredApiDataArr = [];
+    filteredApiDataArr.value = [];
 
-    editOn.value = false;
 }
 
 const testCb = () =>
@@ -134,16 +123,18 @@ watch(searchString, async () =>
 
   try 
   {
-    console.log(`searchString: ${searchString.value}`)
+    //console.log(`searchString: ${searchString.value}`)
     //searchString.value = "test"
     const res = await fetch(
-      `http://localhost:3000/recipeNames?name=${searchString.value}`
+      `${baseUrl}/recipeNames?name=${searchString.value}`
     )
 
   
     const response = await res.json();
     console.log(response)
     const filteredData: string[] = [];
+
+    if (response.rows === undefined) return;
   
     for (let i of response.rows)
       {
@@ -156,7 +147,12 @@ watch(searchString, async () =>
 
     console.log("filterData api func called")
 
-    filteredApiDataArr = filteredData;
+
+    filteredApiDataArr.value = filteredData;
+
+    console.log(filteredApiDataArr.value)
+
+
       
 
   } 
@@ -166,48 +162,56 @@ watch(searchString, async () =>
   }
 });
 
-const exitEdit = (payload: object) =>
-{
-  console.log(payload);
-  editOn.value = payload.editOn;
-  console.log(editOn)
-}
-
-const appReset = (payload: object) =>
-{
-  console.log(payload.mode)
-  resetApp();
-}
   
 </script>
 
 <template>
 
-  <button class="button" @click="updateMode('update')">{{ appMode.mode }}</button>
 
-  <input v-model="searchString" placeholder="type text here">
-  <div v-for="item in filteredList()" :key="item">
-    <button class="listButton" @click="fetchData(item)">{{ item }}</button>
+
+    <div>{{ filteredApiDataArr }}</div>
+    <input v-model="searchString" placeholder="type text here">
+    <div v-for="item in filteredApiDataArr" :key="item">
+      <button class="listButton" @click="fetchData(item) && updateMode(appModes.read)">{{ item }}</button>
+    </div>
+    <div class="item error" v-if="searchString&&!filteredList().length">
+      <p>{{ filteredList().length }}</p>
+    </div>
+    <div >
+    </div>
+  <div v-if="appMode.mode === appModes.read">
+    <h2 v-if="recipe.name">{{ recipe.name }}</h2>
+      <ul class="unordered_list">
+        <li  v-if="recipe.ingredients" v-for="(item) in recipe.ingredients.split(',')"> 
+          {{ item }}
+        </li>
+      </ul>
+    <p v-if="recipe.instructions"> {{ recipe.instructions}}</p>
+    <div id="buttonWrapper">
+      <button class="button" v-if="appMode.mode === appModes.read && recipe.name" @click="updateMode('update')" >edit recipe</button>
+      <Buttons class="button" v-if="appMode.mode === appModes.read && recipe.name"  name="delete" @click="updateMode('delete')"/>
+    </div>
   </div>
-  <div class="item error" v-if="searchString&&!filteredList().length">
-     <p>No results found!</p>
+  <div v-else-if="appMode.mode === appModes.delete">
+
+    <h2 v-if="recipe.name">{{ recipe.name }}</h2>
+      <ul class="unordered_list">
+        <li  v-if="recipe.ingredients" v-for="(item) in recipe.ingredients.split(',')"> 
+          {{ item }}
+        </li>
+      </ul>
+    <p v-if="recipe.instructions"> {{ recipe.instructions}}</p>
+
+    <button class="button" v-if="appMode.mode === appModes.delete && recipe.name" @click="deleteRecipe(recipe.name, baseUrl) && updateMode('find')">submit delete</button>
+    <button class="button" v-if="appMode.mode === appModes.delete && recipe.name" @click="updateMode('find')">cancel</button>
+
   </div>
-  <h2 v-if="recipe.name">{{ recipe.name }}</h2>
-  <div class="unordered_list">
-    <li  v-if="recipe.ingredients" v-for="(item) in recipe.ingredients.split(',')"> 
-      {{ item }}
-    </li>
-  </div>
-  <p v-if="recipe.instructions"> {{ recipe.instructions}}</p>
-  <div id="buttonWrapper">
-    <button class="button" v-if="editOn == false && recipe.name" @click="enterEditMode" >edit recipe</button>
-    <button class="button" v-if="recipe.name" @click="deleteRecipe(recipe.name, baseUrl)" >delete recipe</button>
-  </div>
-  <UpdateRecipe2 v-if="editOn" :name="recipe.name" 
+  <UpdateRecipe2 v-else-if="appMode.mode === appModes.update" :name="recipe.name" 
   :ingredients="recipe.ingredients" 
   :instructions="recipe.instructions" 
-  :type="recipe.type" @cancel-edit="exitEdit"
-  @app-reset="appReset"/>
+  :type="recipe.type" 
+  />
+  <div v-else>Nothing to see here...</div>
 </template>
 
 <style scoped>
