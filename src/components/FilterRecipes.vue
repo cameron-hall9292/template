@@ -94,7 +94,7 @@ async function fetchData(value: (string | null))
    recipe.name = null;
    recipe.ingredients = null;
    recipe.instructions = null;
-   console.error(error);
+   //console.error(error);
   }
 }
 
@@ -160,11 +160,48 @@ watch(searchString, async () =>
   } 
   catch (error) 
   {
-    console.error(error);
+    //console.error(error);
   }
 });
 
-  
+ const testVar: string = "a string";
+
+ const testFunc = (): void =>
+ {
+  console.log("test func called");
+ }
+
+
+
+
+ const modSearchContainer = (val: boolean) =>
+ {
+  console.log("mod contain called")
+
+  //change style prop of search container
+
+  if (val)
+  {
+    searchContainerStyle.border = "5px solid purple"
+  }
+  else 
+  {
+
+    searchContainerStyle.border = "5px solid red"
+  }
+
+  return;
+
+ }
+
+ const searchContainerStyle = reactive
+ (
+  {
+    border: "5px solid red",
+  }
+ )
+
+
 </script>
 
 <template>
@@ -172,26 +209,22 @@ watch(searchString, async () =>
 
     <div v-if="appMode.mode === appModes.find" id="searchWrapper">
       <div>filteredApiDataArr: {{ filteredApiDataArr }}</div>
-      <input v-model="searchString" id="searchbar" type="search" name="q"  placeholder="search recipe" list="ice-cream-flavors">
+
+      <div id="search-container" contenteditable="true" :style="{border: searchContainerStyle.border}">
+
+        <input @focus="modSearchContainer(true)" @blur="modSearchContainer(false)" v-model="searchString" :onchange="fetchData(searchString)" id="searchbar" type="search" name="q"  placeholder="search recipe" autocomplete="off">
+        <label class="forScreenReaders" value="searchbar">searchbar for finding recipes</label>
+        <span class="search-icon">&#128269;</span> <!-- Unicode for magnifying glass icon -->
+        <div class="dropdown-list" id="dropdownList">
+              <div class="dropdown-item" v-for="item in filteredApiDataArr" :key="item" :value="item" @click="fetchData(item)">{{ item }}</div>
+        </div>
 
 
-
-   
-
-      <datalist id="ice-cream-flavors" >
-        <option v-for="item in filteredApiDataArr" :key="item" :value="item">{{ item }}</option>
-      </datalist>
-
-      <input v-model="searchString" placeholder="type text here">
-      <div v-for="item in filteredApiDataArr" :key="item">
-        <button class="listButton" @click="fetchData(item)">{{ item }}</button>
       </div>
-      <div class="item error" v-if="searchString&&!filteredApiDataArr.length">
-        <p>{{ filteredApiDataArr.length }}</p>
-      </div>
-      <div >
-      </div>
-      </div>
+
+
+    </div>
+
   <div v-else-if="appMode.mode === appModes.read">
     <h2 v-if="recipe.name">{{ recipe.name }}</h2>
       <ul class="unordered_list">
@@ -249,12 +282,75 @@ watch(searchString, async () =>
 {
   list-style-position: inside;
 }
-.unordered_list {
+.unordered_list 
+{
   display: grid;
   grid-template-columns: 1fr 1fr;
   list-style: none;
   border: 2px solid black;
 }
+ /* Input Styling */
+#searchbar 
+{
+  width: 100%;
+  padding: 10px 40px 10px 15px; /* Add padding for icon space */
+  font-size: 16px;
+  border: 2px solid #ccc; /* Default border color */
+  border-radius: 25px; /* Rounded border */
+  outline: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
 
+/* Focus Effect */
+#searchbar:focus 
+{
+  border-color: #4CAF50; /* Highlight border color */
+  box-shadow: 0 0 8px rgba(76, 175, 80, 0.5); /* Green glow */
+}
 
+/* Search Icon */
+#searchbar .search-icon 
+{
+  position: absolute;
+  top: 50%;
+  right: 15px; /* Adjust space from the right */
+  transform: translateY(-50%);
+  font-size: 20px; /* Icon size */
+  color: #aaa; /* Default icon color */
+  pointer-events: none; /* Prevent interaction with the icon */
+}
+
+/* Placeholder Text Styling */
+#searchbar::placeholder 
+{
+  color: #aaa; /* Placeholder color */
+  font-style: italic; /* Placeholder style */
+}
+
+/*styling for searchbar dropdown list */
+.dropdown-list
+{
+  display: none;
+}
+
+#searchbar:focus ~ .dropdown-list
+{
+  border: 3px solid black;
+  display: inline-block;
+}
+
+#search-container
+{
+  border: 3px solid black;
+}
+#search-container:focus .dropdown-list
+{
+  display: inline-block;
+}
+
+/* styling for accessiblity */
+.forScreenReaders
+{
+  display: none;
+}
 </style>

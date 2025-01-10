@@ -12,6 +12,16 @@
   <p v-if="recipeInstructions">recipeInstructions: {{ recipeInstructions }}</p>
   <p v-else>Oh no!!!!</p>
       
+      <datalist id="recipes">
+        <option v-for="item in filteredApiDataArr" :key="item" :value="item" >{{ item }}</option>
+      </datalist>
+
+
+
+      <input v-model="searchString" placeholder="type text here">
+      <div v-for="item in filteredApiDataArr" :key="item">
+        <button class="listButton" @click="fetchData(item)">{{ item }}</button>
+      </div>
 
 
       <datalist id="ice-cream-flavors" v-for="item in filteredApiDataArr" :key="item">
