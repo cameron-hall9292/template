@@ -1,8 +1,9 @@
 
 <script setup lang="ts">
 
-import { ref, reactive, watch, inject} from 'vue'
+import { computed, ref, reactive, watch, inject, useTransitionState, HtmlHTMLAttributes, type ReservedProps} from 'vue'
 
+import { type StyleValue } from 'vue';
 import deleteRecipe from '../api/delete';
 
 import { fetchData } from '../api/get';
@@ -160,7 +161,7 @@ watch(searchString, async () =>
   } 
   catch (error) 
   {
-    //console.error(error);
+    console.error(error);
   }
 });
 
@@ -183,40 +184,132 @@ watch(searchString, async () =>
   if (val)
   {
     searchContainerStyle.border = "5px solid purple"
+    searchContainerStyle.backgroundColor = "#FFFFFF"
+    searchContainerStyle.borderRadius = "30px"
+    //searchContainerStyle.height  = `${filteredApiDataArr.value.length * 4}em`;
+    searchItemStyle.visibility = "visible"
   }
   else 
   {
 
     searchContainerStyle.border = "5px solid red"
+    searchContainerStyle.backgroundColor = "#FFFAA0"
+    searchContainerStyle.borderRadius = "0px"
+    
+    //searchContainerStyle.height = "0px"
+    //searchItemStyle.visibility = "hidden"
   }
 
   return;
 
  }
 
- const searchContainerStyle = reactive
+ const input = ref(null);
+
+ const blurSearchContainer = (event) =>
+ {
+
+    searchContainerStyle.border = "5px solid red"
+    searchContainerStyle.backgroundColor = "#FFFAA0"
+    searchContainerStyle.borderRadius = "0px"
+    //reset search filter
+    //filteredApiDataArr.value = [];
+    searchItemStyle.visibility = "hidden"
+    //register a click event
+    input.value.blur();
+ }
+//expand search box based on number of items fetched by the search string
+watch(filteredApiDataArr, () => 
+{
+
+    const initialSearchBarHeight = 2.5 //em
+    const itemDivHeight = searchItemHeight + searchItemPadding * 2
+    searchContainerStyle.height  = `${initialSearchBarHeight + itemDivHeight + (filteredApiDataArr.value.length * (itemDivHeight))}em`;
+    console.log(searchContainerStyle.height)
+})
+
+ const searchContainerStyle: Record<string, string> = reactive
  (
   {
     border: "5px solid red",
+    width: "35em",
+    height: "2.5em", 
+    backgroundColor:"#FFFAA0",
+    borderRadius: "0px",
+    boxShadow: "0 0 8px rgba(76, 175, 80, 0.5)", /* Green glow */
+    borderWidth: "2px",
+    position: "absolute",
+    overflow: "visible",
+    display: "block",
   }
  )
 
+ const searchItemHeight = 1;
+
+ const searchItemPadding = 0.5;
+
+ const searchItemStyle = reactive
+ (
+  {
+    height: `${searchItemHeight}em`,
+    padding: `${searchItemPadding}em`,
+    display: "flex",
+    justifyContent: "left",
+    alignItems: "center",
+    visibility: "visible"
+  }
+ )
+
+
+const searchBarStyle: Record<string, string> = reactive
+(
+  {
+    width: "100%",
+    height: "2.5em",
+    padding: "10px 40px 10px 15px",
+    fontSize: "16px",
+    border: "2px solid #ccc",
+    borderRadius: "25px",
+    outline: "none",
+    transition: "border-color 0.3s, box-shadow 0.3s",
+    position: "relative"
+
+  }
+)
+ const selectSearchItem = (val: string ) =>
+ {
+  searchString.value =  val;
+
+  console.log("selectSearchItem func called")
+  
+  //collapse search bar after user has clicked an item from the drop-down list
+  modSearchContainer(false);
+
+
+  //fetch recipe and display it when user clicks recipe name from drop-down
+
+  fetchData(val);
+
+  //empty item array so that when user returns, the search-field will be empty
+  filteredApiDataArr.value = [];
+
+ }
+
+const count = ref(0);
 
 </script>
 
 <template>
 
-
     <div v-if="appMode.mode === appModes.find" id="searchWrapper">
-      <div>filteredApiDataArr: {{ filteredApiDataArr }}</div>
 
-      <div id="search-container" contenteditable="true" :style="{border: searchContainerStyle.border}">
+      <div id="search-container" tabindex="0"  
+     @keydown.enter="fetchData(searchString)" :style="searchContainerStyle"  @mouseleave="blurSearchContainer"   >
 
-        <input @focus="modSearchContainer(true)" @blur="modSearchContainer(false)" v-model="searchString" :onchange="fetchData(searchString)" id="searchbar" type="search" name="q"  placeholder="search recipe" autocomplete="off">
+        <input ref="input" :style="searchBarStyle" @keydown.enter="fetchData(searchString)" @mouseenter="modSearchContainer(true)" @focus="modSearchContainer(true)"  v-model="searchString" id="searchbar" type="search" name="q"  placeholder="search recipe" autocomplete="off">
         <label class="forScreenReaders" value="searchbar">searchbar for finding recipes</label>
-        <span class="search-icon">&#128269;</span> <!-- Unicode for magnifying glass icon -->
-        <div class="dropdown-list" id="dropdownList">
-              <div class="dropdown-item" v-for="item in filteredApiDataArr" :key="item" :value="item" @click="fetchData(item)">{{ item }}</div>
+        <div class="dropdown-list" id="dropdownList" >
+              <div :style="searchItemStyle" class="dropdown-item" v-for="item in filteredApiDataArr" :key="item" :value="item" @click="selectSearchItem(item)">{{ item }}</div>
         </div>
 
 
@@ -262,6 +355,22 @@ watch(searchString, async () =>
 
 <style scoped>
 
+#searchWrapper
+{
+  border: 3px solid black;
+}
+
+.dropdown-item:hover
+{
+  background-color: blue;
+  color:white;
+}
+
+.dropdown-item:blur
+{
+  display: none;
+}
+
 #buttonWrapper
 {
   border: 2px solid black;
@@ -289,64 +398,8 @@ watch(searchString, async () =>
   list-style: none;
   border: 2px solid black;
 }
- /* Input Styling */
-#searchbar 
-{
-  width: 100%;
-  padding: 10px 40px 10px 15px; /* Add padding for icon space */
-  font-size: 16px;
-  border: 2px solid #ccc; /* Default border color */
-  border-radius: 25px; /* Rounded border */
-  outline: none;
-  transition: border-color 0.3s, box-shadow 0.3s;
-}
 
-/* Focus Effect */
-#searchbar:focus 
-{
-  border-color: #4CAF50; /* Highlight border color */
-  box-shadow: 0 0 8px rgba(76, 175, 80, 0.5); /* Green glow */
-}
 
-/* Search Icon */
-#searchbar .search-icon 
-{
-  position: absolute;
-  top: 50%;
-  right: 15px; /* Adjust space from the right */
-  transform: translateY(-50%);
-  font-size: 20px; /* Icon size */
-  color: #aaa; /* Default icon color */
-  pointer-events: none; /* Prevent interaction with the icon */
-}
-
-/* Placeholder Text Styling */
-#searchbar::placeholder 
-{
-  color: #aaa; /* Placeholder color */
-  font-style: italic; /* Placeholder style */
-}
-
-/*styling for searchbar dropdown list */
-.dropdown-list
-{
-  display: none;
-}
-
-#searchbar:focus ~ .dropdown-list
-{
-  border: 3px solid black;
-  display: inline-block;
-}
-
-#search-container
-{
-  border: 3px solid black;
-}
-#search-container:focus .dropdown-list
-{
-  display: inline-block;
-}
 
 /* styling for accessiblity */
 .forScreenReaders
