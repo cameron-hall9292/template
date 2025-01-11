@@ -1,17 +1,13 @@
 
 <script setup lang="ts">
 
-import { inject, ref, reactive, watch, onMounted, onUpdated, onUnmounted, onBeforeUpdate, onActivated} from 'vue'
+import { inject, reactive, onMounted  } from 'vue'
 
-import { appModes } from '../appModes';
+import updateRecipe from '../api/update';
 
-const baseUrl = `http://localhost:3000`;
+import { type mode } from '../interfaces/interface';
 
-let searchString = ref<string | null>("testing, testing");
-
-
-const { appMode, updateMode } = inject("appMode");
-
+const appMode = inject<mode>("appMode");
 
 interface RecipePutData 
 {
@@ -22,7 +18,6 @@ interface RecipePutData
 }
 
 const props = defineProps<RecipePutData>();
-
 
 
 const recipePut: RecipePutData = reactive
@@ -36,70 +31,6 @@ const recipePut: RecipePutData = reactive
     }
 )
 
-
-async function updateRecipe(value: RecipePutData) 
-{
-  try 
-  {
-
-    console.log(recipePut.ingredients)
-
-
-    await fetch(baseUrl + `/display`,
-    {
-
-      method: "PUT",
-      headers: 
-      {
-
-        "Content-Type" : "application/json",
-      },
-
-
-      body: JSON.stringify(value),
-
-    })
-  
-
-    console.log(`value: ${value}`)
-    console.log(value);
-
-    alert(`recipe for ${value.name} was successfully updated`)
-    
-  } 
-  catch (error) 
-  {
-   console.error(error);
-  }
-}
-
-
-//testing
-
-//onUpdated(() => {
-  //console.log(`the component is now updated.`)
-  //recipePut.name = props.name;
-  //recipePut.ingredients = props.ingredients;
-  //recipePut.instructions = props.instructions;
-  //recipePut.type = props.type;
-//})
-
-//onUnmounted(() => {
-  //console.log(`the component is now unMounted.`)
-  //recipePut.name = props.name;
-  //recipePut.ingredients = props.ingredients;
-  //recipePut.instructions = props.instructions;
-  //recipePut.type = props.type;
-//})
-
-//onMounted(() => {
-  //console.log(`the component is now mounted.`)
-  //recipePut.name = props.name;
-  //recipePut.ingredients = props.ingredients;
-  //recipePut.instructions = props.instructions;
-  //recipePut.type = props.type;
-//})
-  
 onMounted(() => {
   console.log(`the component is now mounted.`)
   recipePut.name = props.name;
@@ -107,11 +38,6 @@ onMounted(() => {
   recipePut.instructions = props.instructions;
   recipePut.type = props.type;
 })
-
-  //recipePut.name = props.name;
-  //recipePut.ingredients = props.ingredients;
-  //recipePut.instructions = props.instructions;
-  //recipePut.type = props.type;
 
 
 </script>
@@ -122,8 +48,8 @@ onMounted(() => {
   <textarea id="formIngredients" class="longForm"  v-model="recipePut.ingredients" placeholder="enter ingredients" ></textarea>
   <textarea id="formInstructions" class="longForm" v-model="recipePut.instructions" placeholder="enter instructions"></textarea>
   <input id="formType" class="longForm" v-model="recipePut.type" placeholder="enter recipe type">
-  <button class="button" @click="updateRecipe(recipePut)">submit update</button>
-  <button class="button" @click="updateMode('find')" >cancel</button>
+  <button class="button" @click="updateRecipe(recipePut) && appMode?.change('find')">submit update</button>
+  <button class="button" @click="appMode?.change('find')" >cancel</button>
 </template>
 
 <style scoped>

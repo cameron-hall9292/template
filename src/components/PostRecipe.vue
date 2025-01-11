@@ -1,70 +1,25 @@
 
 <script setup lang="ts">
+
 import { reactive, inject} from 'vue';
-import type Ingredients from './ingredients.vue';
 
+import { type mode } from '../interfaces/interface';
 
-import { appModes } from '../appModes';
+import { type Recipe } from '../interfaces/interface';
 
-const { appMode, updateMode } = inject("appMode");
-const baseUrl = `http://localhost:3000`;
+import postData from '../api/post';
 
-interface RecipePostData 
-{
-    name: string | null,
-    ingredients: string | null,
-    instructions: string | null,
-    type: string | null
-}
+const appMode = inject<mode>("appMode");
 
-const recipePost: RecipePostData = reactive
+const recipePost: Recipe = reactive
 (
-
     {
         name: null,
         ingredients: null,
         instructions: null,
         type: "main dish",
     }
-)
-
-const postData = async (value: RecipePostData) =>
-{
-
-//const fakeData = 
-//{
-  //name: value,
-  //ingredients: "tomato sauce",
-  //instructions: "cut tomatos",
-  //type: "soup",
-//}
-  try 
-  {
-
-    await fetch(baseUrl + `/display`, 
-
-    {
-      method: "POST",
-      headers: 
-      {
-
-        "Content-Type" : "application/json",
-      },
-
-      body: JSON.stringify(value),
-
-    });
-
-    alert(`recipe for ${value.name} added successfully`)
-
-   }
-   catch(error)
-   {
-    console.error(error);
-   }
-} 
-
-
+);
 
 </script>
 
@@ -91,14 +46,13 @@ const postData = async (value: RecipePostData) =>
     </div>
     
     <div id="buttonWrapper">
-      <button class="button" @click="postData(recipePost) && updateMode('find')" >submit recipe</button>
-      <button class="button" @click="updateMode('find')" >cancel</button>
+      <button class="button" @click="postData(recipePost) && appMode?.change('find')" >submit recipe</button>
+      <button class="button" @click="appMode?.change('find')" >cancel</button>
     </div>
 
   </div>
 
 </template>
-
 
 <style scoped>
 

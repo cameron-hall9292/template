@@ -1,56 +1,30 @@
 
 <script setup lang="ts">
 
-import { computed, ref, reactive, watch, inject, useTransitionState, HtmlHTMLAttributes, type ReservedProps} from 'vue'
+import { ref, reactive, watch, inject } from 'vue'
 
-import { type StyleValue } from 'vue';
 import deleteRecipe from '../api/delete';
-
-import { fetchData } from '../api/get';
-
 
 import UpdateRecipe2 from './UpdateRecipe2.vue';
 
 import Buttons from './Buttons.vue';
 
 
-
 //import { recipe } from '../api/get';
+
+import { type mode } from '../interfaces/interface';
 
 import { appModes } from '../appModes';
 
-const { appMode, updateMode } = inject("appMode");
+import { baseUrl } from '../api/endpoints';
 
+import { type Recipe } from '../interfaces/interface';
 
-
-let editOn = ref<boolean>(false);
-
-const baseUrl = `http://localhost:3000`;
-
+const appMode = inject<mode>("appMode");
 
 let searchString = ref<string | null>(null);
 
-//let searchString = reactive({
-  //value: "testing"
-//})
-
-
-
 let filteredApiDataArr = ref<string[]>([]) 
-
-function filteredList() {
-  return filteredApiDataArr.value.filter((item) =>
-    item.toLowerCase().includes(searchString.value.toLowerCase())
-  );
-}
-
-interface Recipe 
-{
-  name: string | null,
-  ingredients: string | null,
-  instructions: string | null,
-  type: string | null,
-}
 
 
 let recipe: Recipe = reactive(
@@ -61,17 +35,6 @@ let recipe: Recipe = reactive(
     type: null,
   }
 )
-
-
-//let recipe = ref<Recipe>(
-  //{
-    //name: null,
-    //ingredients: null,
-    //instructions: null,
-    //type: null,
-  //}
-//)
-
 
 
 async function fetchData(value: (string | null)) 
@@ -109,16 +72,9 @@ const resetAfterFetch = () =>
     //reset search array
     filteredApiDataArr.value = [];
     
-    updateMode(appModes.read);
+    appMode?.change(appModes.read);
 
 }
-
-const testCb = () =>
-{
-  console.log("testing")
-}
-
-
 
 
 watch(searchString, async () => 
@@ -126,8 +82,6 @@ watch(searchString, async () =>
 
   try 
   {
-    //console.log(`searchString: ${searchString.value}`)
-    //searchString.value = "test"
     const res = await fetch(
       `${baseUrl}/recipeNames?name=${searchString.value}`
     )
@@ -155,24 +109,12 @@ watch(searchString, async () =>
 
     console.log(filteredApiDataArr.value)
 
-
-      
-
   } 
   catch (error) 
   {
     console.error(error);
   }
 });
-
- const testVar: string = "a string";
-
- const testFunc = (): void =>
- {
-  console.log("test func called");
- }
-
-
 
 
  const modSearchContainer = (val: boolean) =>
@@ -219,6 +161,7 @@ watch(searchString, async () =>
     input.value.blur();
  }
 //expand search box based on number of items fetched by the search string
+
 watch(filteredApiDataArr, () => 
 {
 
@@ -248,7 +191,7 @@ watch(filteredApiDataArr, () =>
 
  const searchItemPadding = 0.5;
 
- const searchItemStyle = reactive
+ const searchItemStyle: Record<string, string> = reactive
  (
   {
     height: `${searchItemHeight}em`,
@@ -295,7 +238,6 @@ const searchBarStyle: Record<string, string> = reactive
 
  }
 
-const count = ref(0);
 
 </script>
 
@@ -327,8 +269,8 @@ const count = ref(0);
       </ul>
     <p v-if="recipe.instructions"> {{ recipe.instructions}}</p>
     <div id="buttonWrapper">
-      <button class="button" v-if="appMode.mode === appModes.read && recipe.name" @click="updateMode('update')" >edit recipe</button>
-      <Buttons class="button" v-if="appMode.mode === appModes.read && recipe.name"  name="delete recipe" @click="updateMode('delete')"/>
+      <button class="button" v-if="appMode.mode === appModes.read && recipe.name" @click="appMode?.change('update')" >edit recipe</button>
+      <Buttons class="button" v-if="appMode.mode === appModes.read && recipe.name"  name="delete recipe" @click="appMode?.change('delete')"/>
     </div>
   </div>
   <div v-else-if="appMode.mode === appModes.delete">
@@ -341,8 +283,8 @@ const count = ref(0);
       </ul>
     <p v-if="recipe.instructions"> {{ recipe.instructions}}</p>
 
-    <button class="button" v-if="appMode.mode === appModes.delete && recipe.name" @click="deleteRecipe(recipe.name, baseUrl) && updateMode('find')">submit delete</button>
-    <button class="button" v-if="appMode.mode === appModes.delete && recipe.name" @click="updateMode('find')">cancel</button>
+    <button class="button" v-if="appMode.mode === appModes.delete && recipe.name" @click="deleteRecipe(recipe.name, baseUrl) && appMode?.change('find')">submit delete</button>
+    <button class="button" v-if="appMode.mode === appModes.delete && recipe.name" @click="appMode?.change('find')">cancel</button>
 
   </div>
   <UpdateRecipe2 v-else-if="appMode.mode === appModes.update" :name="recipe.name" 

@@ -6,33 +6,25 @@ import FilterRecipes from './components/FilterRecipes.vue';
 
 import PostRecipe from './components/PostRecipe.vue';
 
-import DeleteRecipe from './components/DeleteRecipe.vue';
-
-import UpdateRecipe from './components/UpdateRecipe.vue';
 
 import { appModes } from './appModes';
 
-const baseUrl = `http://localhost:3000`;
+import { type mode } from './interfaces/interface';
 
-const count = ref(0);
-
-let appMode = reactive(
+let appMode = reactive<mode>(
   {
     mode: appModes.find,
+    change(val: string): string
+    {
+      this.mode = val;
+      return val;
+    }
   }
 )
 
-const updateMode = (val: any) =>
-{
-  appMode.mode = val;
-}
 
-provide("appMode", 
-  {
-    appMode,
-    updateMode,
-  }
-)
+provide<mode>("appMode", appMode)
+
 const changeMode = (modeVal: string): void =>
 {
   console.log("changemode func called")
@@ -59,19 +51,6 @@ const changeMode = (modeVal: string): void =>
   }
 }
 
-const appReset = (payload: object): void =>
-{
-  //changeMode(payload.mode);
-  appMode.mode = appModes.find;
-  count.value++;
-  console.log(count.value);
-
-}
-
-const enterEditMode = (): void => 
-{
-  appMode.mode = appModes.update;
-}
 
 </script>
 

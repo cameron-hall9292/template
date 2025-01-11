@@ -9,3 +9,11 @@ export interface Recipe
   instructions: string | null,
   type: string | null,
 }
+
+
+export interface mode
+{
+  mode: string,
+  change(val: string): string,
+    
+}
