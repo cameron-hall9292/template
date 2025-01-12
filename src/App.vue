@@ -7,13 +7,15 @@ import FilterRecipes from './components/FilterRecipes.vue';
 import PostRecipe from './components/PostRecipe.vue';
 
 
-import { appModes } from './appModes';
+
+
+import { appModes } from './interfaces/appModes';
 
 import { type mode } from './interfaces/interface';
 
 let appMode = reactive<mode>(
   {
-    mode: appModes.find,
+    mode: appModes.index,
     change(val: string): string
     {
       this.mode = val;
@@ -28,27 +30,7 @@ provide<mode>("appMode", appMode)
 const changeMode = (modeVal: string): void =>
 {
   console.log("changemode func called")
-  if (modeVal === appModes.find)
-  {
-    appMode.mode = appModes.find;
-  }
-  else if (modeVal === appModes.create)
-  {
-    appMode.mode = appModes.create;
-  } 
-  else if (modeVal === appModes.delete)
-  {
-    appMode.mode = appModes.delete;
-  }
-  else if (modeVal === appModes.update)
-  {
-    appMode.mode = appModes.update;
-  }
-  else 
-  {
-    //do nothing
-    return;
-  }
+  appMode.mode = modeVal;
 }
 
 
@@ -59,6 +41,8 @@ const changeMode = (modeVal: string): void =>
   <h1>appMode.mode = {{ appMode.mode }}</h1>
   <button v-if="appMode.mode !== appModes.create" class="button" @click="changeMode(appModes.create)">add recipe</button>
   <button v-if="appMode.mode !== appModes.find" class="button" @click="changeMode(appModes.find)">find recipe</button>
+  <button v-if="appMode.mode !== appModes.index" class="button" @click="changeMode(appModes.index)">all recipes</button>
+
 
   <FilterRecipes />
 

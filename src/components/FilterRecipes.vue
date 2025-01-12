@@ -1,7 +1,9 @@
 
 <script setup lang="ts">
 
-import { ref, reactive, watch, inject } from 'vue'
+import { ref, reactive, watch, inject, provide} from 'vue'
+
+import allRecipes from './allRecipes.vue';
 
 import deleteRecipe from '../api/delete';
 
@@ -12,9 +14,9 @@ import Buttons from './Buttons.vue';
 
 //import { recipe } from '../api/get';
 
-import { type mode } from '../interfaces/interface';
+import { type mode, type recipeLookup } from '../interfaces/interface';
 
-import { appModes } from '../appModes';
+import { appModes } from '../interfaces/appModes';
 
 import { baseUrl } from '../api/endpoints';
 
@@ -25,6 +27,46 @@ const appMode = inject<mode>("appMode");
 let searchString = ref<string | null>(null);
 
 let filteredApiDataArr = ref<string[]>([]) 
+
+let recipeLookup = reactive<recipeLookup>
+  (
+    {
+      recipeData: reactive({
+        name: null,
+        ingredients: null,
+        instructions: null,
+        type: null,
+      }),
+      async fetchData(value: (string | null)): Promise<any>
+      {
+        try 
+        {
+          const res = await fetch(
+            `${baseUrl}/display?name=${value}`
+          )
+  
+          await res.json()
+
+          .then(data => this.recipeData = data.rows[0])
+
+          //reset after data fetch
+          resetAfterFetch();
+          console.log("fetchData func called")
+        } 
+        catch (error) 
+        {
+        this.recipeData.name = null;
+        this.recipeData.ingredients = null;
+        this.recipeData.instructions = null;
+        //console.error(error);
+        }
+      }
+
+    }
+  )
+
+provide<recipeLookup>("selectRecipe", recipeLookup);
+
 
 
 let recipe: Recipe = reactive(
@@ -231,7 +273,9 @@ const searchBarStyle: Record<string, string> = reactive
 
   //fetch recipe and display it when user clicks recipe name from drop-down
 
-  fetchData(val);
+  //fetchData(val);
+
+  recipeLookup.fetchData(val)
 
   //empty item array so that when user returns, the search-field will be empty
   filteredApiDataArr.value = [];
@@ -243,12 +287,14 @@ const searchBarStyle: Record<string, string> = reactive
 
 <template>
 
+    <allRecipes v-if="appMode.mode === appModes.index"/>
+
     <div v-if="appMode.mode === appModes.find" id="searchWrapper">
 
       <div id="search-container" tabindex="0"  
-     @keydown.enter="fetchData(searchString)" :style="searchContainerStyle"  @mouseleave="blurSearchContainer"   >
+     @keydown.enter="fetchData(searchString)" :style="searchContainerStyle"  @pointerleave="blurSearchContainer"   >
 
-        <input ref="input" :style="searchBarStyle" @keydown.enter="fetchData(searchString)" @mouseenter="modSearchContainer(true)" @focus="modSearchContainer(true)"  v-model="searchString" id="searchbar" type="search" name="q"  placeholder="search recipe" autocomplete="off">
+        <input ref="input" :style="searchBarStyle" @keydown.enter="fetchData(searchString)" @pointerenter="modSearchContainer(true)" @focus="modSearchContainer(true)"  v-model="searchString" id="searchbar" type="search" name="q"  placeholder="search recipe" autocomplete="off">
         <label class="forScreenReaders" value="searchbar">searchbar for finding recipes</label>
         <div class="dropdown-list" id="dropdownList" >
               <div :style="searchItemStyle" class="dropdown-item" v-for="item in filteredApiDataArr" :key="item" :value="item" @click="selectSearchItem(item)">{{ item }}</div>
@@ -261,36 +307,36 @@ const searchBarStyle: Record<string, string> = reactive
     </div>
 
   <div v-else-if="appMode.mode === appModes.read">
-    <h2 v-if="recipe.name">{{ recipe.name }}</h2>
+    <h2 v-if="recipeLookup.recipeData.name">{{ recipeLookup.recipeData.name }}</h2>
       <ul class="unordered_list">
-        <li  v-if="recipe.ingredients" v-for="(item) in recipe.ingredients.split(',')"> 
+        <li  v-if="recipeLookup.recipeData.ingredients" v-for="(item) in recipeLookup.recipeData.ingredients.split(',')"> 
           {{ item }}
         </li>
       </ul>
-    <p v-if="recipe.instructions"> {{ recipe.instructions}}</p>
+    <p v-if="recipeLookup.recipeData.instructions"> {{ recipeLookup.recipeData.instructions}}</p>
     <div id="buttonWrapper">
-      <button class="button" v-if="appMode.mode === appModes.read && recipe.name" @click="appMode?.change('update')" >edit recipe</button>
-      <Buttons class="button" v-if="appMode.mode === appModes.read && recipe.name"  name="delete recipe" @click="appMode?.change('delete')"/>
+      <button class="button" v-if="appMode.mode === appModes.read && recipeLookup.recipeData.name" @click="appMode?.change('update')" >edit recipe</button>
+      <Buttons class="button" v-if="appMode.mode === appModes.read && recipeLookup.recipeData.name"  name="delete recipe" @click="appMode?.change('delete')"/>
     </div>
   </div>
   <div v-else-if="appMode.mode === appModes.delete">
 
-    <h2 v-if="recipe.name">{{ recipe.name }}</h2>
+    <h2 v-if="recipeLookup.recipeData.name">{{ recipeLookup.recipeData.name }}</h2>
       <ul class="unordered_list">
-        <li  v-if="recipe.ingredients" v-for="(item) in recipe.ingredients.split(',')"> 
+        <li  v-if="recipeLookup.recipeData.ingredients" v-for="(item) in recipeLookup.recipeData.ingredients.split(',')"> 
           {{ item }}
         </li>
       </ul>
-    <p v-if="recipe.instructions"> {{ recipe.instructions}}</p>
+    <p v-if="recipeLookup.recipeData.instructions"> {{ recipeLookup.recipeData.instructions}}</p>
 
-    <button class="button" v-if="appMode.mode === appModes.delete && recipe.name" @click="deleteRecipe(recipe.name, baseUrl) && appMode?.change('find')">submit delete</button>
-    <button class="button" v-if="appMode.mode === appModes.delete && recipe.name" @click="appMode?.change('find')">cancel</button>
+    <button class="button" v-if="appMode.mode === appModes.delete && recipeLookup.recipeData.name" @click="deleteRecipe(recipeLookup.recipeData.name ) && appMode?.change('find')">submit delete</button>
+    <button class="button" v-if="appMode.mode === appModes.delete && recipeLookup.recipeData.name" @click="appMode?.change('find')">cancel</button>
 
   </div>
-  <UpdateRecipe2 v-else-if="appMode.mode === appModes.update" :name="recipe.name" 
-  :ingredients="recipe.ingredients" 
-  :instructions="recipe.instructions" 
-  :type="recipe.type" 
+  <UpdateRecipe2 v-else-if="appMode.mode === appModes.update" :name="recipeLookup.recipeData.name" 
+  :ingredients="recipeLookup.recipeData.ingredients" 
+  :instructions="recipeLookup.recipeData.instructions" 
+  :type="recipeLookup.recipeData.type" 
   />
   <div v-else>Nothing to see here...</div>
 </template>

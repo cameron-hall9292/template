@@ -1,8 +1,9 @@
 
 
-//const baseUrl = `http://localhost:3000`;
 
-export default async function deleteRecipe(value: (string | null), baseUrl: string) 
+import { baseUrl } from "./endpoints";
+
+export default async function deleteRecipe(value: (string | null))
 {
   try 
   {

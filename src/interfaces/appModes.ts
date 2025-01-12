@@ -7,6 +7,7 @@ export enum appModes
   read = "read",
   create = "create",
   delete = "delete",
-  update = "update"
+  update = "update",
+  index = "index",
 
 }

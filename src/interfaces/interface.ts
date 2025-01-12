@@ -17,3 +17,11 @@ export interface mode
   change(val: string): string,
     
 }
+
+
+export interface recipeLookup
+{
+  recipeData: Recipe,
+  fetchData(value: (string | null)): Promise<any>,
+
+}
