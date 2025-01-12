@@ -124,11 +124,20 @@ watch(searchString, async () =>
 
   try 
   {
+    //encode search string so it works as query string
+    if (searchString.value === null)
+    {
+      throw new Error(`argument ${searchString} cannot be null`)
+    }
+    else 
+    {
+      encodeURIComponent(searchString.value)
+    }
+   
     const res = await fetch(
       `${baseUrl}/recipeNames?name=${searchString.value}`
     )
 
-  
     const response = await res.json();
     console.log(response)
     const filteredData: string[] = [];
@@ -188,9 +197,9 @@ watch(searchString, async () =>
 
  }
 
- const input = ref(null);
+ const input = ref<HTMLInputElement>();
 
- const blurSearchContainer = (event) =>
+ const blurSearchContainer = () =>
  {
 
     searchContainerStyle.border = "5px solid red"
@@ -200,32 +209,39 @@ watch(searchString, async () =>
     //filteredApiDataArr.value = [];
     searchItemStyle.visibility = "hidden"
     //register a click event
-    input.value.blur();
+    if (input.value !== null && input.value !== undefined)
+    {
+      input.value.blur()
+    }
+    else
+    {
+      //do nothing
+    }
  }
 //expand search box based on number of items fetched by the search string
 
-watch(filteredApiDataArr, () => 
-{
+//watch(filteredApiDataArr, () => 
+//{
 
-    const initialSearchBarHeight = 2.5 //em
-    const itemDivHeight = searchItemHeight + searchItemPadding * 2
-    searchContainerStyle.height  = `${initialSearchBarHeight + itemDivHeight + (filteredApiDataArr.value.length * (itemDivHeight))}em`;
-    console.log(searchContainerStyle.height)
-})
+    //const initialSearchBarHeight = 2.5 //em
+    //const itemDivHeight = searchItemHeight + searchItemPadding * 2
+    //searchContainerStyle.height  = `${initialSearchBarHeight + itemDivHeight + (filteredApiDataArr.value.length * (itemDivHeight))}em`;
+    //console.log(searchContainerStyle.height)
+//})
 
  const searchContainerStyle: Record<string, string> = reactive
  (
   {
-    border: "5px solid red",
-    width: "35em",
-    height: "2.5em", 
+    display: "flex",
+    border: "5px dotted red",
+    width: "100%",
+    maxWidth: "100%",
+    maxHeight: "100%", 
     backgroundColor:"#FFFAA0",
     borderRadius: "0px",
     boxShadow: "0 0 8px rgba(76, 175, 80, 0.5)", /* Green glow */
     borderWidth: "2px",
-    position: "absolute",
-    overflow: "visible",
-    display: "block",
+    position: "absolute"
   }
  )
 
@@ -238,8 +254,12 @@ watch(filteredApiDataArr, () =>
   {
     height: `${searchItemHeight}em`,
     padding: `${searchItemPadding}em`,
+
+
+    maxWidth: "100%",
+    width: "100%",
     display: "flex",
-    justifyContent: "left",
+    justifyContent: "center",
     alignItems: "center",
     visibility: "visible"
   }
@@ -257,7 +277,7 @@ const searchBarStyle: Record<string, string> = reactive
     borderRadius: "25px",
     outline: "none",
     transition: "border-color 0.3s, box-shadow 0.3s",
-    position: "relative"
+    position: "absolute"
 
   }
 )
@@ -270,10 +290,7 @@ const searchBarStyle: Record<string, string> = reactive
   //collapse search bar after user has clicked an item from the drop-down list
   modSearchContainer(false);
 
-
   //fetch recipe and display it when user clicks recipe name from drop-down
-
-  //fetchData(val);
 
   recipeLookup.fetchData(val)
 
@@ -287,17 +304,26 @@ const searchBarStyle: Record<string, string> = reactive
 
 <template>
 
+  <div id="father-container">
+    
+    <p>filteredApiDataArr: {{ filteredApiDataArr }}</p>
+    <p>searchString: {{ searchString}}</p>
+
     <allRecipes v-if="appMode.mode === appModes.index"/>
 
     <div v-if="appMode.mode === appModes.find" id="searchWrapper">
 
       <div id="search-container" tabindex="0"  
-     @keydown.enter="fetchData(searchString)" :style="searchContainerStyle"  @pointerleave="blurSearchContainer"   >
+      :style="searchContainerStyle"  @pointerleave="blurSearchContainer"   >
 
-        <input ref="input" :style="searchBarStyle" @keydown.enter="fetchData(searchString)" @pointerenter="modSearchContainer(true)" @focus="modSearchContainer(true)"  v-model="searchString" id="searchbar" type="search" name="q"  placeholder="search recipe" autocomplete="off">
+        <input ref="input" :style="searchBarStyle" @keydown.enter="recipeLookup.fetchData(searchString)" @pointerenter="modSearchContainer(true)" @focus="modSearchContainer(true)"  v-model="searchString" id="searchbar" type="search" name="q"  placeholder="search recipe" autocomplete="off">
         <label class="forScreenReaders" value="searchbar">searchbar for finding recipes</label>
-        <div class="dropdown-list" id="dropdownList" >
-              <div :style="searchItemStyle" class="dropdown-item" v-for="item in filteredApiDataArr" :key="item" :value="item" @click="selectSearchItem(item)">{{ item }}</div>
+        <div class="searchItemWrapper">
+
+          <div class="dropdown-list" id="dropdownList" >
+                <div :style="searchItemStyle" class="dropdown-item" v-for="item in filteredApiDataArr" :key="item" :value="item" @click="selectSearchItem(item)">{{ item }}</div>
+          </div>
+
         </div>
 
 
@@ -339,14 +365,43 @@ const searchBarStyle: Record<string, string> = reactive
   :type="recipeLookup.recipeData.type" 
   />
   <div v-else>Nothing to see here...</div>
+  </div>
 </template>
 
 <style scoped>
 
+
+#father-container
+{
+  border: 3px solid gray;
+}
+
 #searchWrapper
 {
+  display: flex;
+  
   border: 3px solid black;
+  box-sizing: border-box;
+  width: 100%;
 }
+
+.searchItemWrapper
+{
+  display: flex;
+  box-sizing: border-box;
+  max-width: 100%;
+  width: 100%;
+  margin-top: 3em;
+  /* padding-top: 15%; */
+  border: 3px dotted teal;
+}
+
+.dropdown-item
+{
+  width: 100%;
+  border: 2px solid black;
+}
+
 
 .dropdown-item:hover
 {
