@@ -292,17 +292,6 @@ const searchBarStyle: Record<string, string> = reactive
   background-color: #FFFAA0;
   margin: 2px;
 }
-.ingredientList
-{
-  list-style-position: inside;
-}
-.unordered_list 
-{
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  list-style: none;
-  border: 2px solid black;
-}
 
 
 

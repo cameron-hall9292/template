@@ -34,7 +34,7 @@ const recipeTypes = ref<string[]>(["main dish", "side dish", "soup/chili", "dess
 
 <template>
 
-  <div id="templateWrapper">
+  <div id="component-container-all-recipes">
 
     <span> recipe type: {{ chooseRecipeType }}</span>
 
@@ -49,7 +49,7 @@ const recipeTypes = ref<string[]>(["main dish", "side dish", "soup/chili", "dess
     </ul>
     
     <div id="buttonWrapper">
-      <button class="button" @click="getRecipes(chooseRecipeType) && appMode?.change('find')" >get recipes</button>
+      <!-- <button class="button" @click="getRecipes(chooseRecipeType) && appMode?.change('find')" >get recipes</button> -->
       <button class="button" @click="appMode?.change('find')" >cancel</button>
     </div>
 
@@ -61,12 +61,17 @@ const recipeTypes = ref<string[]>(["main dish", "side dish", "soup/chili", "dess
 
 <style scoped>
 
-#templateWrapper
+#component-container-all-recipes
 {
-  display: block;
-  width: 50%;
-  position: absolute;
-  border: 3px solid black;
+  display: flex;
+  border: 3px dotted black;
+  flex-direction: column;
+  box-sizing: border-box;
+  padding: 2%;
+  position: relative;
+  max-width: 100%;
+  width: 100%;
+  height: 100%;
 }
 .button
 {

@@ -129,31 +129,36 @@ provide<mode>("appMode", appMode)
     <button v-if="appMode.mode !== appModes.update" class="button" @click="appMode.change(appModes.update)">edit recipe</button>
     <button v-if="appMode.mode !== appModes.delete" class="button" @click="appMode.change(appModes.delete)">delete recipe</button>
 
+  </div>
   <h4>appMode.mode = {{ appMode.mode }}</h4>
 
-  <FilterRecipes v-if="appMode.mode === appModes.find"/>
-  <UpdateRecipe2 v-else-if="appMode.mode === appModes.update" :name="recipeLookup.recipeData.name" 
-  :ingredients="recipeLookup.recipeData.ingredients" 
-  :instructions="recipeLookup.recipeData.instructions" 
-  :type="recipeLookup.recipeData.type" 
-  />
-  <PostRecipe v-else-if="appMode.mode === appModes.create" />
 
-  <ReadRecipe v-else-if="appMode.mode === appModes.read" :name="recipeLookup.recipeData.name" 
-  :ingredients="recipeLookup.recipeData.ingredients" 
-  :instructions="recipeLookup.recipeData.instructions" 
-  :type="recipeLookup.recipeData.type" 
-  />
+  <div id="component-container">
 
-  <DeleteRecipe v-else-if="appMode.mode === appModes.delete" :name="recipeLookup.recipeData.name" 
-  :ingredients="recipeLookup.recipeData.ingredients" 
-  :instructions="recipeLookup.recipeData.instructions" 
-  :type="recipeLookup.recipeData.type" 
-  />
+    <FilterRecipes v-if="appMode.mode === appModes.find"/>
+    <UpdateRecipe2 v-else-if="appMode.mode === appModes.update" :name="recipeLookup.recipeData.name" 
+    :ingredients="recipeLookup.recipeData.ingredients" 
+    :instructions="recipeLookup.recipeData.instructions" 
+    :type="recipeLookup.recipeData.type" 
+    />
+    <PostRecipe v-else-if="appMode.mode === appModes.create" />
 
+    <ReadRecipe v-else-if="appMode.mode === appModes.read" :name="recipeLookup.recipeData.name" 
+    :ingredients="recipeLookup.recipeData.ingredients" 
+    :instructions="recipeLookup.recipeData.instructions" 
+    :type="recipeLookup.recipeData.type" 
+    />
+
+    <DeleteRecipe v-else-if="appMode.mode === appModes.delete" :name="recipeLookup.recipeData.name" 
+    :ingredients="recipeLookup.recipeData.ingredients" 
+    :instructions="recipeLookup.recipeData.instructions" 
+    :type="recipeLookup.recipeData.type" 
+    />
   
-  <allRecipes v-else-if="appMode.mode === appModes.index"/>
+    <allRecipes v-else-if="appMode.mode === appModes.index"/>
+
   </div>
+
 
 </div>
 
@@ -179,6 +184,20 @@ provide<mode>("appMode", appMode)
   }
 }
 
+#component-container
+{
+  display: flex;
+  border: 3px solid maroon;
+  flex-direction: column;
+  box-sizing: border-box;
+  padding: 2%;
+  position: relative;
+  max-width: 100%;
+  width: 100%;
+  height: 100%;
+
+}
+
 #button-container
 {
   display: flex;
@@ -188,8 +207,7 @@ provide<mode>("appMode", appMode)
   align-items: center;
   box-sizing: border-box;
   border: 3px dotted orange;
-  padding: 10%;
-  margin: 2%;
+  padding: 2%;
   position: relative;
   max-width: 100%;
   height: 100%;
@@ -207,7 +225,7 @@ provide<mode>("appMode", appMode)
   color:white;
   margin: 10px;
   max-width: 100%;
-  width: 100%;
+  width: 50%;
   height: 20%;
 }
 
