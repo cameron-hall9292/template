@@ -1,7 +1,7 @@
 
 <script setup lang="ts">
 
-import { reactive, inject, ref} from 'vue';
+import { inject, ref} from 'vue';
 
 import { type mode, type recipeLookup } from '../interfaces/interface';
 

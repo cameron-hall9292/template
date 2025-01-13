@@ -5,39 +5,33 @@ import { inject, reactive, onMounted  } from 'vue'
 
 import updateRecipe from '../api/update';
 
-import { type mode } from '../interfaces/interface';
+import { type mode, type Recipe, type recipeLookup } from '../interfaces/interface';
 
 const appMode = inject<mode>("appMode");
 
-interface RecipePutData 
-{
-    name: string | null,
-    ingredients: string | null,
-    instructions: string | null,
-    type: string | null
-}
+let recipeLookup = inject<recipeLookup>("selectRecipe");
 
-const props = defineProps<RecipePutData>();
+//const props = defineProps<Recipe>();
 
 
-const recipePut: RecipePutData = reactive
-(
+//const recipePut: Recipe = reactive
+//(
 
-    {
-        name: null,
-        ingredients: null,
-        instructions: null,
-        type: null,
-    }
-)
+    //{
+        //name: null,
+        //ingredients: null,
+        //instructions: null,
+        //type: null,
+    //}
+//)
 
-onMounted(() => {
-  console.log(`the component is now mounted.`)
-  recipePut.name = props.name;
-  recipePut.ingredients = props.ingredients;
-  recipePut.instructions = props.instructions;
-  recipePut.type = props.type;
-})
+//onMounted(() => {
+  //console.log(`the component is now mounted.`)
+  //recipePut.name = props.name;
+  //recipePut.ingredients = props.ingredients;
+  //recipePut.instructions = props.instructions;
+  //recipePut.type = props.type;
+//})
 
 
 </script>
@@ -48,10 +42,10 @@ onMounted(() => {
 
     <div id="formWrapper">
 
-  <input id="formName" class="longForm" v-model="recipePut.name" placeholder="enter recipe name">
-  <textarea id="formIngredients" class="longForm"  v-model="recipePut.ingredients" placeholder="enter ingredients" ></textarea>
-  <textarea id="formInstructions" class="longForm" v-model="recipePut.instructions" placeholder="enter instructions"></textarea>
-  <select class="longForm" placeholder="select recipe type" v-model="recipePut.type"  >
+  <input id="formName" class="longForm" v-if="recipeLookup !== undefined" v-model=" recipeLookup.recipeData.name" placeholder="enter recipe name">
+  <textarea id="formIngredients" class="longForm"  v-if="recipeLookup !== undefined" v-model="recipeLookup.recipeData.ingredients" placeholder="enter ingredients" ></textarea>
+  <textarea id="formInstructions" class="longForm" v-if="recipeLookup !== undefined" v-model="recipeLookup.recipeData.instructions" placeholder="enter instructions"></textarea>
+  <select class="longForm" placeholder="select recipe type" v-if="recipeLookup !== undefined" v-model="recipeLookup.recipeData.type"  >
     <optgroup label="recipe types">
       <option value="main dish">main dish</option>
       <option value="side dish">side dish</option>
@@ -60,7 +54,7 @@ onMounted(() => {
     </optgroup>
   </select>
     </div>
-  <button class="button" @click="updateRecipe(recipePut) && appMode?.change('find')">submit update</button>
+  <button class="button" v-if="recipeLookup !== undefined" @click="updateRecipe(recipeLookup.recipeData) && appMode?.change('find')">submit update</button>
   <button class="button" @click="appMode?.change('find')" >cancel</button>
 </div>
 </template>

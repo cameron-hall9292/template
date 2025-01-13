@@ -1,171 +1,75 @@
 
 <script setup lang="ts">
 
-import { ref, reactive, watch, inject, provide} from 'vue'
+import { ref, reactive, watch, inject, type Ref } from 'vue'
 
-import allRecipes from './allRecipes.vue';
-
-import deleteRecipe from '../api/delete';
-
-import UpdateRecipe2 from './UpdateRecipe2.vue';
-
-import Buttons from './Buttons.vue';
-
-
-//import { recipe } from '../api/get';
-
-import { type mode, type recipeLookup } from '../interfaces/interface';
-
-import { appModes } from '../interfaces/appModes';
+import { type recipeLookup,  } from '../interfaces/interface';
 
 import { baseUrl } from '../api/endpoints';
 
-import { type Recipe } from '../interfaces/interface';
+let searchString = inject<Ref<string | null>>("searchString");
 
-const appMode = inject<mode>("appMode");
+let filteredApiDataArr  = inject<Ref<string[]>>("filteredApiDataArr")
 
-let searchString = ref<string | null>(null);
+let recipeLookup = inject<recipeLookup>("selectRecipe");
 
-let filteredApiDataArr = ref<string[]>([]) 
 
-let recipeLookup = reactive<recipeLookup>
-  (
+if (searchString !== undefined)
+{
+
+  watch(searchString, async () => 
+  {
+    try 
     {
-      recipeData: reactive({
-        name: null,
-        ingredients: null,
-        instructions: null,
-        type: null,
-      }),
-      async fetchData(value: (string | null)): Promise<any>
+
+      //encode search string so it works as query string
+      if (searchString.value === null)
       {
-        try 
-        {
-          const res = await fetch(
-            `${baseUrl}/display?name=${value}`
-          )
-  
-          await res.json()
-
-          .then(data => this.recipeData = data.rows[0])
-
-          //reset after data fetch
-          resetAfterFetch();
-          console.log("fetchData func called")
-        } 
-        catch (error) 
-        {
-        this.recipeData.name = null;
-        this.recipeData.ingredients = null;
-        this.recipeData.instructions = null;
-        //console.error(error);
-        }
+        throw new Error(`argument ${searchString} cannot be null`)
       }
-
-    }
-  )
-
-provide<recipeLookup>("selectRecipe", recipeLookup);
-
-
-
-let recipe: Recipe = reactive(
-  {
-    name: null,
-    ingredients: null,
-    instructions: null,
-    type: null,
-  }
-)
-
-
-async function fetchData(value: (string | null)) 
-{
-  try 
-  {
-    const res = await fetch(
-      `${baseUrl}/display?name=${value}`
-    )
-  
-    await res.json()
-
-    .then(data => recipe = data.rows[0])
-
-    //reset after data fetch
-    resetAfterFetch();
-    console.log("fetchData func called")
-  } 
-  catch (error) 
-  {
-   recipe.name = null;
-   recipe.ingredients = null;
-   recipe.instructions = null;
-   //console.error(error);
-  }
-}
-
-
-
-const resetAfterFetch = () =>
-{
-    //reset searchString to null
-    searchString.value = null;
-
-    //reset search array
-    filteredApiDataArr.value = [];
-    
-    appMode?.change(appModes.read);
-
-}
-
-
-watch(searchString, async () => 
-{
-
-  try 
-  {
-    //encode search string so it works as query string
-    if (searchString.value === null)
-    {
-      throw new Error(`argument ${searchString} cannot be null`)
-    }
-    else 
-    {
-      encodeURIComponent(searchString.value)
-    }
+      else 
+      {
+        encodeURIComponent(searchString.value)
+      }
    
-    const res = await fetch(
-      `${baseUrl}/recipeNames?name=${searchString.value}`
-    )
+      const res = await fetch(
+        `${baseUrl}/recipeNames?name=${searchString.value}`
+      )
 
-    const response = await res.json();
-    console.log(response)
-    const filteredData: string[] = [];
+      const response = await res.json();
+      console.log(response)
+      const filteredData: string[] = [];
 
-    if (response.rows === undefined) return;
+      if (response.rows === undefined) return;
   
-    for (let i of response.rows)
+      for (let i of response.rows)
+        {
+          filteredData.push(i.name);
+          //console.log(i.name)
+        }
+
+      console.log(`filteredData ${filteredData}`)
+      console.log(filteredData)
+
+      console.log("filterData api func called")
+
+
+      if (filteredApiDataArr !== undefined)
       {
-        filteredData.push(i.name);
-        //console.log(i.name)
+        filteredApiDataArr.value = filteredData;
+
+        console.log(filteredApiDataArr.value)
       }
+      
 
-    console.log(`filteredData ${filteredData}`)
-    console.log(filteredData)
+    } 
+    catch (error) 
+    {
+      console.error(error);
+    }
+  });
 
-    console.log("filterData api func called")
-
-
-    filteredApiDataArr.value = filteredData;
-
-    console.log(filteredApiDataArr.value)
-
-  } 
-  catch (error) 
-  {
-    console.error(error);
-  }
-});
+}
 
 
  const modSearchContainer = (val: boolean) =>
@@ -283,19 +187,22 @@ const searchBarStyle: Record<string, string> = reactive
 )
  const selectSearchItem = (val: string ) =>
  {
-  searchString.value =  val;
 
-  console.log("selectSearchItem func called")
+  if (searchString !== undefined && recipeLookup !== undefined && filteredApiDataArr !== undefined)
+  {
+    searchString.value =  val;
+
+    console.log("selectSearchItem func called")
   
-  //collapse search bar after user has clicked an item from the drop-down list
-  modSearchContainer(false);
+    //collapse search bar after user has clicked an item from the drop-down list
+    modSearchContainer(false);
 
-  //fetch recipe and display it when user clicks recipe name from drop-down
+    //fetch recipe and display it when user clicks recipe name from drop-down
+    recipeLookup.fetchData(val)
 
-  recipeLookup.fetchData(val)
-
-  //empty item array so that when user returns, the search-field will be empty
-  filteredApiDataArr.value = [];
+    //empty item array so that when user returns, the search-field will be empty
+    filteredApiDataArr.value = [];
+  }
 
  }
 
@@ -305,67 +212,22 @@ const searchBarStyle: Record<string, string> = reactive
 <template>
 
   <div id="father-container">
-    
     <p>filteredApiDataArr: {{ filteredApiDataArr }}</p>
     <p>searchString: {{ searchString}}</p>
-
-    <allRecipes v-if="appMode.mode === appModes.index"/>
-
-    <div v-if="appMode.mode === appModes.find" id="searchWrapper">
-
+    <div  id="searchWrapper">
       <div id="search-container" tabindex="0"  
-      :style="searchContainerStyle"  @pointerleave="blurSearchContainer"   >
-
-        <input ref="input" :style="searchBarStyle" @keydown.enter="recipeLookup.fetchData(searchString)" @pointerenter="modSearchContainer(true)" @focus="modSearchContainer(true)"  v-model="searchString" id="searchbar" type="search" name="q"  placeholder="search recipe" autocomplete="off">
+        :style="searchContainerStyle"  @pointerleave="blurSearchContainer"   >
+        <input ref="input" :style="searchBarStyle" @keydown.enter=" searchString !== undefined && recipeLookup?.fetchData(searchString)" @pointerenter="modSearchContainer(true)" @focus="modSearchContainer(true)"  v-model="searchString" id="searchbar" type="search" name="q"  placeholder="search recipe" autocomplete="off">
         <label class="forScreenReaders" value="searchbar">searchbar for finding recipes</label>
-        <div class="searchItemWrapper">
-
-          <div class="dropdown-list" id="dropdownList" >
-                <div :style="searchItemStyle" class="dropdown-item" v-for="item in filteredApiDataArr" :key="item" :value="item" @click="selectSearchItem(item)">{{ item }}</div>
-          </div>
-
+          <div class="searchItemWrapper">
+            <div class="dropdown-list" id="dropdownList" >
+              <div :style="searchItemStyle" class="dropdown-item" v-for="item in filteredApiDataArr" :key="item" :value="item" @click="selectSearchItem(item)">{{ item }}</div>
+            </div>
         </div>
-
-
       </div>
-
-
-    </div>
-
-  <div v-else-if="appMode.mode === appModes.read">
-    <h2 v-if="recipeLookup.recipeData.name">{{ recipeLookup.recipeData.name }}</h2>
-      <ul class="unordered_list">
-        <li  v-if="recipeLookup.recipeData.ingredients" v-for="(item) in recipeLookup.recipeData.ingredients.split(',')"> 
-          {{ item }}
-        </li>
-      </ul>
-    <p v-if="recipeLookup.recipeData.instructions"> {{ recipeLookup.recipeData.instructions}}</p>
-    <div id="buttonWrapper">
-      <button class="button" v-if="appMode.mode === appModes.read && recipeLookup.recipeData.name" @click="appMode?.change('update')" >edit recipe</button>
-      <Buttons class="button" v-if="appMode.mode === appModes.read && recipeLookup.recipeData.name"  name="delete recipe" @click="appMode?.change('delete')"/>
     </div>
   </div>
-  <div v-else-if="appMode.mode === appModes.delete">
 
-    <h2 v-if="recipeLookup.recipeData.name">{{ recipeLookup.recipeData.name }}</h2>
-      <ul class="unordered_list">
-        <li  v-if="recipeLookup.recipeData.ingredients" v-for="(item) in recipeLookup.recipeData.ingredients.split(',')"> 
-          {{ item }}
-        </li>
-      </ul>
-    <p v-if="recipeLookup.recipeData.instructions"> {{ recipeLookup.recipeData.instructions}}</p>
-
-    <button class="button" v-if="appMode.mode === appModes.delete && recipeLookup.recipeData.name" @click="deleteRecipe(recipeLookup.recipeData.name ) && appMode?.change('find')">submit delete</button>
-    <button class="button" v-if="appMode.mode === appModes.delete && recipeLookup.recipeData.name" @click="appMode?.change('find')">cancel</button>
-
-  </div>
-  <UpdateRecipe2 v-else-if="appMode.mode === appModes.update" :name="recipeLookup.recipeData.name" 
-  :ingredients="recipeLookup.recipeData.ingredients" 
-  :instructions="recipeLookup.recipeData.instructions" 
-  :type="recipeLookup.recipeData.type" 
-  />
-  <div v-else>Nothing to see here...</div>
-  </div>
 </template>
 
 <style scoped>

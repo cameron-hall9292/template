@@ -11,6 +11,12 @@ export interface Recipe
 }
 
 
+export interface searchString
+{
+  value: string,
+}
+
+
 export interface mode
 {
   mode: string,
