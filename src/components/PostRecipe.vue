@@ -26,7 +26,7 @@ const recipePost: Recipe = reactive
 
 <template>
 
-  <div id="templateWrapper">
+  <div id="component-container-post">
 
     <div id="formWrapper">
 
@@ -44,11 +44,9 @@ const recipePost: Recipe = reactive
       <!-- <input class="longForm" v-model="recipePost.type" placeholder="enter recipe type"> -->
 
     </div>
-    
-    <div id="buttonWrapper">
+
       <button class="button" @click="postData(recipePost) && appMode?.change('find')" >submit recipe</button>
       <button class="button" @click="appMode?.change('find')" >cancel</button>
-    </div>
 
   </div>
 
@@ -56,20 +54,29 @@ const recipePost: Recipe = reactive
 
 <style scoped>
 
-#templateWrapper
+#component-container-post
 {
+  display: flex;
   border: 3px solid blue;
+  flex-direction: column;
+  box-sizing: border-box;
+  padding: 2%;
+  position: relative;
+  max-width: 100%;
+  width: 100%;
+  height: 100%;
 }
 #formWrapper
 {
   display: flex;
-  justify-content: center; /* Horizontally center */
-  align-items: center; /* Vertically center */
-  flex-direction: column;
   border: 3px solid black;
-  width: 100%;
-  height: 75%;
+  flex-direction: column;
   box-sizing: border-box;
+  padding: 2%;
+  position: relative;
+  max-width: 100%;
+  width: 100%;
+  height: 100%;
 }
 .button
 {
@@ -78,16 +85,15 @@ const recipePost: Recipe = reactive
 }
 .longForm
  {
-	display: block;
-	width: 50%;
-	height: 7em;
-	box-sizing: border-box;
-	border-radius: 5%;
-	background-color: #F7F9FC;
-	border: 2px solid #BFBFBF;
-	color: #2c3e50;
-  margin: 0.10em;
-  padding: 2em;
+  display: flex;
+  border: 3px solid black;
+  flex-direction: column;
+  box-sizing: border-box;
+  padding: 2%;
+  position: relative;
+  max-width: 100%;
+  width: 100%;
+  height: 100%;
 }
 .longForm:focus
  {
@@ -96,7 +102,7 @@ const recipePost: Recipe = reactive
   font-size: large;
   
  }
-.buttonWrapper
+#buttonWrapper
 {
   border: 1px solid black
 }

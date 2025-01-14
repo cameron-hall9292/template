@@ -37,7 +37,7 @@ let recipeLookup = inject<recipeLookup>("selectRecipe");
 </script>
 
 <template>
-  <div id="templateWrapper">
+  <div id="component-container-delete">
     <div id="formWrapper">
     <input disabled id="formName" class="longForm" v-if="recipeLookup !== undefined" v-model=" recipeLookup.recipeData.name" placeholder="enter recipe name">
     <textarea disabled id="formIngredients" class="longForm"  v-if="recipeLookup !== undefined" v-model="recipeLookup.recipeData.ingredients" placeholder="enter ingredients" ></textarea>
@@ -57,20 +57,29 @@ let recipeLookup = inject<recipeLookup>("selectRecipe");
 </template>
 <style scoped>
 
-#templateWrapper
+#component-container-delete
 {
+  display: flex;
   border: 3px solid blue;
+  flex-direction: column;
+  box-sizing: border-box;
+  padding: 2%;
+  position: relative;
+  max-width: 100%;
+  width: 100%;
+  height: 100%;
 }
 #formWrapper
 {
   display: flex;
-  justify-content: center; /* Horizontally center */
-  align-items: center; /* Vertically center */
-  flex-direction: column;
   border: 3px solid black;
-  width: 100%;
-  height: 75%;
+  flex-direction: column;
   box-sizing: border-box;
+  padding: 2%;
+  position: relative;
+  max-width: 100%;
+  width: 100%;
+  height: 100%;
 }
 .button
 {
@@ -79,16 +88,15 @@ let recipeLookup = inject<recipeLookup>("selectRecipe");
 }
 .longForm
  {
-	display: block;
-	width: 50%;
-	height: 7em;
-	box-sizing: border-box;
-	border-radius: 5%;
-	background-color: #F7F9FC;
-	border: 2px solid #BFBFBF;
-	color: #2c3e50;
-  margin: 0.10em;
-  padding: 2em;
+  display: flex;
+  border: 3px solid black;
+  flex-direction: column;
+  box-sizing: border-box;
+  padding: 2%;
+  position: relative;
+  max-width: 100%;
+  width: 100%;
+  height: 100%;
 }
 .longForm:focus
  {

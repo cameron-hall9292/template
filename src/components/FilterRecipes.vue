@@ -136,16 +136,28 @@ if (searchString !== undefined)
  const searchContainerStyle: Record<string, string> = reactive
  (
   {
+    //display: "flex",
+    //border: "5px dotted red",
+    //width: "100%",
+    //maxWidth: "100%",
+    //maxHeight: "100%", 
+    //backgroundColor:"#FFFAA0",
+    //borderRadius: "0px",
+    //boxShadow: "0 0 8px rgba(76, 175, 80, 0.5)", /* Green glow */
+    //borderWidth: "6px",
+    //position: "relative"
+
+
+
     display: "flex",
     border: "5px dotted red",
-    width: "100%",
+    flexDirection: "column",
+    boxSizing: "border-box",
+    padding: "2%",
+    position: "relative",
     maxWidth: "100%",
-    maxHeight: "100%", 
-    backgroundColor:"#FFFAA0",
-    borderRadius: "0px",
-    boxShadow: "0 0 8px rgba(76, 175, 80, 0.5)", /* Green glow */
-    borderWidth: "2px",
-    position: "absolute"
+    width: "100%",
+    height: "100%",
   }
  )
 
@@ -155,14 +167,16 @@ if (searchString !== undefined)
 
  const searchItemStyle: Record<string, string> = reactive
  (
+
   {
-    height: `${searchItemHeight}em`,
-    padding: `${searchItemPadding}em`,
+    //height: `${searchItemHeight}em`,
+    //padding: `${searchItemPadding}em`,
 
-
+    display: "flex",
+    flexDirection: "column",
+    boxSizing: "border-box",
     maxWidth: "100%",
     width: "100%",
-    display: "flex",
     justifyContent: "center",
     alignItems: "center",
     visibility: "visible"
@@ -173,15 +187,29 @@ if (searchString !== undefined)
 const searchBarStyle: Record<string, string> = reactive
 (
   {
+    //width: "100%",
+    //height: "2.5em",
+    //padding: "10px 40px 10px 15px",
+    //fontSize: "16px",
+    //border: "2px solid #ccc",
+    //borderRadius: "25px",
+    //outline: "none",
+    //transition: "border-color 0.3s, box-shadow 0.3s",
+    //position: "absolute"
+    //border: "6px dotted yellow",
+
+    display: "flex",
+    flexDirection: "column",
+    boxSizing: "border-box",
+    padding: "2%",
+    position: "relative",
+    maxWidth: "100%",
     width: "100%",
-    height: "2.5em",
-    padding: "10px 40px 10px 15px",
-    fontSize: "16px",
+    height: "100%",
     border: "2px solid #ccc",
     borderRadius: "25px",
     outline: "none",
     transition: "border-color 0.3s, box-shadow 0.3s",
-    position: "absolute"
 
   }
 )
@@ -207,11 +235,17 @@ const searchBarStyle: Record<string, string> = reactive
  }
 
 
+ const eventTestFunc = () =>
+ {
+  console.log("pointer is over item")
+ }
+
+
 </script>
 
 <template>
 
-  <div id="father-container">
+  <div id="component-container-search">
     <p>filteredApiDataArr: {{ filteredApiDataArr }}</p>
     <p>searchString: {{ searchString}}</p>
     <div  id="searchWrapper">
@@ -221,7 +255,7 @@ const searchBarStyle: Record<string, string> = reactive
         <label class="forScreenReaders" value="searchbar">searchbar for finding recipes</label>
           <div class="searchItemWrapper">
             <div class="dropdown-list" id="dropdownList" >
-              <div :style="searchItemStyle" class="dropdown-item" v-for="item in filteredApiDataArr" :key="item" :value="item" @click="selectSearchItem(item)">{{ item }}</div>
+              <div :style="searchItemStyle" class="dropdown-item" v-for="item in filteredApiDataArr" :key="item" :value="item" @click="selectSearchItem(item)" @pointerdown="selectSearchItem(item)" >{{ item }}</div>
             </div>
         </div>
       </div>
@@ -233,29 +267,43 @@ const searchBarStyle: Record<string, string> = reactive
 <style scoped>
 
 
-#father-container
+#component-container-search
 {
   border: 3px solid gray;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  padding: 2%;
+  position: relative;
+  max-width: 100%;
+  width: 100%;
+  height: 100%;
 }
 
 #searchWrapper
 {
+  border: 3px solid pink;
   display: flex;
-  
-  border: 3px solid black;
+  flex-direction: column;
   box-sizing: border-box;
+  padding: 2%;
+  position: relative;
+  max-width: 100%;
   width: 100%;
+  height: 100%;
 }
 
 .searchItemWrapper
 {
+  border: 6px dotted teal;
   display: flex;
+  flex-direction: column;
   box-sizing: border-box;
+  padding: 2%;
+  position: relative;
   max-width: 100%;
   width: 100%;
-  margin-top: 3em;
-  /* padding-top: 15%; */
-  border: 3px dotted teal;
+  height: 100%;
 }
 
 .dropdown-item
