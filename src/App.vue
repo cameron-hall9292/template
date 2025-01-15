@@ -120,8 +120,6 @@ provide<mode>("appMode", appMode)
 
 <template id="template">
 
-  <div id="father-container">
-
   <div id="button-container">
     <button v-if="appMode.mode !== appModes.create" class="button" @click="appMode.change(appModes.create)">add recipe</button>
     <button v-if="appMode.mode !== appModes.find" class="button" @click="appMode.change(appModes.find)">find recipe</button>
@@ -130,6 +128,8 @@ provide<mode>("appMode", appMode)
     <button v-if="appMode.mode !== appModes.delete" class="button" @click="appMode.change(appModes.delete)">delete recipe</button>
 
   </div>
+  <div id="father-container">
+
   <h4>appMode.mode = {{ appMode.mode }}</h4>
 
 
@@ -174,8 +174,8 @@ provide<mode>("appMode", appMode)
   justify-content: center;
   align-items: center;
   border: 3px solid purple;
-  width: 75vw;
-  height: 75vh;
+  width: 100%;
+  height: 100%;
 }
 @media (min-width: 800px) {
   #father-container {
@@ -189,6 +189,8 @@ provide<mode>("appMode", appMode)
   display: flex;
   border: 3px solid maroon;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
   box-sizing: border-box;
   padding: 2%;
   position: relative;
@@ -201,19 +203,18 @@ provide<mode>("appMode", appMode)
 #button-container
 {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   flex-wrap: nowrap;
   justify-content: center;
   align-items: center;
   box-sizing: border-box;
   border: 3px dotted orange;
   padding: 2%;
-  position: relative;
   max-width: 100%;
-  height: 100%;
+  height: 20%;
   width: 100%;
-
 }
+
 .button
 {
   
@@ -223,10 +224,11 @@ provide<mode>("appMode", appMode)
   border: 3px dotted blue;
   box-sizing:border-box;
   color:white;
-  margin: 10px;
+  padding: 5%;
   max-width: 100%;
-  width: 50%;
+  width: 20%;
   height: 20%;
+  
 }
 
 </style>

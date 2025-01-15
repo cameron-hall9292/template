@@ -44,7 +44,7 @@ const recipeTypes = ref<string[]>(["main dish", "side dish", "soup/chili", "dess
         <option class="select-option" v-for="item in recipeTypes" @click="getRecipes(item)" :value="item">{{ item }}</option>
       </optgroup>
     </select>
-    <ul >
+    <ul id="list-container" >
       <li class="recipe-list" v-for="item in recipeNameArr.sort()" @click="recipeLookup?.fetchData(item) && appMode?.change('read')">{{ item }}</li>
     </ul>
     
@@ -66,11 +66,14 @@ const recipeTypes = ref<string[]>(["main dish", "side dish", "soup/chili", "dess
   display: flex;
   border: 3px dotted black;
   flex-direction: column;
+  justify-content: left;
+  align-items: left;
+  text-align: left;
   box-sizing: border-box;
   padding: 2%;
   position: relative;
   max-width: 100%;
-  width: 100%;
+  width: 75%;
   height: 100%;
 }
 .button
@@ -86,15 +89,31 @@ const recipeTypes = ref<string[]>(["main dish", "side dish", "soup/chili", "dess
  {
 	display: flex;
   text-align: left;
-  align-items: center;
-  justify-content: center;
+  align-items: left;
+  justify-content: left;
+}
+
+#list-container
+{
+  border: 3px solid gray;
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  align-items: left;
+  text-align: left;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
 }
 .recipe-list
 {
+  border: 1px solid black;
 	display: flex;
+  flex-direction: column;
+  align-items: left;
+  justify-content: left;
   text-align: left;
-  align-items: center;
-  justify-content: center;
+  padding: 1px;
 
 }
 .recipe-list:hover
