@@ -51,21 +51,27 @@ const props = defineProps<Recipe>();
 {
   display: grid;
   grid-template-columns: 1fr 1fr;
+  /* display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  max-width: calc(2 * 150px + 20px); */
   list-style: number;
   padding: 4%;
   border: 2px solid turquoise;
   list-style-position: inside;
+  margin: 2%;
 }
 
 .list-item
 {
   border: 1px solid black;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  text-align: center;
   padding: 4%;
   margin: 4%;
+  overflow-wrap: break-word;
+  word-break: break-word;
 
 }
 
@@ -82,7 +88,7 @@ const props = defineProps<Recipe>();
   width: 100%;
   overflow-wrap: break-word;
   word-break: break-word;
-  padding: 1%;
+  padding: 10%;
 }
 
 

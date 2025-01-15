@@ -118,7 +118,9 @@ provide<mode>("appMode", appMode)
 
 </script>
 
-<template id="template">
+<template>
+
+  <div id="father-container">
 
   <div id="button-container">
     <button v-if="appMode.mode !== appModes.create" class="button" @click="appMode.change(appModes.create)">add recipe</button>
@@ -128,8 +130,6 @@ provide<mode>("appMode", appMode)
     <button v-if="appMode.mode !== appModes.delete" class="button" @click="appMode.change(appModes.delete)">delete recipe</button>
 
   </div>
-  <div id="father-container">
-
   <h4>appMode.mode = {{ appMode.mode }}</h4>
 
 
@@ -166,6 +166,13 @@ provide<mode>("appMode", appMode)
 
 <style scoped>
 
+
+#template
+{
+  border: 5px solid black;
+  background-color: black;
+}
+
 #father-container
 {
   
@@ -174,8 +181,10 @@ provide<mode>("appMode", appMode)
   justify-content: center;
   align-items: center;
   border: 3px solid purple;
+  box-sizing: border-box;
   width: 100%;
   height: 100%;
+  padding: 0%;
 }
 @media (min-width: 800px) {
   #father-container {
@@ -223,11 +232,12 @@ provide<mode>("appMode", appMode)
   align-items: center;
   border: 3px dotted blue;
   box-sizing:border-box;
-  color:white;
+  color: black;
   padding: 5%;
   max-width: 100%;
   width: 20%;
   height: 20%;
+  margin: 2%;
   
 }
 
