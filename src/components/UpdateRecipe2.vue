@@ -7,6 +7,8 @@ import updateRecipe from '../api/update';
 
 import { type mode, type Recipe, type recipeLookup } from '../interfaces/interface';
 
+import FormButtons from '../components/FormButtons.vue'
+
 const appMode = inject<mode>("appMode");
 
 let recipeLookup = inject<recipeLookup>("selectRecipe");
@@ -40,23 +42,24 @@ let recipeLookup = inject<recipeLookup>("selectRecipe");
 
   <div id="component-container-update">
 
+    <h1>Update Recipe</h1>
     <div id="formWrapper">
 
-  <input id="formName" class="longForm" v-if="recipeLookup !== undefined" v-model=" recipeLookup.recipeData.name" placeholder="enter recipe name">
-  <textarea id="formIngredients" class="longForm"  v-if="recipeLookup !== undefined" v-model="recipeLookup.recipeData.ingredients" placeholder="enter ingredients" ></textarea>
-  <textarea id="formInstructions" class="longForm" v-if="recipeLookup !== undefined" v-model="recipeLookup.recipeData.instructions" placeholder="enter instructions"></textarea>
-  <select class="longForm" placeholder="select recipe type" v-if="recipeLookup !== undefined" v-model="recipeLookup.recipeData.type"  >
-    <optgroup label="recipe types">
-      <option value="main dish">main dish</option>
-      <option value="side dish">side dish</option>
-      <option value="soup/chili">soup/chili</option>
-      <option value="dessert">dessert</option>
-    </optgroup>
-  </select>
+      <input id="formName" class="longForm" v-if="recipeLookup !== undefined" v-model=" recipeLookup.recipeData.name" placeholder="enter recipe name">
+      <textarea id="formIngredients" class="longForm"  v-if="recipeLookup !== undefined" v-model="recipeLookup.recipeData.ingredients" placeholder="enter ingredients" ></textarea>
+      <textarea id="formInstructions" class="longForm" v-if="recipeLookup !== undefined" v-model="recipeLookup.recipeData.instructions" placeholder="enter instructions"></textarea>
+      <select class="longForm" placeholder="select recipe type" v-if="recipeLookup !== undefined" v-model="recipeLookup.recipeData.type"  >
+        <optgroup label="recipe types">
+          <option value="main dish">main dish</option>
+          <option value="side dish">side dish</option>
+          <option value="soup/chili">soup/chili</option>
+          <option value="dessert">dessert</option>
+        </optgroup>
+      </select>
     </div>
-  <button class="button" v-if="recipeLookup !== undefined" @click="updateRecipe(recipeLookup.recipeData) && appMode?.change('find')">submit update</button>
-  <button class="button" @click="appMode?.change('find')" >cancel</button>
-</div>
+    <FormButtons v-if="recipeLookup !== undefined" @click="updateRecipe(recipeLookup.recipeData) && appMode?.change('find')" name="submit update"></FormButtons>
+    <FormButtons @click="appMode?.change('find')" name="cancel" ></FormButtons>
+  </div>
 </template>
 <style scoped>
 
@@ -71,6 +74,11 @@ let recipeLookup = inject<recipeLookup>("selectRecipe");
   max-width: 100%;
   width: 100%;
   height: 100%;
+}
+
+h1 
+{
+  text-align: center;
 }
 #formWrapper
 {

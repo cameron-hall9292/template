@@ -246,6 +246,7 @@ const searchBarStyle: Record<string, string> = reactive
 <template>
 
   <div id="component-container-search">
+    <h1>Search Recipes</h1>
     <p>filteredApiDataArr: {{ filteredApiDataArr }}</p>
     <p>searchString: {{ searchString}}</p>
     <div  id="searchWrapper">
@@ -279,7 +280,10 @@ const searchBarStyle: Record<string, string> = reactive
   width: 100%;
   height: 100%;
 }
-
+h1
+{
+  text-align: center;
+}
 #searchWrapper
 {
   border: 3px solid pink;

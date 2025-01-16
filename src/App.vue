@@ -8,6 +8,7 @@ import PostRecipe from './components/PostRecipe.vue';
 
 import UpdateRecipe2 from './components/UpdateRecipe2.vue';
 
+
 import Read from './components/ReadRecipe.vue';
 
 import allRecipes from './components/allRecipes.vue';
@@ -122,15 +123,7 @@ provide<mode>("appMode", appMode)
 
   <div id="father-container">
 
-  <div id="button-container">
-    <button v-if="appMode.mode !== appModes.create" class="button" @click="appMode.change(appModes.create)">add recipe</button>
-    <button v-if="appMode.mode !== appModes.find" class="button" @click="appMode.change(appModes.find)">find recipe</button>
-    <button v-if="appMode.mode !== appModes.index" class="button" @click="appMode.change(appModes.index)">all recipes</button>
-    <button v-if="appMode.mode !== appModes.update" class="button" @click="appMode.change(appModes.update)">edit recipe</button>
-    <button v-if="appMode.mode !== appModes.delete" class="button" @click="appMode.change(appModes.delete)">delete recipe</button>
-
-  </div>
-  <h4>appMode.mode = {{ appMode.mode }}</h4>
+  <!-- <h4>appMode.mode = {{ appMode.mode }}</h4> -->
 
 
   <div id="component-container">
@@ -162,6 +155,15 @@ provide<mode>("appMode", appMode)
 
 </div>
 
+
+  <div id="button-container">
+    <button v-if="appMode.mode === appModes.find" class="button" @click="appMode.change(appModes.create)">add recipe</button>
+    <button v-if="appMode.mode !== appModes.find" class="button" @click="appMode.change(appModes.find)">find recipe</button>
+    <button v-if="appMode.mode === appModes.find" class="button" @click="appMode.change(appModes.index)">all recipes</button>
+    <button v-if="appMode.mode === appModes.read" class="button" @click="appMode.change(appModes.update)">edit recipe</button>
+    <button v-if="appMode.mode === appModes.read" class="button" @click="appMode.change(appModes.delete)">delete recipe</button>
+
+  </div>
 </template>
 
 <style scoped>
@@ -222,6 +224,8 @@ provide<mode>("appMode", appMode)
   max-width: 100%;
   height: 20%;
   width: 100%;
+  position: absolute;
+  bottom: -10;
 }
 
 .button
@@ -233,11 +237,12 @@ provide<mode>("appMode", appMode)
   border: 3px dotted blue;
   box-sizing:border-box;
   color: black;
-  padding: 5%;
+  padding: 10%;
   max-width: 100%;
   width: 20%;
   height: 20%;
-  margin: 2%;
+  margin: 0%;
+  font-size: 1em;
   
 }
 

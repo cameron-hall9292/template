@@ -7,6 +7,8 @@ import { type mode, type recipeLookup } from '../interfaces/interface';
 
 import { fetchByType } from '../api/getByType';
 
+import FormButtons from '../components/FormButtons.vue'
+
 const appMode = inject<mode>("appMode");
 
 let recipeLookup = inject<recipeLookup>("selectRecipe");
@@ -34,8 +36,10 @@ const recipeTypes = ref<string[]>(["main dish", "side dish", "soup/chili", "dess
 
 <template>
 
+
   <div id="component-container-all-recipes">
 
+    <h1>Recipe Index</h1>
     <span> recipe type: {{ chooseRecipeType }}</span>
 
     <select class="select" placeholder="select recipe type" v-model="chooseRecipeType"  >
@@ -49,8 +53,7 @@ const recipeTypes = ref<string[]>(["main dish", "side dish", "soup/chili", "dess
     </ul>
     
     <div id="buttonWrapper">
-      <!-- <button class="button" @click="getRecipes(chooseRecipeType) && appMode?.change('find')" >get recipes</button> -->
-      <button class="button" @click="appMode?.change('find')" >cancel</button>
+       <FormButtons name="cancel" @click="appMode?.change('find')"></FormButtons>
     </div>
 
 
@@ -76,6 +79,11 @@ const recipeTypes = ref<string[]>(["main dish", "side dish", "soup/chili", "dess
   width: 75%;
   height: 100%;
 }
+h1
+{
+  text-align: center;
+}
+
 .button
 {
     color: white; 
@@ -91,6 +99,7 @@ const recipeTypes = ref<string[]>(["main dish", "side dish", "soup/chili", "dess
   text-align: left;
   align-items: left;
   justify-content: left;
+  font-size: 1em;
 }
 
 #list-container
@@ -114,6 +123,7 @@ const recipeTypes = ref<string[]>(["main dish", "side dish", "soup/chili", "dess
   justify-content: left;
   text-align: left;
   padding: 1px;
+  font-size: 1em;
 
 }
 .recipe-list:hover

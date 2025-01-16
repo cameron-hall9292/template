@@ -7,6 +7,8 @@ import { type mode,type recipeLookup } from '../interfaces/interface';
 
 import deleteRecipe from '../api/delete';
 
+import FormButtons from '../components/FormButtons.vue'
+
 const appMode = inject<mode>("appMode");
 
 let recipeLookup = inject<recipeLookup>("selectRecipe");
@@ -38,22 +40,24 @@ let recipeLookup = inject<recipeLookup>("selectRecipe");
 
 <template>
   <div id="component-container-delete">
+
+    <h1>Delete Recipe</h1>
     <div id="formWrapper">
-    <input disabled id="formName" class="longForm" v-if="recipeLookup !== undefined" v-model=" recipeLookup.recipeData.name" placeholder="enter recipe name">
-    <textarea disabled id="formIngredients" class="longForm"  v-if="recipeLookup !== undefined" v-model="recipeLookup.recipeData.ingredients" placeholder="enter ingredients" ></textarea>
-    <textarea disabled id="formInstructions" class="longForm" v-if="recipeLookup !== undefined" v-model="recipeLookup.recipeData.instructions" placeholder="enter instructions"></textarea>
-    <select disabled class="longForm" placeholder="select recipe type" v-if="recipeLookup !== undefined" v-model="recipeLookup.recipeData.type"  >
-      <optgroup label="recipe types">
-        <option value="main dish">main dish</option>
-        <option value="side dish">side dish</option>
-        <option value="soup/chili">soup/chili</option>
-        <option value="dessert">dessert</option>
-      </optgroup>
-    </select>
+      <input disabled id="formName" class="longForm" v-if="recipeLookup !== undefined" v-model=" recipeLookup.recipeData.name" placeholder="enter recipe name">
+      <textarea disabled id="formIngredients" class="longForm"  v-if="recipeLookup !== undefined" v-model="recipeLookup.recipeData.ingredients" placeholder="enter ingredients" ></textarea>
+      <textarea disabled id="formInstructions" class="longForm" v-if="recipeLookup !== undefined" v-model="recipeLookup.recipeData.instructions" placeholder="enter instructions"></textarea>
+      <select disabled class="longForm" placeholder="select recipe type" v-if="recipeLookup !== undefined" v-model="recipeLookup.recipeData.type"  >
+        <optgroup label="recipe types">
+          <option value="main dish">main dish</option>
+          <option value="side dish">side dish</option>
+          <option value="soup/chili">soup/chili</option>
+          <option value="dessert">dessert</option>
+        </optgroup>
+      </select>
     </div>
-      <button class="button" v-if="recipeLookup !== undefined" @click="deleteRecipe(recipeLookup.recipeData.name) && appMode?.change('find')">submit delete</button>
-      <button class="button" @click="appMode?.change('find')" >cancel</button>
-    </div>
+    <FormButtons v-if="recipeLookup !== undefined" @click="deleteRecipe(recipeLookup.recipeData.name) && appMode?.change('find')" name="delete recipe"></FormButtons>
+    <FormButtons name="cancel" @click="appMode?.change('find')"></FormButtons>
+  </div>
 </template>
 <style scoped>
 
@@ -68,6 +72,11 @@ let recipeLookup = inject<recipeLookup>("selectRecipe");
   max-width: 100%;
   width: 100%;
   height: 100%;
+}
+
+h1
+{
+  text-align: center;
 }
 #formWrapper
 {

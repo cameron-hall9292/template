@@ -24,6 +24,20 @@ const { name }= defineProps<Props>()
 
 <template>
 
-  <button >{{ name }}</button>
+  <button class="form-button">{{ name }}</button>
 
 </template>
+
+<style scoped>
+
+.form-button
+{
+    color: black;
+    font-size: 1em;
+    padding: 2%;
+
+}
+
+
+
+</style>

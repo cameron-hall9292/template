@@ -9,6 +9,8 @@ import { type Recipe } from '../interfaces/interface';
 
 import postData from '../api/post';
 
+import FormButtons from '../components/FormButtons.vue'
+
 const appMode = inject<mode>("appMode");
 
 const recipePost: Recipe = reactive
@@ -28,7 +30,12 @@ const recipePost: Recipe = reactive
 
   <div id="component-container-post">
 
+    
+    <h1>Add New Recipe</h1>
+
     <div id="formWrapper">
+
+
 
       <textarea class="longForm" v-model="recipePost.name" placeholder="enter recipe name"></textarea>
       <textarea class="longForm" id="ingredients" v-model="recipePost.ingredients" placeholder="enter ingredients"></textarea>
@@ -45,8 +52,8 @@ const recipePost: Recipe = reactive
 
     </div>
 
-      <button class="button" @click="postData(recipePost) && appMode?.change('find')" >submit recipe</button>
-      <button class="button" @click="appMode?.change('find')" >cancel</button>
+      <FormButtons @click="postData(recipePost) && appMode?.change('find')" name="submit recipe" ></FormButtons>
+      <FormButtons @click="appMode?.change('find')" name="cancel" ></FormButtons>
 
   </div>
 
@@ -65,6 +72,11 @@ const recipePost: Recipe = reactive
   max-width: 100%;
   width: 100%;
   height: 100%;
+}
+
+h1
+{
+  text-align: center;
 }
 #formWrapper
 {
