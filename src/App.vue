@@ -9,6 +9,9 @@ import PostRecipe from './components/PostRecipe.vue';
 import UpdateRecipe2 from './components/UpdateRecipe2.vue';
 
 
+import NavBar from './components/NavBar.vue';
+
+
 import Read from './components/ReadRecipe.vue';
 
 import allRecipes from './components/allRecipes.vue';
@@ -127,16 +130,13 @@ provide<mode>("appMode", appMode)
   <div id="father-container">
 
   
-      <div class="spacer">spacer</div>
-      <div class="navbar">
+    <!-- <div class="spacer">spacer</div>
+    <div class="navbar">
+      <div id="hamburger-icon">hamburger icon</div>
+      </div> -->
 
+    <NavBar home="Home" index="Index" add="Add"></NavBar>
 
-    <button class="button" @click="appMode.change(appModes.create)">add recipe</button>
-    <button  class="button" @click="appMode.change(appModes.find)">find recipe</button>
-    <button  class="button" @click="appMode.change(appModes.index)">all recipes</button>
-    <button  class="button" @click="appMode.change(appModes.update)">edit recipe</button>
-    <button  class="button" @click="appMode.change(appModes.delete)">delete recipe</button>
-      </div>
   <!-- <h4>appMode.mode = {{ appMode.mode }}</h4> -->
 
 
@@ -167,14 +167,14 @@ provide<mode>("appMode", appMode)
   </div>
 
 
-  <!-- <div id="button-container">
+  <div id="button-container">
     <button v-if="appMode.mode === appModes.find" class="button" @click="appMode.change(appModes.create)">add recipe</button>
     <button v-if="appMode.mode !== appModes.find" class="button" @click="appMode.change(appModes.find)">find recipe</button>
     <button v-if="appMode.mode === appModes.find" class="button" @click="appMode.change(appModes.index)">all recipes</button>
     <button v-if="appMode.mode === appModes.read" class="button" @click="appMode.change(appModes.update)">edit recipe</button>
     <button v-if="appMode.mode === appModes.read" class="button" @click="appMode.change(appModes.delete)">delete recipe</button>
 
-  </div> -->
+  </div>
 </div>
 
 
@@ -195,7 +195,7 @@ provide<mode>("appMode", appMode)
 {
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: right;
   align-items: center;
   width: 100%;
   height: 4em;
@@ -204,6 +204,15 @@ provide<mode>("appMode", appMode)
   top: 0;
   z-index: 1;
   background-color: gray;
+}
+
+#hamburger-icon
+{
+  border: 1px solid black;
+  display: flex;
+  justify-content: right;
+  align-items: right;
+  margin: 2em;
 }
 #father-container
 {
