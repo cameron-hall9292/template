@@ -85,10 +85,10 @@ const props = defineProps<Recipe>();
   justify-content: center;
   align-items: center;
   max-width: 100%;
-  width: 100%;
+  width: 90%;
   overflow-wrap: break-word;
   word-break: break-word;
-  padding: 10%;
+  padding: 5%;
 }
 
 
