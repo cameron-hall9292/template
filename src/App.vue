@@ -11,6 +11,8 @@ import UpdateRecipe2 from './components/UpdateRecipe2.vue';
 
 import NavBar from './components/NavBar.vue';
 
+import BottomNav from './components/BottomNav.vue';
+
 
 import Read from './components/ReadRecipe.vue';
 
@@ -130,51 +132,50 @@ provide<mode>("appMode", appMode)
   <div id="father-container">
 
   
-    <!-- <div class="spacer">spacer</div>
-    <div class="navbar">
-      <div id="hamburger-icon">hamburger icon</div>
-      </div> -->
+     <div class="spacer">spacer</div>
 
     <NavBar home="Home" index="Index" add="Add"></NavBar>
 
   <!-- <h4>appMode.mode = {{ appMode.mode }}</h4> -->
 
 
-  <div id="component-container">
+    <div id="component-container">
 
-    <FilterRecipes v-if="appMode.mode === appModes.find"/>
-    <UpdateRecipe2 v-else-if="appMode.mode === appModes.update" :name="recipeLookup.recipeData.name" 
-    :ingredients="recipeLookup.recipeData.ingredients" 
-    :instructions="recipeLookup.recipeData.instructions" 
-    :type="recipeLookup.recipeData.type" 
-    />
-    <PostRecipe v-else-if="appMode.mode === appModes.create" />
+      <FilterRecipes v-if="appMode.mode === appModes.find"/>
+      <UpdateRecipe2 v-else-if="appMode.mode === appModes.update" :name="recipeLookup.recipeData.name" 
+      :ingredients="recipeLookup.recipeData.ingredients" 
+      :instructions="recipeLookup.recipeData.instructions" 
+      :type="recipeLookup.recipeData.type" 
+      />
+      <PostRecipe v-else-if="appMode.mode === appModes.create" />
 
-    <ReadRecipe v-else-if="appMode.mode === appModes.read" :name="recipeLookup.recipeData.name" 
-    :ingredients="recipeLookup.recipeData.ingredients" 
-    :instructions="recipeLookup.recipeData.instructions" 
-    :type="recipeLookup.recipeData.type" 
-    />
+      <ReadRecipe v-else-if="appMode.mode === appModes.read" :name="recipeLookup.recipeData.name" 
+      :ingredients="recipeLookup.recipeData.ingredients" 
+      :instructions="recipeLookup.recipeData.instructions" 
+      :type="recipeLookup.recipeData.type" 
+      />
 
-    <DeleteRecipe v-else-if="appMode.mode === appModes.delete" :name="recipeLookup.recipeData.name" 
-    :ingredients="recipeLookup.recipeData.ingredients" 
-    :instructions="recipeLookup.recipeData.instructions" 
-    :type="recipeLookup.recipeData.type" 
-    />
+      <DeleteRecipe v-else-if="appMode.mode === appModes.delete" :name="recipeLookup.recipeData.name" 
+      :ingredients="recipeLookup.recipeData.ingredients" 
+      :instructions="recipeLookup.recipeData.instructions" 
+      :type="recipeLookup.recipeData.type" 
+      />
   
-    <allRecipes v-else-if="appMode.mode === appModes.index"/>
+      <allRecipes v-else-if="appMode.mode === appModes.index"/>
 
-  </div>
+    </div>
 
 
-  <div id="button-container">
-    <button v-if="appMode.mode === appModes.find" class="button" @click="appMode.change(appModes.create)">add recipe</button>
-    <button v-if="appMode.mode !== appModes.find" class="button" @click="appMode.change(appModes.find)">find recipe</button>
-    <button v-if="appMode.mode === appModes.find" class="button" @click="appMode.change(appModes.index)">all recipes</button>
-    <button v-if="appMode.mode === appModes.read" class="button" @click="appMode.change(appModes.update)">edit recipe</button>
-    <button v-if="appMode.mode === appModes.read" class="button" @click="appMode.change(appModes.delete)">delete recipe</button>
+    <div id="button-container">
+      <button v-if="appMode.mode === appModes.find" class="button" @click="appMode.change(appModes.create)">add recipe</button>
+      <button v-if="appMode.mode !== appModes.find" class="button" @click="appMode.change(appModes.find)">find recipe</button>
+      <button v-if="appMode.mode === appModes.find" class="button" @click="appMode.change(appModes.index)">all recipes</button>
+      <button v-if="appMode.mode === appModes.read" class="button" @click="appMode.change(appModes.update)">edit recipe</button>
+      <button v-if="appMode.mode === appModes.read" class="button" @click="appMode.change(appModes.delete)">delete recipe</button>
 
-  </div>
+    </div>
+
+    <BottomNav home="Home" index="Index" add="Add"></BottomNav>
 </div>
 
 

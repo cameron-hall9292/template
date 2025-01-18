@@ -2,7 +2,16 @@
 <script setup lang="ts">
 
 
-import { ref, type Ref, onMounted, onBeforeUnmount } from "vue";
+import { ref, type Ref, onMounted, onBeforeUnmount, inject } from "vue";
+
+
+import { type mode } from '../interfaces/interface';
+
+import { appModes } from '../interfaces/appModes';
+
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+
+const appMode = inject<mode>("appMode");
 
 interface Props
 {
@@ -45,6 +54,14 @@ onMounted(() =>
 onBeforeUnmount(() => {
   document.removeEventListener("click", handleClickOutsideNav);
 });
+
+
+const navigate = (mode) =>
+{
+    toggleActiveState();
+    appMode.change(mode);
+}
+
 </script>
 
 
@@ -56,18 +73,15 @@ onBeforeUnmount(() => {
     <div id="navbar-container">
 
         <nav ref="navbar" class="navbar" :class="{ active: isActive}"  >
-            <div id="hamburger-icon" :class="{active: isActive}">hamburger icon
-                <span></span>
-                <span></span>
-                <span></span>
+            <div id="hamburger-icon" :class="{active: isActive}" @click="toggleActiveState">
+                <FontAwesomeIcon icon="fa-solid fa-bars" />
             </div>
             <ul class="nav-menu" id="nav-menu" :class="{ active: isActive }">
-                <li>{{ home }}</li>
-                <li>{{ index }}</li>
-                <li>{{ add }}</li>
+                <li @click="navigate(appModes.find)">{{ home }}</li>
+                <li @click="navigate(appModes.index)"> {{ index }}</li>
+                <li @click="navigate(appModes.create)">{{ add }}</li>
             </ul>
 
-    <button id="test-button" @click="toggleActiveState">test button: {{ isActive }}</button>
         </nav>
 
     </div>
@@ -100,12 +114,13 @@ onBeforeUnmount(() => {
   justify-content: right;
   align-items: center;
   width: 100%;
-  height: 4em;
+  height: 5em;
   border: 3px solid black;
   position: fixed;
   top: 0;
   z-index: 1;
-  background-color: gray;
+  /* background-color: gray; */
+  background-color: #FFFAA0;
   font-size: 1em;
 }
 .navbar.active
@@ -158,12 +173,16 @@ onBeforeUnmount(() => {
 
 #hamburger-icon
 {
-  border: 1px solid black;
+  border: 1px dotted white;
   display: flex;
+  flex-direction: row;
   justify-content: right;
   align-items: right;
   margin: 2em;
+  padding: 0em;
+  font-size: 2em;
 }
+
 
 #hamburger-icon.active
 {
