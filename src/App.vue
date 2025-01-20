@@ -56,8 +56,7 @@ provide<Ref<string[]>>("filteredApiDataArr", filteredApiDataArr);
 //render the current recipe that was selected in the search
 //component.  
 
-let recipeLookup = reactive<recipeLookup>
-  (
+let recipeLookup = reactive<recipeLookup>(
     {
       recipeData: reactive({
         name: null,
@@ -101,8 +100,7 @@ let recipeLookup = reactive<recipeLookup>
         }
       }
 
-    }
-  )
+    });
 
 provide<recipeLookup>("selectRecipe", recipeLookup);
 
@@ -167,15 +165,17 @@ provide<mode>("appMode", appMode)
 
 
     <div id="button-container">
-      <button v-if="appMode.mode === appModes.find" class="button" @click="appMode.change(appModes.create)">add recipe</button>
-      <button v-if="appMode.mode !== appModes.find" class="button" @click="appMode.change(appModes.find)">find recipe</button>
-      <button v-if="appMode.mode === appModes.find" class="button" @click="appMode.change(appModes.index)">all recipes</button>
-      <button v-if="appMode.mode === appModes.read" class="button" @click="appMode.change(appModes.update)">edit recipe</button>
-      <button v-if="appMode.mode === appModes.read" class="button" @click="appMode.change(appModes.delete)">delete recipe</button>
+      <!-- <button v-if="appMode.mode === appModes.find" class="button" @click="appMode.change(appModes.create)">add recipe</button> -->
+      <!-- <button v-if="appMode.mode !== appModes.find" class="button" @click="appMode.change(appModes.find)">find recipe</button> -->
+      <!-- <button v-if="appMode.mode === appModes.find" class="button" @click="appMode.change(appModes.index)">all recipes</button> -->
+      <!-- <button v-if="appMode.mode === appModes.read" class="button" @click="appMode.change(appModes.update)">edit recipe</button> -->
+      <!-- <button v-if="appMode.mode === appModes.read" class="button" @click="appMode.change(appModes.delete)">delete recipe</button> -->
 
     </div>
 
     <BottomNav home="Home" index="Index" add="Add"></BottomNav>
+
+    <div class="spacer">spacer</div>
 </div>
 
 

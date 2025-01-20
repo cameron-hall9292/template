@@ -9,6 +9,8 @@ import { type mode, type Recipe, type recipeLookup } from '../interfaces/interfa
 
 import FormButtons from '../components/FormButtons.vue'
 
+import FormInput from '../components/FormInput.vue'
+
 const appMode = inject<mode>("appMode");
 
 let recipeLookup = inject<recipeLookup>("selectRecipe");
@@ -43,20 +45,7 @@ let recipeLookup = inject<recipeLookup>("selectRecipe");
   <div id="component-container-update">
 
     <h1>Update Recipe</h1>
-    <div id="formWrapper">
-
-      <input id="formName" class="longForm" v-if="recipeLookup !== undefined" v-model=" recipeLookup.recipeData.name" placeholder="enter recipe name">
-      <textarea id="formIngredients" class="longForm"  v-if="recipeLookup !== undefined" v-model="recipeLookup.recipeData.ingredients" placeholder="enter ingredients" ></textarea>
-      <textarea id="formInstructions" class="longForm" v-if="recipeLookup !== undefined" v-model="recipeLookup.recipeData.instructions" placeholder="enter instructions"></textarea>
-      <select class="longForm" placeholder="select recipe type" v-if="recipeLookup !== undefined" v-model="recipeLookup.recipeData.type"  >
-        <optgroup label="recipe types">
-          <option value="main dish">main dish</option>
-          <option value="side dish">side dish</option>
-          <option value="soup/chili">soup/chili</option>
-          <option value="dessert">dessert</option>
-        </optgroup>
-      </select>
-    </div>
+    <FormInput />
     <FormButtons v-if="recipeLookup !== undefined" @click="updateRecipe(recipeLookup.recipeData) && appMode?.change('find')" name="submit update"></FormButtons>
     <FormButtons @click="appMode?.change('find')" name="cancel" ></FormButtons>
   </div>
@@ -107,7 +96,7 @@ h1
   position: relative;
   max-width: 100%;
   width: 100%;
-  height: 100%;
+  height: 8em;
 }
 .longForm:focus
  {

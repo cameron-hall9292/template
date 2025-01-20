@@ -6,6 +6,14 @@
 import { type Recipe } from '../interfaces/interface';
 
 
+import { inject } from 'vue'
+
+import { appModes } from '../interfaces/appModes';
+
+import FormButtons from '../components/FormButtons.vue'
+
+const appMode = inject<mode>("appMode");
+
 const props = defineProps<Recipe>();
 
 
@@ -23,6 +31,11 @@ const props = defineProps<Recipe>();
       </ul>
     <div id="instruction-container">
     <p id="component-instructions" v-if="props.instructions"> {{ props.instructions}}</p>
+    </div>
+
+    <div id="button-wrapper">
+      <FormButtons class="button" @click="appMode.change(appModes.update)" name="edit recipe "></FormButtons>
+      <FormButtons class="button" @click="appMode.change(appModes.delete)" name="delete recipe"></FormButtons>
     </div>
   </div>
 </template>
@@ -89,6 +102,22 @@ const props = defineProps<Recipe>();
   overflow-wrap: break-word;
   word-break: break-word;
   padding: 5%;
+}
+
+#button-wrapper
+{
+  border: 1px dotted black;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 1em;
+
+}
+
+.button
+{
+  margin: 1em;
+  height: 4em;
 }
 
 

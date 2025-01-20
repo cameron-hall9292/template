@@ -2,7 +2,7 @@
 <script setup lang="ts">
 
 
-import { ref, type Ref, inject } from "vue";
+import { ref, type Ref, inject, computed, reactive } from "vue";
 
 
 import { type mode } from '../interfaces/interface';
@@ -12,6 +12,56 @@ import { appModes } from '../interfaces/appModes';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 const appMode = inject<mode>("appMode");
+
+const defaultIconColor = "black";
+
+const colorHighlight = "orange";
+
+interface HighLightIcons
+{
+    home: string,
+    index: string,
+    add: string,
+}
+
+const iconHighlight = reactive<HighLightIcons>(
+{
+    home: "black",
+    index: "black",
+    add: "black",
+
+});
+
+const highlightNavIcon = computed(() => 
+{
+    switch(appMode.mode)
+    {
+        case "find": 
+            iconHighlight.home = colorHighlight;
+            iconHighlight.index= defaultIconColor;
+            iconHighlight.add = defaultIconColor;
+        break;
+        case "index":
+            iconHighlight.index = colorHighlight;
+            iconHighlight.add = defaultIconColor;
+            iconHighlight.home = defaultIconColor;
+        break;
+        case "create":
+            iconHighlight.add = colorHighlight;
+            iconHighlight.home = defaultIconColor;
+            iconHighlight.index = defaultIconColor;
+        break;
+        default:
+            iconHighlight.home = defaultIconColor;
+            iconHighlight.index= defaultIconColor;
+            iconHighlight.add = defaultIconColor;
+
+    }
+
+    return iconHighlight;
+
+});
+
 
 interface Props
 {
@@ -51,15 +101,15 @@ const navigate = (mode) =>
 
     <div id="nav-container">
         <nav ref="nav" class="nav" :class="{ active: isActive}"  >
-                <span @click="navigate(appModes.index)">
-                    <FontAwesomeIcon icon="fa-solid fa-list" />
+                <span @click="navigate(appModes.index)" :style="{color: highlightNavIcon.index}">
+                    <FontAwesomeIcon icon="fa-solid fa-list" size="xl" width="fw" />
                 </span>
-                <span @click="navigate(appModes.find)">
-                    <FontAwesomeIcon icon="fa-solid fa-house" />
+                <span @click="navigate(appModes.find)" :style="{color: highlightNavIcon.home}">
+                    <FontAwesomeIcon icon="fa-solid fa-house" size="xl" width="fw" />
                 </span>
-                <span id="add" @click="navigate(appModes.create)">
+                <span id="add" @click="navigate(appModes.create)" :style="{color: highlightNavIcon.add}">
 
-                    <FontAwesomeIcon icon="fa-solid fa-plus" />
+                    <FontAwesomeIcon icon="fa-solid fa-plus" size="xl" width="fw" />
                 </span>
         </nav>
 
@@ -83,34 +133,26 @@ const navigate = (mode) =>
 .nav
 {
   display: flex;
+  box-sizing: border-box;
   flex-direction: row;
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 6em;
+  height: 8em;
   border: 3px solid black;
   position: fixed;
   bottom: 0;
   background-color: gray;
-  font-size: 1em;
 }
 
 .nav span
 {
     border: 2px dotted yellow;
+    box-sizing: border-box;
     margin: 2em;
-    padding: 1em;
+    padding: 0.5em;
 }
 
-#add
-{
-
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-
-}
 
 
 

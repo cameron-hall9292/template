@@ -9,7 +9,11 @@ import deleteRecipe from '../api/delete';
 
 import FormButtons from '../components/FormButtons.vue'
 
+import FormInput from '../components/FormInput.vue'
+
 const appMode = inject<mode>("appMode");
+
+import { appModes } from '../interfaces/appModes';
 
 let recipeLookup = inject<recipeLookup>("selectRecipe");
 
@@ -36,27 +40,26 @@ let recipeLookup = inject<recipeLookup>("selectRecipe");
 //})
 
 
+const deleteAndGoHome = (): void =>
+{
+
+  //delete recipe
+  deleteRecipe(recipeLookup.recipeData.name);
+  
+  //return to home screen
+  appMode.change(appModes.find);
+}
+
+
 </script>
 
 <template>
   <div id="component-container-delete">
 
     <h1>Delete Recipe</h1>
-    <div id="formWrapper">
-      <input disabled id="formName" class="longForm" v-if="recipeLookup !== undefined" v-model=" recipeLookup.recipeData.name" placeholder="enter recipe name">
-      <textarea disabled id="formIngredients" class="longForm"  v-if="recipeLookup !== undefined" v-model="recipeLookup.recipeData.ingredients" placeholder="enter ingredients" ></textarea>
-      <textarea disabled id="formInstructions" class="longForm" v-if="recipeLookup !== undefined" v-model="recipeLookup.recipeData.instructions" placeholder="enter instructions"></textarea>
-      <select disabled class="longForm" placeholder="select recipe type" v-if="recipeLookup !== undefined" v-model="recipeLookup.recipeData.type"  >
-        <optgroup label="recipe types">
-          <option value="main dish">main dish</option>
-          <option value="side dish">side dish</option>
-          <option value="soup/chili">soup/chili</option>
-          <option value="dessert">dessert</option>
-        </optgroup>
-      </select>
-    </div>
-    <FormButtons v-if="recipeLookup !== undefined" @click="deleteRecipe(recipeLookup.recipeData.name) && appMode?.change('find')" name="delete recipe"></FormButtons>
-    <FormButtons name="cancel" @click="appMode?.change('find')"></FormButtons>
+    <FormInput />
+    <FormButtons v-if="recipeLookup !== undefined" @click="deleteAndGoHome" name="delete recipe"></FormButtons>
+    <FormButtons name="cancel" @click="appMode?.change(appModes.find)"></FormButtons>
   </div>
 </template>
 <style scoped>
@@ -105,7 +108,7 @@ h1
   position: relative;
   max-width: 100%;
   width: 100%;
-  height: 100%;
+  height: 8em;
 }
 .longForm:focus
  {

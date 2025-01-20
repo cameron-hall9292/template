@@ -1,7 +1,7 @@
 
 <script setup lang="ts">
 
-import { ref, reactive, watch, inject, type Ref } from 'vue'
+import { ref, reactive, watch, inject, type Ref, onMounted, onBeforeUnmount } from 'vue'
 
 import { type recipeLookup,  } from '../interfaces/interface';
 
@@ -12,6 +12,61 @@ let searchString = inject<Ref<string | null>>("searchString");
 let filteredApiDataArr  = inject<Ref<string[]>>("filteredApiDataArr")
 
 let recipeLookup = inject<recipeLookup>("selectRecipe");
+
+
+const searchBar = ref(null);
+
+let isActive: Ref<boolean> = ref(false);
+
+const toggleActiveState = (): Ref<boolean> =>
+{
+    isActive.value = !isActive.value;
+    return isActive.value
+}
+
+const handleClickOutsideNav = (): boolean =>
+{
+    if (searchBar.value && !searchBar.value.contains(event.target))
+    {
+        isActive.value = false;
+        console.log(`isActive search: ${isActive.value}`)
+
+        //clear out api data array and search string
+        filteredApiDataArr.value = [];
+        searchString.value = null;
+        return isActive.value
+    }
+    else return false;
+}
+
+onMounted(() =>
+{
+    document.addEventListener("click", handleClickOutsideNav);
+});
+
+// Clean up event listeners when component unmounts
+onBeforeUnmount(() => {
+  document.removeEventListener("click", handleClickOutsideNav);
+});
+ 
+
+ const activateSearchDrop = (): void =>
+ {
+
+    if (filteredApiDataArr.value)
+    {
+      if (filteredApiDataArr.value.length > 0)
+      {
+        isActive.value = true
+      }
+      else
+      {
+        isActive.value = false;
+      }
+    }
+    console.log(`activateSearchDrop called`)
+
+ }
 
 
 if (searchString !== undefined)
@@ -60,6 +115,9 @@ if (searchString !== undefined)
 
         console.log(filteredApiDataArr.value)
       }
+
+      //make searchbar drop down if search array contains recipe names
+      activateSearchDrop();
       
 
     } 
@@ -150,7 +208,7 @@ if (searchString !== undefined)
 
 
     display: "flex",
-    border: "5px dotted red",
+    border: "3px dotted red",
     flexDirection: "column",
     boxSizing: "border-box",
     padding: "2%",
@@ -205,8 +263,8 @@ const searchBarStyle: Record<string, string> = reactive
     position: "relative",
     maxWidth: "100%",
     width: "100%",
-    height: "100%",
-    border: "2px solid #ccc",
+    height: "4em",
+    border: "5px solid #ccc",
     borderRadius: "25px",
     outline: "none",
     transition: "border-color 0.3s, box-shadow 0.3s",
@@ -221,9 +279,6 @@ const searchBarStyle: Record<string, string> = reactive
     searchString.value =  val;
 
     console.log("selectSearchItem func called")
-  
-    //collapse search bar after user has clicked an item from the drop-down list
-    modSearchContainer(false);
 
     //fetch recipe and display it when user clicks recipe name from drop-down
     recipeLookup.fetchData(val)
@@ -245,56 +300,28 @@ const searchBarStyle: Record<string, string> = reactive
 
 <template>
 
-  <div id="component-container-search">
     <h1>Search Recipes</h1>
     <p>filteredApiDataArr: {{ filteredApiDataArr }}</p>
     <p>searchString: {{ searchString}}</p>
-    <div  id="searchWrapper">
-      <div id="search-container" tabindex="0"  
-        :style="searchContainerStyle"  @pointerleave="blurSearchContainer"   >
-        <input ref="input" :style="searchBarStyle" @keydown.enter=" searchString !== undefined && recipeLookup?.fetchData(searchString)" @pointerenter="modSearchContainer(true)" @focus="modSearchContainer(true)"  v-model="searchString" id="searchbar" type="search" name="q"  placeholder="search recipe" autocomplete="off">
+      <div id="search-container" tabindex="0" ref="searchBar" :class="{ active: isActive}" 
+        @pointerleave="blurSearchContainer"   >
+        <input ref="input" :class="{ active: isActive }" :style="searchBarStyle" @keydown.enter=" searchString !== undefined && recipeLookup?.fetchData(searchString)"  v-model="searchString" id="searchbar" type="search" name="q"  placeholder="search recipe" autocomplete="off">
         <label class="forScreenReaders" value="searchbar">searchbar for finding recipes</label>
           <div class="searchItemWrapper">
             <div class="dropdown-list" id="dropdownList" >
-              <div :style="searchItemStyle" class="dropdown-item" v-for="item in filteredApiDataArr" :key="item" :value="item" @click="selectSearchItem(item)" @pointerdown="selectSearchItem(item)" >{{ item }}</div>
+              <div :class="{ active: isActive }" class="dropdown-item" v-for="item in filteredApiDataArr" :key="item" :value="item" @click="selectSearchItem(item)" >{{ item }}</div>
             </div>
         </div>
       </div>
-    </div>
-  </div>
 
 </template>
 
 <style scoped>
 
 
-#component-container-search
-{
-  border: 3px solid gray;
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
-  padding: 2%;
-  position: relative;
-  max-width: 100%;
-  width: 100%;
-  height: 100%;
-}
 h1
 {
   text-align: center;
-}
-#searchWrapper
-{
-  border: 3px solid pink;
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
-  padding: 2%;
-  position: relative;
-  max-width: 100%;
-  width: 100%;
-  height: 100%;
 }
 
 .searchItemWrapper
@@ -310,10 +337,60 @@ h1
   height: 100%;
 }
 
+
+#search-container
+{
+
+    display: flex;
+    border: 3px dotted red;
+    flex-direction: column;
+    box-sizing: border-box;
+    padding: 2%;
+    position: relative;
+    max-width: 100%;
+    width: 100%;
+    height: 100%;
+}
+#search-container.active
+{
+
+    border: 5px solid purple;
+    background-color:  #FFFFFF;
+    border-radius: 30px;
+    visibility: visible;
+}
+
+#searchbar
+{
+
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    padding: 2%;
+    position: relative;
+    max-width: 100%;
+    width: 100%;
+    height: 4em;
+    border: 5px solid #ccc;
+    border-radius: 25px;
+    outline: none;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
 .dropdown-item
 {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  max-width: 90%;
   width: 100%;
-  border: 2px solid black;
+  height: 2em;
+  justify-content: left;
+  align-items: left;
+  visibility: visible;
+  border: 1px solid black;
+  margin: 1em;
+  font-size: 1.5em;
 }
 
 

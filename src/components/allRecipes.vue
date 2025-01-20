@@ -52,9 +52,9 @@ const recipeTypes = ref<string[]>(["main dish", "side dish", "soup/chili", "dess
       <li class="recipe-list" v-for="item in recipeNameArr.sort()" @click="recipeLookup?.fetchData(item) && appMode?.change('read')">{{ item }}</li>
     </ul>
     
-    <div id="buttonWrapper">
+    <!-- <div id="button-wrapper">
        <FormButtons name="cancel" @click="appMode?.change('find')"></FormButtons>
-    </div>
+    </div> -->
 
 
 
@@ -76,7 +76,7 @@ const recipeTypes = ref<string[]>(["main dish", "side dish", "soup/chili", "dess
   padding: 2%;
   position: relative;
   max-width: 100%;
-  width: 75%;
+  width: 100%;
   height: 100%;
 }
 h1
@@ -84,22 +84,16 @@ h1
   text-align: center;
 }
 
-.button
-{
-    color: white; 
-    margin: 5px;
-}
-.recipes
-{
-  position: relative;
-}
 .select
  {
 	display: flex;
-  text-align: left;
+  box-sizing: border-box;
+  text-align: center;
   align-items: left;
   justify-content: left;
+  margin: 0em;
   font-size: 1em;
+  height: 4em;
 }
 
 #list-container
@@ -118,12 +112,15 @@ h1
 {
   border: 1px solid black;
 	display: flex;
+  box-sizing: border-box;
   flex-direction: column;
-  align-items: left;
-  justify-content: left;
+  align-items: center;
+  justify-content: center;
   text-align: left;
   padding: 1px;
   font-size: 1em;
+  height: 4em;
+  margin: 1em;
 
 }
 .recipe-list:hover
@@ -138,9 +135,16 @@ h1
   font-size: large;
   
  }
-.buttonWrapper
+
+#button-wrapper
 {
-  border: 1px solid black
+  border: 1px dotted black;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 1em;
+
 }
 </style>
 

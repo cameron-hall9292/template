@@ -74,7 +74,7 @@ const navigate = (mode) =>
 
         <nav ref="navbar" class="navbar" :class="{ active: isActive}"  >
             <div id="hamburger-icon" :class="{active: isActive}" @click="toggleActiveState">
-                <FontAwesomeIcon icon="fa-solid fa-bars" />
+                <FontAwesomeIcon icon="fa-solid fa-bars" size="xl" width="fw" />
             </div>
             <ul class="nav-menu" id="nav-menu" :class="{ active: isActive }">
                 <li @click="navigate(appModes.find)">{{ home }}</li>
@@ -114,14 +114,14 @@ const navigate = (mode) =>
   justify-content: right;
   align-items: center;
   width: 100%;
-  height: 5em;
+  height: 4em;
   border: 3px solid black;
   position: fixed;
   top: 0;
   z-index: 1;
   /* background-color: gray; */
   background-color: #FFFAA0;
-  font-size: 1em;
+  transition: all 0.2s ease-in-out;
 }
 .navbar.active
 {
@@ -133,6 +133,7 @@ const navigate = (mode) =>
   height: 95%;
   border: 3px solid black;
   position: absolute;
+  transition: all 0.2s ease-in-out;
 }
 
 
@@ -180,7 +181,6 @@ const navigate = (mode) =>
   align-items: right;
   margin: 2em;
   padding: 0em;
-  font-size: 2em;
 }
 
 
