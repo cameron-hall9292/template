@@ -86,6 +86,7 @@ if (searchString !== undefined)
       {
         encodeURIComponent(searchString.value)
       }
+
    
       const res = await fetch(
         `${baseUrl}/recipeNames?name=${searchString.value}`
