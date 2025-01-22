@@ -6,22 +6,51 @@
 import { type Recipe } from '../interfaces/interface';
 
 
-import { inject } from 'vue'
+import { inject, onMounted, ref, reactive } from 'vue'
 
 import { appModes } from '../interfaces/appModes';
 
 import FormButtons from '../components/FormButtons.vue'
 
+import fetchUserPermissions from '../api/permissions';
+
 const appMode = inject<mode>("appMode");
 
 const props = defineProps<Recipe>();
 
+//check if user is logged in and get their user permissions e.g read, write, etc.
+
+let userPermissions = reactive(
+  {
+    permArr: []
+  }
+) 
+
+//let userPermissions = ref<string[]>([])
+const getPermissions = async () => 
+{
+
+  if (sessionStorage.getItem('jwtToken'))
+  {
+   fetchUserPermissions()
+   .then(data => userPermissions.permArr = data.data)
+    // userPermissions.value = [1,2,3,4]
+    console.log(userPermissions.permArr)
+  }
+}
+
+onMounted( () =>
+{
+
+  getPermissions()
+})
 
 </script>
 
 
 <template>
 
+      <div>permissions: {{ userPermissions }}</div>
   <div id="component-container-read"> 
     <h2 v-if="props.name">{{ props.name }}</h2>
       <ul class="unordered_list">

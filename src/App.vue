@@ -28,7 +28,8 @@ import { baseUrl } from './api/endpoints';
 import ReadRecipe from './components/ReadRecipe.vue';
 import DeleteRecipe from './components/DeleteRecipe.vue';
 
-import fetchUserPermissions from './api/permissions';
+import tokenExpir from './auth/tokenExpir.ts'
+
 
 
 //define key data that will be all components must
@@ -129,33 +130,33 @@ const handleSignOut = () =>
   sessionStorage.removeItem("jwtToken")
 }
 
-let userPermissions = reactive(
-  {
-    permArr: []
-  }
-) 
+//monitor access token to see if it is expired
+//and if so, redirect user to the login page
+
+// const myToken = ref<string>('')
+// myToken.value = sessionStorage.getItem('jwtToken')
 
 
+// watch(myToken, () =>
+// {
 
-//check if user is logged in and get their user permissions
+//   if (!myToken.value)
+//   {
+//     appMode.mode = appModes.login;
 
-const getPermissions = async () => 
+//   }
+// })
+
+const token1 = sessionStorage.getItem("jwtToken");
+
+
+console.log(tokenExpir(token1))
+
+
+const testTokenFunc = () =>
 {
-
-  if (sessionStorage.getItem('jwtToken'))
-  {
-   fetchUserPermissions()
-   .then(data => userPermissions.permArr = data.data)
-    // userPermissions.value = [1,2,3,4]
-    console.log(userPermissions.permArr)
-  }
+  console.log(tokenExpir(token1))
 }
-
-onMounted( () =>
-{
-
-  getPermissions()
-})
 
 </script>
 
@@ -171,15 +172,15 @@ onMounted( () =>
 
     <NavBar home="Home" index="Index" add="Add"></NavBar>
 
-  <!-- <h4>appMode.mode = {{ appMode.mode }}</h4> -->
+  <h4>appMode.mode = {{ appMode.mode }}</h4>
 
+    <!-- <h4>token: {{myToken }}</h4> -->
 
     <div id="component-container">
 
       <div v-if="appMode.mode === appModes.login">
       <GoogleLogin  />
-      <div>permissions: {{ userPermissions }}</div>
-      <button @click="handleSignOut">signout</button>
+      <button @click="testTokenFunc">test</button>
 
       </div>
 
