@@ -1,18 +1,8 @@
 
 
-import { reactive, ref } from "vue";
+import { ref } from "vue";
 import { type Recipe } from "../interfaces/interface";
 
-
-
-//export let recipe: Recipe = reactive(
-  //{
-    //name: null,
-    //ingredients: null,
-    //instructions: null,
-    //type: null,
-  //}
-//)
 
 export async function fetchData(value: (string | null),  baseUrl: string, callback: Function) 
 {
@@ -26,8 +16,14 @@ export async function fetchData(value: (string | null),  baseUrl: string, callba
         type: null,
     }
     )
-    const res = await fetch(
-      `${baseUrl}/display?name=${value}`
+
+    const res = await fetch(`${baseUrl}/display?name=${value}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type" : "application/json",
+        },
+      }
     )
   
     await res.json()

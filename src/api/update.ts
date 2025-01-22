@@ -12,7 +12,8 @@ export default async function updateRecipe(value: Recipe)
   {
 
 
-    await fetch(baseUrl + `/display`,
+    const token = sessionStorage.getItem('jwtToken');
+   const response = await fetch(baseUrl + `/display`,
     {
 
       method: "PUT",
@@ -20,6 +21,7 @@ export default async function updateRecipe(value: Recipe)
       {
 
         "Content-Type" : "application/json",
+        'Authorization': `Bearer ${token}`, //set JWT authorization in header
       },
 
 
@@ -27,7 +29,21 @@ export default async function updateRecipe(value: Recipe)
 
     })
 
-    alert(`recipe for ${value.name} was successfully updated`)
+    if (response.status === 403)
+    {
+      alert("You do not have persmission to edit recipes")
+      throw new Error("You do not have persmission to edit recipes") 
+    }
+    else if (!response.ok)
+    {
+      alert("failed to edit resource");
+      throw new Error("failed to edit resource");
+    }
+
+    else
+    {
+      //do nothing
+    }
     
   } 
   catch (error) 

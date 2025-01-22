@@ -1,14 +1,10 @@
 
 import { type Recipe } from "../interfaces/interface";
 
-
 import { baseUrl } from "./endpoints";
-
-
 
 export default async function postData (value: Recipe) 
 {
-
   try 
   {
     //throw error if value argument is null or is of type object
@@ -18,6 +14,7 @@ export default async function postData (value: Recipe)
         throw new Error(`value argument cannot be of type ${value.name} or be equal to ${null} `)
     }
 
+    const token = sessionStorage.getItem('jwtToken');
 
     const response = await fetch(baseUrl + `/display`, 
 
@@ -27,28 +24,35 @@ export default async function postData (value: Recipe)
       {
 
         "Content-Type" : "application/json",
+        'Authorization': `Bearer ${token}`, //set JWT authorization in header
       },
 
       body: JSON.stringify(value),
 
     });
 
-    if (!response.ok)
-    {
-        throw new Error("network response is not ok")
-    }
+      if (response.status === 403)
+      {
+        alert("You do not have persmission to add recipes")
+        throw new Error("You do not have persmission to add recipes") 
+      }
+      else if (!response.ok)
+      {
+        alert("failed to add resource");
+        throw new Error("failed to add resource");
+      }
 
-
-    alert(`recipe for ${value.name} added successfully`)
+      else
+      {
+        //do nothing
+      }
 
 
    }
    catch(error)
    {
 
-    alert("the following error has been thrown: " + error)
     console.error(error);
-    throw error;
    }
    
 } 

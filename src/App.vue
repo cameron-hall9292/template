@@ -1,6 +1,8 @@
 <script setup lang="ts">
 
-import { ref, reactive, watch, provide, type Ref } from 'vue'
+import { ref, reactive, watch, provide, type Ref, onMounted } from 'vue'
+
+import GoogleLogin from './components/GoogleLogin.vue';
 
 import FilterRecipes from './components/FilterRecipes.vue';
 
@@ -25,6 +27,9 @@ import { appModes } from './interfaces/appModes';
 import { baseUrl } from './api/endpoints';
 import ReadRecipe from './components/ReadRecipe.vue';
 import DeleteRecipe from './components/DeleteRecipe.vue';
+
+import fetchUserPermissions from './api/permissions';
+
 
 //define key data that will be all components must
 //share and potentially mutate. the search-string
@@ -107,7 +112,7 @@ provide<recipeLookup>("selectRecipe", recipeLookup);
 
 let appMode = reactive<mode>(
   {
-    mode: appModes.find,
+    mode: appModes.login,
     change(val: string): string
     {
       this.mode = val;
@@ -119,6 +124,38 @@ let appMode = reactive<mode>(
 provide<mode>("appMode", appMode)
 
 
+const handleSignOut = () =>
+{
+  sessionStorage.removeItem("jwtToken")
+}
+
+let userPermissions = reactive(
+  {
+    permArr: []
+  }
+) 
+
+
+
+//check if user is logged in and get their user permissions
+
+const getPermissions = async () => 
+{
+
+  if (sessionStorage.getItem('jwtToken'))
+  {
+   fetchUserPermissions()
+   .then(data => userPermissions.permArr = data.data)
+    // userPermissions.value = [1,2,3,4]
+    console.log(userPermissions.permArr)
+  }
+}
+
+onMounted( () =>
+{
+
+  getPermissions()
+})
 
 </script>
 
@@ -139,7 +176,14 @@ provide<mode>("appMode", appMode)
 
     <div id="component-container">
 
-      <FilterRecipes v-if="appMode.mode === appModes.find"/>
+      <div v-if="appMode.mode === appModes.login">
+      <GoogleLogin  />
+      <div>permissions: {{ userPermissions }}</div>
+      <button @click="handleSignOut">signout</button>
+
+      </div>
+
+      <FilterRecipes v-else-if="appMode.mode === appModes.find"/>
       <UpdateRecipe2 v-else-if="appMode.mode === appModes.update" :name="recipeLookup.recipeData.name" 
       :ingredients="recipeLookup.recipeData.ingredients" 
       :instructions="recipeLookup.recipeData.instructions" 

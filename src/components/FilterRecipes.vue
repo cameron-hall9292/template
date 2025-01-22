@@ -80,7 +80,7 @@ if (searchString !== undefined)
       //encode search string so it works as query string
       if (searchString.value === null)
       {
-        throw new Error(`argument ${searchString} cannot be null`)
+        // throw new Error(`argument ${searchString} cannot be null`)
       }
       else 
       {

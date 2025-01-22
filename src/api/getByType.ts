@@ -18,8 +18,16 @@ export async function fetchByType(type: (string | null) )
       //valid as a query string value
       type = encodeURIComponent(type);
     }
-    const res = await fetch(
-      `${baseUrl}/recipesByType?type=${type}`
+    const token = sessionStorage.getItem('jwtToken');
+    console.log("token " + token);
+    const res = await fetch(`${baseUrl}/recipesByType?type=${type}`,
+      {
+        method: 'GET',
+        headers: {
+
+          'Content-Type' : 'application/json',
+        }
+      }
     )
   
     if (!res.ok)
