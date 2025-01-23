@@ -129,10 +129,11 @@ const navigate = (mode) =>
   flex-direction: row;
   justify-content: left;
   align-items: left;
-  width: 75%;
-  height: 95%;
+  width: 65%;
+  height: 100%;
   border: 3px solid black;
   position: absolute;
+  cursor: pointer;
   transition: all 0.2s ease-in-out;
 }
 

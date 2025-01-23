@@ -37,6 +37,7 @@ const { name }= defineProps<Props>()
     margin: 1em;
     height: 4em;
     padding: 2%;
+    cursor: pointer;
     transition: all 0.2s ease-in-out;
 
 }
