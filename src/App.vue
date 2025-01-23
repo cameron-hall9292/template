@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import { ref, reactive, watch, provide, type Ref, onMounted } from 'vue'
+import { ref, reactive, watch, provide, type Ref, onMounted, onUpdated } from 'vue'
 
 import GoogleLogin from './components/GoogleLogin.vue';
 
@@ -133,30 +133,26 @@ const handleSignOut = () =>
 //monitor access token to see if it is expired
 //and if so, redirect user to the login page
 
-// const myToken = ref<string>('')
-// myToken.value = sessionStorage.getItem('jwtToken')
 
-
-// watch(myToken, () =>
-// {
-
-//   if (!myToken.value)
-//   {
-//     appMode.mode = appModes.login;
-
-//   }
-// })
-
-const token1 = sessionStorage.getItem("jwtToken");
-
-
-console.log(tokenExpir(token1))
-
-
-const testTokenFunc = () =>
+const checkAuth = () =>
 {
-  console.log(tokenExpir(token1))
+  const token1 = sessionStorage.getItem("jwtToken");
+  console.log(token1);
+
+  if (tokenExpir(token1) || !token1)
+  {
+
+    sessionStorage.removeItem("jwtToken");
+    appMode.mode = appModes.login;
+  }
+
 }
+
+onUpdated(() => 
+{
+  console.log("component updated!!!!")
+  checkAuth();
+})
 
 </script>
 

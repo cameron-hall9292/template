@@ -1,7 +1,7 @@
 
 <script setup lang="ts">
 
-import { inject } from 'vue';
+import { inject, withDefaults } from 'vue';
 
 const appMode = inject<mode>("appMode");
 
@@ -9,16 +9,28 @@ let recipeLookup = inject<recipeLookup>("selectRecipe");
 
 import { appModes } from '../interfaces/appModes';
 
+
+interface Props 
+{
+  formSwitch?: boolean; 
+}
+
+const props = withDefaults(defineProps<Props>(), 
+{
+  formSwitch: false,
+})
+
 </script>
 
 <template>
 
-    <div id="form-wrapper" v-if="appMode.mode !== appModes.delete">
+    <div id="form-wrapper"> 
 
-      <input id="formName" class="longForm" v-if="recipeLookup !== undefined" v-model=" recipeLookup.recipeData.name" placeholder="enter recipe name">
-      <textarea id="formIngredients" class="longForm"  v-if="recipeLookup !== undefined" v-model="recipeLookup.recipeData.ingredients" placeholder="enter ingredients" ></textarea>
-      <textarea id="formInstructions" class="longForm" v-if="recipeLookup !== undefined" v-model="recipeLookup.recipeData.instructions" placeholder="enter instructions"></textarea>
-      <select class="longForm" placeholder="select recipe type" v-if="recipeLookup !== undefined" v-model="recipeLookup.recipeData.type"  >
+      <!-- <div>props.formSwitch: {{ props.formSwitch }}</div> -->
+      <input :disabled="props.formSwitch" id="formName" class="longForm" v-if="recipeLookup !== undefined" v-model=" recipeLookup.recipeData.name" placeholder="enter recipe name">
+      <textarea :disabled="props.formSwitch" id="formIngredients" class="longForm"  v-if="recipeLookup !== undefined" v-model="recipeLookup.recipeData.ingredients" placeholder="enter ingredients" ></textarea>
+      <textarea :disabled="props.formSwitch" id="formInstructions" class="longForm" v-if="recipeLookup !== undefined" v-model="recipeLookup.recipeData.instructions" placeholder="enter instructions"></textarea>
+      <select :disabled="props.formSwitch" class="longForm" placeholder="select recipe type" v-if="recipeLookup !== undefined" v-model="recipeLookup.recipeData.type"  >
         <optgroup label="recipe types">
           <option value="main dish">main dish</option>
           <option value="side dish">side dish</option>
@@ -28,23 +40,6 @@ import { appModes } from '../interfaces/appModes';
       </select>
 
     </div>
-
-    <div id="delete-mode" v-else-if="appMode.mode === appModes.delete">
-    
-      <input disabled id="formName" class="longForm" v-if="recipeLookup !== undefined" v-model=" recipeLookup.recipeData.name" placeholder="enter recipe name">
-      <textarea disabled id="formIngredients" class="longForm"  v-if="recipeLookup !== undefined" v-model="recipeLookup.recipeData.ingredients" placeholder="enter ingredients" ></textarea>
-      <textarea disabled id="formInstructions" class="longForm" v-if="recipeLookup !== undefined" v-model="recipeLookup.recipeData.instructions" placeholder="enter instructions"></textarea>
-      <select disabled class="longForm" placeholder="select recipe type" v-if="recipeLookup !== undefined" v-model="recipeLookup.recipeData.type"  >
-        <optgroup label="recipe types">
-          <option value="main dish">main dish</option>
-          <option value="side dish">side dish</option>
-          <option value="soup/chili">soup/chili</option>
-          <option value="dessert">dessert</option>
-        </optgroup>
-      </select>
-
-    </div>
-
 
 </template>
 

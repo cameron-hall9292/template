@@ -1,7 +1,7 @@
 
 <script setup lang="ts">
 
-import { reactive, inject} from 'vue';
+import { reactive, inject, onMounted } from 'vue';
 
 import { type mode } from '../interfaces/interface';
 
@@ -14,6 +14,8 @@ import FormButtons from '../components/FormButtons.vue'
 import FormInput from '../components/FormInput.vue'
 
 import { appModes } from '../interfaces/appModes';
+
+import fetchUserPermissions from '../api/permissions';
 
 const appMode = inject<mode>("appMode");
 
@@ -40,6 +42,32 @@ const postAndGoHome = (): void =>
   appMode.change(appModes.find);
 }
 
+//check if user is logged in and get their user permissions e.g read, write, etc.
+
+let userPermissions = reactive(
+  {
+    permArr: []
+  }
+) 
+
+const getPermissions = async () => 
+{
+
+  if (sessionStorage.getItem('jwtToken'))
+  {
+   fetchUserPermissions()
+   .then(data => userPermissions.permArr = data.data)
+    console.log(userPermissions.permArr)
+  }
+}
+
+onMounted(() =>
+{
+  getPermissions()
+});
+
+
+
 </script>
 
 
@@ -50,9 +78,9 @@ const postAndGoHome = (): void =>
     
     <h1>Add New Recipe</h1>
 
-      <FormInput />
+      <FormInput :formSwitch="!userPermissions.permArr.includes('canAdd')" />
 
-      <FormButtons @click="postAndGoHome" name="submit recipe" ></FormButtons>
+      <FormButtons @click="postAndGoHome" name="submit recipe" :disabled="!userPermissions.permArr.includes('canAdd')"></FormButtons>
       <FormButtons @click="appMode?.change(appModes.find)" name="cancel" ></FormButtons>
 
   </div>

@@ -26,7 +26,6 @@ let userPermissions = reactive(
   }
 ) 
 
-//let userPermissions = ref<string[]>([])
 const getPermissions = async () => 
 {
 
@@ -34,16 +33,15 @@ const getPermissions = async () =>
   {
    fetchUserPermissions()
    .then(data => userPermissions.permArr = data.data)
-    // userPermissions.value = [1,2,3,4]
     console.log(userPermissions.permArr)
   }
 }
 
-onMounted( () =>
+onMounted(() =>
 {
-
   getPermissions()
-})
+});
+
 
 </script>
 
@@ -63,8 +61,8 @@ onMounted( () =>
     </div>
 
     <div id="button-wrapper">
-      <FormButtons class="button" @click="appMode.change(appModes.update)" name="edit recipe "></FormButtons>
-      <FormButtons class="button" @click="appMode.change(appModes.delete)" name="delete recipe"></FormButtons>
+      <FormButtons class="button" @click="appMode.change(appModes.update)" name="edit recipe " :disabled="!userPermissions.permArr.includes('canEdit')"></FormButtons>
+      <FormButtons class="button" @click="appMode.change(appModes.delete)" name="delete recipe" :disabled="!userPermissions.permArr.includes('canDelete')"></FormButtons>
     </div>
   </div>
 </template>
