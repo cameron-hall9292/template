@@ -140,38 +140,41 @@ const navigate = (mode) =>
 
 .nav-menu
 {
-    border: 2px solid black;
+    /* border: 2px solid black; */
     display: none;
-}
-
-.nav-menu li
-{
-    border: 1px solid white;
-    display: flex;
-    flex-direction: column;
-    justify-content: left;
-    align-items: left;
-    width: 100%;
-    text-decoration: none;
-    margin: 1em;
-    font-size: 2em;
-
 }
 
 .nav-menu.active
 {
-    border: 2px solid black;
+    /* border: 2px solid black; */
     display: flex;
     flex-direction: column;
-    justify-content: left;
+    justify-content: center;
     align-items: left;
-    height: 50%;
-    width: 50%;
+    height: 80%;
+    width: 80%;
     padding: 0;
     margin: 0;
-    margin: 1em;
+    /* margin: 1em; */
     list-style: none;
 }
+
+.nav-menu li
+{
+    /* border: 1px solid white; */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 2em;
+    text-decoration: none;
+    /* margin: 2em; */
+    margin-top: 4em;
+    font-size: 2em;
+    box-shadow: 0px 0px 10px 0px;
+}
+
 
 #hamburger-icon
 {

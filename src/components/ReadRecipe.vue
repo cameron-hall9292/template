@@ -105,13 +105,15 @@ onMounted(() =>
 
 .list-item
 {
-  border: 1px solid black;
+  /* border: 1px solid black; */
   display: flex;
   text-align: center;
   padding: 4%;
   margin: 4%;
   overflow-wrap: break-word;
   word-break: break-word;
+  box-shadow: 2px 2px 3px 2px black;
+  font-size: 1em;
 
 }
 
@@ -129,6 +131,7 @@ onMounted(() =>
   overflow-wrap: break-word;
   word-break: break-word;
   padding: 5%;
+  font-size: 1em;
 }
 
 #button-wrapper

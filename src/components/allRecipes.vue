@@ -107,10 +107,11 @@ h1
   list-style-type: none;
   padding: 0;
   margin: 0;
+  font-size: 1em;
 }
 .recipe-list
 {
-  border: 1px solid black;
+  /* border: 1px solid black; */
 	display: flex;
   box-sizing: border-box;
   flex-direction: column;
@@ -121,6 +122,7 @@ h1
   font-size: 1em;
   height: 4em;
   margin: 1em;
+  box-shadow: 0px 0px 10px 0px;
 
 }
 .recipe-list:hover

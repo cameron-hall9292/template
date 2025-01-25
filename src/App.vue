@@ -170,13 +170,10 @@ onUpdated(() =>
 
   <h4>appMode.mode = {{ appMode.mode }}</h4>
 
-    <!-- <h4>token: {{myToken }}</h4> -->
-
     <div id="component-container">
 
       <div v-if="appMode.mode === appModes.login">
       <GoogleLogin  />
-      <button @click="testTokenFunc">test</button>
 
       </div>
 

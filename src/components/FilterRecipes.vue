@@ -7,6 +7,8 @@ import { type recipeLookup,  } from '../interfaces/interface';
 
 import { baseUrl } from '../api/endpoints';
 
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+
 let searchString = inject<Ref<string | null>>("searchString");
 
 let filteredApiDataArr  = inject<Ref<string[]>>("filteredApiDataArr")
@@ -310,7 +312,8 @@ const searchBarStyle: Record<string, string> = reactive
         <label class="forScreenReaders" value="searchbar">searchbar for finding recipes</label>
           <div class="searchItemWrapper">
             <div class="dropdown-list" id="dropdownList" >
-              <div :class="{ active: isActive }" class="dropdown-item" v-for="item in filteredApiDataArr" :key="item" :value="item" @click="selectSearchItem(item)" >{{ item }}</div>
+              <div :class="{ active: isActive }" class="dropdown-item" v-for="item in filteredApiDataArr" :key="item" :value="item" @click="selectSearchItem(item)" ><FontAwesomeIcon icon="fa-solid fa-magnifying-glass" size="sm" width="fw"  />  &nbsp  {{ item }}</div>
+                
             </div>
         </div>
       </div>
@@ -381,17 +384,17 @@ h1
 .dropdown-item
 {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   box-sizing: border-box;
   max-width: 90%;
   width: 100%;
   height: 2em;
   justify-content: left;
-  align-items: left;
+  align-items: center;
   visibility: visible;
   border: 1px solid black;
   margin: 1em;
-  font-size: 1.5em;
+  font-size: 1em;
 }
 
 
