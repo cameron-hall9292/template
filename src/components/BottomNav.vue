@@ -15,7 +15,7 @@ const appMode = inject<mode>("appMode");
 
 const defaultIconColor = "black";
 
-const colorHighlight = "orange";
+const colorHighlight = "#F5A0FF";
 
 interface HighLightIcons
 {
@@ -126,7 +126,7 @@ const navigate = (mode) =>
     display: flex;
     flex-direction: center;
     align-items: center;
-    border: 4px solid red;
+    /* border: 4px solid red; */
     width: 100vw; 
 }
 
@@ -138,11 +138,13 @@ const navigate = (mode) =>
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 8em;
-  border: 3px solid black;
+  height: 7em;
+  /* border: 3px solid black; */
   position: fixed;
   bottom: 0;
-  background-color: gray;
+  box-shadow: 0px 0px 10px;
+  background-color: #FFFAA0;
+  /* background-color: #A0A5FF;  */
 }
 
 .nav span

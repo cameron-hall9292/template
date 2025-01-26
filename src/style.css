@@ -5,7 +5,8 @@
   font-size: 1em;
 
   color: black;
-  background-color: #FFFAA0;
+  /* background-color: #FFFAA0; */
+  background-color: #FFDAA0;
 
 
   font-synthesis: none;
@@ -19,8 +20,9 @@ body {
 
   margin: 0;
   padding: 0;
-  border: 8px solid black;
+  /* border: 8px solid black; */
   font-size: 1em;
-  background-color: #FFFAA0;
+  /* background-color: #FFFAA0; */
+  /* background-color: #FFDAA0; */
 
 }

@@ -48,7 +48,6 @@ onMounted(() =>
 
 <template>
 
-      <div>permissions: {{ userPermissions }}</div>
   <div id="component-container-read"> 
     <h2 v-if="props.name">{{ props.name }}</h2>
       <ul class="unordered_list">
@@ -73,13 +72,14 @@ onMounted(() =>
 #component-container-read
 {
   display: flex;
-  border: 3px dotted black;
+  /* border: 3px dotted black; */
   flex-direction: column;
   justify-content: center;
   align-items: center;
   box-sizing: border-box;
   padding: 2%;
   position: relative;
+  margin-bottom: 2em;
   max-width: 100%;
   width: 100%;
   height: 100%;
@@ -98,7 +98,7 @@ onMounted(() =>
   max-width: calc(2 * 150px + 20px); */
   list-style: number;
   padding: 4%;
-  border: 2px solid turquoise;
+  /* border: 2px solid turquoise; */
   list-style-position: inside;
   margin: 2%;
 }
@@ -112,15 +112,20 @@ onMounted(() =>
   margin: 4%;
   overflow-wrap: break-word;
   word-break: break-word;
-  box-shadow: 2px 2px 3px 2px black;
+  box-shadow: 0px 0px 5px 0px; 
+  /* box-shadow: 2px 2px 3px 2px black; */
+  border: 1px solid black;
   font-size: 1em;
+  background-color: #FFFCD0; 
+  background-color: #F5A0FF; 
+  background-color: #A0FFF5; 
 
 }
 
 #instruction-container
 {
 
-  border: 1px dotted black;
+  /* border: 1px dotted black; */
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
@@ -132,11 +137,16 @@ onMounted(() =>
   word-break: break-word;
   padding: 5%;
   font-size: 1em;
+  /* box-shadow: 2px 2px 3px 2px black; */
+  /* background-color: #FFCA40; 
+  background-color: #FFDB70; 
+  background-color: #FFFCD0; 
+  background-color: #A0FFF5;  */
 }
 
 #button-wrapper
 {
-  border: 1px dotted black;
+  /* border: 1px dotted black; */
   display: flex;
   flex-direction: column;
   width: 100%;

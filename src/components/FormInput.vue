@@ -106,9 +106,9 @@ const props = withDefaults(defineProps<Props>(),
 
 .longForm:focus
  {
-  background-color: #007BFF;
+  /* background-color: #007BFF;
   background-color: #0818A8;
-  color: yellow; 
+  color: yellow;  */
   /* font-size: large; */
   
  }

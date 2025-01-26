@@ -40,7 +40,6 @@ const recipeTypes = ref<string[]>(["main dish", "side dish", "soup/chili", "dess
   <div id="component-container-all-recipes">
 
     <h1>Recipe Index</h1>
-    <span> recipe type: {{ chooseRecipeType }}</span>
 
     <select class="select" placeholder="select recipe type" v-model="chooseRecipeType"  >
       <optgroup label="recipe types">
@@ -67,7 +66,7 @@ const recipeTypes = ref<string[]>(["main dish", "side dish", "soup/chili", "dess
 #component-container-all-recipes
 {
   display: flex;
-  border: 3px dotted black;
+  /* border: 3px dotted black; */
   flex-direction: column;
   justify-content: left;
   align-items: left;
@@ -75,6 +74,7 @@ const recipeTypes = ref<string[]>(["main dish", "side dish", "soup/chili", "dess
   box-sizing: border-box;
   padding: 2%;
   position: relative;
+  margin-bottom: 2em;
   max-width: 100%;
   width: 100%;
   height: 100%;
@@ -94,11 +94,21 @@ h1
   margin: 0em;
   font-size: 1em;
   height: 4em;
+  margin: 1em;
+  /* padding: 1em; */
+   background-color: #FFFAA0;
+  /* background-color: #F5A0FF;  */
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  border-radius: 25px;
+  border: 1px solid #ccc;
+  box-shadow: 0px 0px 5px 0px; 
+  /* box-shadow: 2px 2px 3px 2px;  */
 }
 
 #list-container
 {
-  border: 3px solid gray;
+  /* border: 3px solid gray; */
   display: flex;
   flex-direction: column;
   justify-content: left;
@@ -122,7 +132,14 @@ h1
   font-size: 1em;
   height: 4em;
   margin: 1em;
-  box-shadow: 0px 0px 10px 0px;
+  /* box-shadow: 0px 0px 10px 0px; */
+  margin-top: 3em;
+  background-color: #A0FFF5; 
+  /* border-radius: 25px; */
+  border: 1px solid black;
+  box-shadow: 0px 0px 5px 0px; 
+
+  /* box-shadow: 2px 2px 3px 2px black; */
 
 }
 .recipe-list:hover
@@ -140,7 +157,7 @@ h1
 
 #button-wrapper
 {
-  border: 1px dotted black;
+  /* border: 1px dotted black; */
   box-sizing: border-box;
   display: flex;
   flex-direction: column;

@@ -60,10 +60,26 @@ const callback: CallbackTypes.CredentialCallback =  (response) => {
 
 
 <template>
-  <GoogleLogin :callback="callback" prompt auto-login/>
+  <div id="login-container">
+    <h1>login</h1>
+    <GoogleLogin :callback="callback" prompt auto-login/>
+  </div>
 </template>
 
 
 
 
 
+<style scoped>
+
+#login-container
+{
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  /* border: 1px solid black; */
+  padding: 1em;
+}
+</style>

@@ -211,7 +211,7 @@ if (searchString !== undefined)
 
 
     display: "flex",
-    border: "3px dotted red",
+    // border: "3px dotted red",
     flexDirection: "column",
     boxSizing: "border-box",
     padding: "2%",
@@ -248,16 +248,6 @@ if (searchString !== undefined)
 const searchBarStyle: Record<string, string> = reactive
 (
   {
-    //width: "100%",
-    //height: "2.5em",
-    //padding: "10px 40px 10px 15px",
-    //fontSize: "16px",
-    //border: "2px solid #ccc",
-    //borderRadius: "25px",
-    //outline: "none",
-    //transition: "border-color 0.3s, box-shadow 0.3s",
-    //position: "absolute"
-    //border: "6px dotted yellow",
 
     display: "flex",
     flexDirection: "column",
@@ -267,8 +257,8 @@ const searchBarStyle: Record<string, string> = reactive
     maxWidth: "100%",
     width: "100%",
     height: "4em",
-    border: "5px solid #ccc",
-    borderRadius: "25px",
+    border: "2px solid #ccc",
+    borderRadius: "35px",
     outline: "none",
     transition: "border-color 0.3s, box-shadow 0.3s",
 
@@ -304,8 +294,6 @@ const searchBarStyle: Record<string, string> = reactive
 <template>
 
     <h1>Search Recipes</h1>
-    <p>filteredApiDataArr: {{ filteredApiDataArr }}</p>
-    <p>searchString: {{ searchString}}</p>
       <div id="search-container" tabindex="0" ref="searchBar" :class="{ active: isActive}" 
         @pointerleave="blurSearchContainer"   >
         <input ref="input" :class="{ active: isActive }" :style="searchBarStyle" @keydown.enter=" searchString !== undefined && recipeLookup?.fetchData(searchString)"  v-model="searchString" id="searchbar" type="search" name="q"  placeholder="search recipe" autocomplete="off">
@@ -330,7 +318,7 @@ h1
 
 .searchItemWrapper
 {
-  border: 6px dotted teal;
+  /* border: 6px dotted teal; */
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
@@ -346,7 +334,7 @@ h1
 {
 
     display: flex;
-    border: 3px dotted red;
+    /* border: 3px dotted red; */
     flex-direction: column;
     box-sizing: border-box;
     padding: 2%;
@@ -354,13 +342,17 @@ h1
     max-width: 100%;
     width: 100%;
     height: 100%;
+    margin-top: 1em;
 }
 #search-container.active
 {
 
-    border: 5px solid purple;
+    /* border: 5px solid purple; */
     background-color:  #FFFFFF;
     border-radius: 30px;
+    box-shadow: 2px 2px 5px;
+    /* transition: all 0.2s ease-in-out; */
+     transition: all 0.3s ease, opacity 0.3s ease;
     visibility: visible;
 }
 
@@ -375,9 +367,12 @@ h1
     max-width: 100%;
     width: 100%;
     height: 4em;
-    border: 5px solid #ccc;
+    /* border: 5px solid #ccc; */
     border-radius: 25px;
     outline: none;
+    /* box-shadow: 2px 2px 5px; */
+    box-shadow: 0px 0px 5px 0px; 
+    font-size: 1em;
     transition: border-color 0.3s, box-shadow 0.3s;
 }
 
@@ -392,7 +387,7 @@ h1
   justify-content: left;
   align-items: center;
   visibility: visible;
-  border: 1px solid black;
+  /* border: 1px solid black; */
   margin: 1em;
   font-size: 1em;
 }
@@ -411,7 +406,7 @@ h1
 
 #buttonWrapper
 {
-  border: 2px solid black;
+  /* border: 2px solid black; */
 }
 
 .button

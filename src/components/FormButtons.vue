@@ -38,9 +38,12 @@ const { name }= defineProps<Props>()
     height: 4em;
     cursor: pointer;
     transition: all 0.2s ease-in-out;
-    border-radius: 15px;
+    border-radius: 35px;
     background-color: #FFFAA0;
-    box-shadow: 2px 2px 3px 2px; 
+    /* background-color: #F5A0FF; */
+    /* box-shadow: 2px 2px 3px 2px;  */
+    box-shadow: 0px 0px 5px 0px; 
+    border: 1px solid #ccc;
 
 }
 

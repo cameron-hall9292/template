@@ -103,7 +103,7 @@ const navigate = (mode) =>
 #navbar-container
 {
     display: flex;
-    border: 4px solid red;
+    /* border: 4px solid red; */
     width: 100vw; 
 }
 
@@ -115,12 +115,14 @@ const navigate = (mode) =>
   align-items: center;
   width: 100%;
   height: 4em;
-  border: 3px solid black;
+  /* border: 3px solid black; */
   position: fixed;
   top: 0;
   z-index: 1;
   /* background-color: gray; */
   background-color: #FFFAA0;
+  /* background-color: #A0A5FF;  */
+  box-shadow: 2px 2px 5px;
   transition: all 0.2s ease-in-out;
 }
 .navbar.active
@@ -131,10 +133,11 @@ const navigate = (mode) =>
   align-items: left;
   width: 65%;
   height: 100%;
-  border: 3px solid black;
+  border: 1px solid black;
   position: absolute;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
+  box-shadow: 2px 2px 5px;
 }
 
 
@@ -149,7 +152,7 @@ const navigate = (mode) =>
     /* border: 2px solid black; */
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: left;
     align-items: left;
     height: 80%;
     width: 80%;
@@ -172,13 +175,14 @@ const navigate = (mode) =>
     /* margin: 2em; */
     margin-top: 4em;
     font-size: 2em;
-    box-shadow: 0px 0px 10px 0px;
+    /* box-shadow: 0px 0px 10px 0px; */
+    box-shadow: 2px 2px 3px 2px black;
 }
 
 
 #hamburger-icon
 {
-  border: 1px dotted white;
+  /* border: 1px dotted white; */
   display: flex;
   flex-direction: row;
   justify-content: right;

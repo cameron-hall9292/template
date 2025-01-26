@@ -164,11 +164,10 @@ onUpdated(() =>
   <div id="father-container">
 
   
-     <div class="spacer">spacer</div>
+     <div class="spacer"></div>
 
     <NavBar home="Home" index="Index" add="Add"></NavBar>
 
-  <h4>appMode.mode = {{ appMode.mode }}</h4>
 
     <div id="component-container">
 
@@ -213,7 +212,7 @@ onUpdated(() =>
 
     <BottomNav home="Home" index="Index" add="Add"></BottomNav>
 
-    <div class="spacer">spacer</div>
+    <div class="spacer"></div>
 </div>
 
 
@@ -227,7 +226,7 @@ onUpdated(() =>
   display: flex;
   width: 100%;
   height: 4em;
-  border: 3px solid black;
+  /* border: 3px solid black; */
 }
 
 .navbar
@@ -238,7 +237,7 @@ onUpdated(() =>
   align-items: center;
   width: 100%;
   height: 4em;
-  border: 3px solid black;
+  /* border: 3px solid black; */
   position: fixed;
   top: 0;
   z-index: 1;
@@ -260,7 +259,7 @@ onUpdated(() =>
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  border: 3px solid purple;
+  /* border: 3px solid purple; */
   box-sizing: border-box;
   width: 100%;
   height: 100%;
@@ -276,7 +275,7 @@ onUpdated(() =>
 #component-container
 {
   display: flex;
-  border: 3px solid maroon;
+  /* border: 3px solid maroon; */
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -297,7 +296,7 @@ onUpdated(() =>
   justify-content: center;
   align-items: center;
   box-sizing: border-box;
-  border: 3px dotted orange;
+  /* border: 3px dotted orange; */
   padding: 2%;
   max-width: 100%;
   height: 20%;
@@ -312,7 +311,7 @@ onUpdated(() =>
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 3px dotted blue;
+  /* border: 3px dotted blue; */
   background-color: green;
   box-sizing:border-box;
   color: black;

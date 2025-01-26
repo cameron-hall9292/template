@@ -80,8 +80,8 @@ onMounted(() =>
 
       <FormInput :formSwitch="!userPermissions.permArr.includes('canAdd')" />
 
-      <FormButtons @click="postAndGoHome" name="submit recipe" :disabled="!userPermissions.permArr.includes('canAdd')"></FormButtons>
-      <FormButtons @click="appMode?.change(appModes.find)" name="cancel" ></FormButtons>
+        <FormButtons @click="postAndGoHome" name="submit recipe" :disabled="!userPermissions.permArr.includes('canAdd')"></FormButtons>
+        <FormButtons @click="appMode?.change(appModes.find)" name="cancel" ></FormButtons>
 
   </div>
 
@@ -97,6 +97,7 @@ onMounted(() =>
   box-sizing: border-box;
   padding: 2%;
   position: relative;
+  margin-bottom: 2em;
   max-width: 100%;
   width: 100%;
   height: 100%;
@@ -121,7 +122,7 @@ h1
 .button
 {
     color: white; 
-    margin: 5px;
+    margin: 2px;
 }
 .longForm
  {
@@ -144,6 +145,6 @@ h1
  }
 #buttonWrapper
 {
-  border: 1px solid black
+  border: 1px solid black;
 }
 </style>

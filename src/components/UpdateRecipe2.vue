@@ -60,6 +60,7 @@ let recipeLookup = inject<recipeLookup>("selectRecipe");
   box-sizing: border-box;
   padding: 2%;
   position: relative;
+  margin-bottom: 2em;
   max-width: 100%;
   width: 100%;
   height: 100%;
