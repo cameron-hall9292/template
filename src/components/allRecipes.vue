@@ -48,7 +48,7 @@ const recipeTypes = ref<string[]>(["main dish", "side dish", "soup/chili", "dess
       </optgroup>
     </select>
     <ul id="list-container" >
-      <li class="recipe-list" v-for="item in recipeNameArr.sort()" @click="recipeLookup?.fetchData(item) && appMode?.change('read')">{{ item }}</li>
+      <li class="recipe-list" v-for="(item, index) in recipeNameArr.sort()" @click="recipeLookup?.fetchData(item) && appMode?.change('read')">{{ index + 1 }}. {{ item }}</li>
     </ul>
     
     <!-- <div id="button-wrapper">
