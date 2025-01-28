@@ -14,9 +14,7 @@ import FormButtons from '../components/FormButtons.vue'
 
 import fetchUserPermissions from '../api/permissions';
 
-import { jsPDF } from 'jspdf';
-
-import  html2canvas from 'html2canvas';
+import generatePDF from '../utils/jsPDF.js'
 
 
 const appMode = inject<mode>("appMode");
@@ -42,99 +40,43 @@ const getPermissions = async () =>
   }
 }
 
+
+const checkMarkIngredient = (e) =>
+{
+  // console.log("ingredient clicked")
+  // console.log(e.target.value)
+
+  const ingredient = document.getElementById(e.target.id);
+
+  console.log(ingredient)
+
+  if (ingredient.dataset.enabled == "true")
+  {
+
+    console.log("if")
+    console.log(ingredient.dataset.enabled)
+    ingredient.style.opacity = "0.3" 
+    ingredient.dataset.enabled = "false" 
+  }
+
+  else if (ingredient.dataset.enabled == "false")
+  {
+    console.log("else")
+    console.log(ingredient.dataset.enabled)
+    ingredient.style.opacity = "1" 
+    ingredient.dataset.enabled = "true" 
+
+  }
+
+}
+
 onMounted(() =>
 {
   getPermissions()
 });
 
-//generate a pdf from the html page but make it black and white
 
 
-const generatePDF = async (id: string) =>
-{
-
-
-  //create a jsPDF isntance
-
-  const pdf = new jsPDF({
-    orientation: 'portrait',
-    unit: "mm",
-    format: "a4",
-  });
-
-  const pdfWidth = pdf.internal.pageSize.getWidth();
-  const pdfHeight = pdf.internal.pageSize.getHeight();
-
-
-  //join recipe instructions back into a string so easier to work with in jsPDF
-
-  // let recipeIngredients = props.ingredients.join(',');
-
-
-  let recipeIngredients = props.ingredients;
-
-  //remove line breaks
-
-  recipeIngredients = recipeIngredients.split('\n').join('');
-
-  //remove spaces
-
-  recipeIngredients = recipeIngredients.split(' ').join('');
-
-
-  console.log("recipeIngredients")
-  console.log(recipeIngredients);
-
-
-  
-  const text = [props.name, '\n', "ingredients: " + recipeIngredients, '\n', "instructions: " + props.instructions, '\n'];
-
-
-  // const text = recipeIngredients.split(',');
-
-  // const text = "i am text".repeat(300);
-
-  console.log(text);
-
-  const fontSize = 18;
-
-  pdf.setFontSize(fontSize);
-
-  pdf.setFont("helvetica", "regular"); // 'normal', 'bold', 'italic', 'bolditalic'
-
-  const lines = pdf.splitTextToSize(text, pdfWidth - 20);
-
-  const lineHeight = fontSize + 2;
-
-  let currentY = 10;
-
-  for (let line of lines)
-  {
-    if (currentY + lineHeight > pdfHeight)
-    {
-      pdf.addPage(); //add a new page
-      currentY = 10; //reset Y to top of page
-
-    }
-    pdf.text(line, 20, currentY,
-      {
-        maxWidth: pdfWidth * .80 ,
-      }
-    ); //add the text at 10, currentY
-    currentY += lineHeight;
-  }
-
-  // pdf.text(lines, pdfWidth * 0.5, 10, {
-  //   maxWidth: pdfWidth * 0.85,
-  //   align: 'center',
-  // });
-
-
-  //save the pdf
-
-  pdf.save((props.name + '.pdf'))
-
-}
 </script>
 
 
@@ -145,7 +87,7 @@ const generatePDF = async (id: string) =>
 
       <h2 v-if="props.name">{{ props.name }}</h2>
         <ul class="unordered_list">
-          <li class="list-item"  v-if="props.ingredients" v-for="(item, index) in props.ingredients.split(',')"> 
+          <li @click="checkMarkIngredient" class="list-item"  v-if="props.ingredients" v-for="(item, index) in props.ingredients.split(',')" :id="index" :value="index" :name="item" data-enabled="true"> 
             {{index + 1}}. {{ item }}
           </li>
         </ul>
@@ -157,7 +99,7 @@ const generatePDF = async (id: string) =>
     <div id="button-wrapper">
       <FormButtons class="button" @click="appMode.change(appModes.update)" name="edit recipe " :disabled="!userPermissions.permArr.includes('canEdit')"></FormButtons>
       <FormButtons class="button" @click="appMode.change(appModes.delete)" name="delete recipe" :disabled="!userPermissions.permArr.includes('canDelete')"></FormButtons>
-      <FormButtons class="button" @click="generatePDF('pdf-container')" name="print pdf" :disabled="!userPermissions.permArr.includes('canDelete')"></FormButtons>
+      <FormButtons class="button" @click="generatePDF(props)" name="print pdf" :disabled="!userPermissions.permArr.includes('canDelete')"></FormButtons>
     </div>
   </div>
 </template>
