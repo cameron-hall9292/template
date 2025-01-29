@@ -265,6 +265,8 @@ onUpdated(() =>
   height: 100%;
   padding: 2%;
 }
+
+
 @media (min-width: 800px) {
   #father-container {
 
