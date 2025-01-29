@@ -187,8 +187,6 @@ const navigate = (mode) =>
     box-sizing: border-box;
     display: flex;
     flex-direction: row;
-
-    background-color: green;
     width: 100%;
     height: 20%;
   }
@@ -210,7 +208,7 @@ const navigate = (mode) =>
     }
     .nav-menu.active li
     {
-        border: 1px solid blue;
+        border: 1px solid #F5A0FF;
         box-sizing: border-box;
         display: flex;
         flex-direction: row;
@@ -219,6 +217,7 @@ const navigate = (mode) =>
         text-decoration: none;
         margin: 1em;
         font-size: 2em;
+        padding: 1em;
         /* box-shadow: 0px 0px 10px 0px; */
         box-shadow: 2px 2px 3px 2px black;
     }

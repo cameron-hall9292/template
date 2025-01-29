@@ -36,6 +36,7 @@ const { name }= defineProps<Props>()
     font-size: 1em;
     margin: 1em;
     height: 4em;
+    width: 100%;
     cursor: pointer;
     transition: all 0.2s ease-in-out;
     border-radius: 35px;
@@ -52,6 +53,14 @@ const { name }= defineProps<Props>()
   color: white;
   background-color: blue;
   transition: 0.1s;
+}
+
+@media(min-width: 800px)
+{
+  .form-button
+  {
+    width: 12em;
+  }
 }
 
 

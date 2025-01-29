@@ -267,12 +267,6 @@ onUpdated(() =>
 }
 
 
-@media (min-width: 800px) {
-  #father-container {
-
-    background-color: white;
-  }
-}
 
 #component-container
 {

@@ -193,9 +193,11 @@ onMounted(() =>
 
 #button-wrapper
 {
-  /* border: 1px dotted black; */
+  border: 1px dotted black;
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
   width: 100%;
   padding: 1em;
 
