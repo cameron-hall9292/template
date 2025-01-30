@@ -428,4 +428,23 @@ h1
 {
   display: none;
 }
+
+@media(min-width: 800px)
+{
+  #search-container
+  {
+
+      display: flex;
+      /* border: 3px dotted red; */
+      flex-direction: column;
+      box-sizing: border-box;
+      padding: 0%;
+      position: relative;
+      max-width: 50%;
+      width: 35%;
+      height: 50%;
+      margin-top: 1em;
+  }
+
+}
 </style>

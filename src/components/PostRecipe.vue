@@ -80,8 +80,10 @@ onMounted(() =>
 
       <FormInput :formSwitch="!userPermissions.permArr.includes('canAdd')" />
 
+      <div id="buttonWrapper">
         <FormButtons @click="postAndGoHome" name="submit recipe" :disabled="!userPermissions.permArr.includes('canAdd')"></FormButtons>
         <FormButtons @click="appMode?.change(appModes.find)" name="cancel" ></FormButtons>
+      </div>
 
   </div>
 
@@ -92,7 +94,7 @@ onMounted(() =>
 #component-container-post
 {
   display: flex;
-  border: 3px solid blue;
+  /* border: 3px solid blue; */
   flex-direction: column;
   box-sizing: border-box;
   padding: 2%;
@@ -110,7 +112,7 @@ h1
 #formWrapper
 {
   display: flex;
-  border: 3px solid black;
+  /* border: 3px solid black; */
   flex-direction: column;
   box-sizing: border-box;
   padding: 2%;
@@ -127,7 +129,7 @@ h1
 .longForm
  {
   display: flex;
-  border: 3px solid black;
+  /* border: 3px solid black; */
   flex-direction: column;
   box-sizing: border-box;
   padding: 2%;
@@ -145,6 +147,25 @@ h1
  }
 #buttonWrapper
 {
-  border: 1px solid black;
+  /* border: 1px solid black; */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+@media(min-width: 800px)
+{
+  #buttonWrapper
+  {
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+  }
+  #component-container-post
+  {
+    width: 50%;
+  }
 }
 </style>

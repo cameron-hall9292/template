@@ -134,7 +134,7 @@ const navigate = (mode) =>
   flex-direction: row;
   justify-content: left;
   align-items: left;
-  width: 65%;
+  width: 60%;
   height: 100%;
   border: 1px solid black;
   position: absolute;
@@ -154,13 +154,16 @@ const navigate = (mode) =>
     /* border: 2px solid black; */
     display: flex;
     flex-direction: column;
-    justify-content: left;
+    justify-content: center;
     align-items: left;
-    height: 80%;
-    width: 80%;
-    padding: 0;
+    height: 100%;
+    width: 60%;
+    padding: 1em;
     margin: 0;
-    /* margin: 1em; */
+    background-color: #FFFAA0;
+    position: fixed;
+    transition: all 0.2s ease-in-out;
+    box-shadow: 2px 2px 5px;
     list-style: none;
 }
 
@@ -172,12 +175,14 @@ const navigate = (mode) =>
     justify-content: center;
     align-items: center;
     height: 2em;
+    /* width: 90%; */
     text-decoration: none;
     /* margin: 2em; */
     margin-top: 4em;
     font-size: 2em;
+    font-weight: bold;
     /* box-shadow: 0px 0px 10px 0px; */
-    box-shadow: 2px 2px 3px 2px black;
+    /* box-shadow: 2px 2px 3px 2px black; */
 }
 
 @media (min-width: 800px) {
@@ -192,23 +197,25 @@ const navigate = (mode) =>
   }
     .nav-menu.active
     {
-        border: 4px solid black;
+        /* border: 4px solid black; */
         box-sizing: border-box;
         display: flex;
         flex-direction: row;
-        justify-content: center;
+        justify-content: left;
         align-items: center;
-        height: 60%;
+        height: 20%;
         margin: 0em;
         width: 100%;
-        height: 100%;
         padding: 0;
+        position: fixed;
+        z-index: 1;
+        box-shadow: 2px 2px 5px;
         /* margin: 1em; */
         list-style: none;
     }
     .nav-menu.active li
     {
-        border: 1px solid #F5A0FF;
+        /* border: 1px solid #F5A0FF; */
         box-sizing: border-box;
         display: flex;
         flex-direction: row;
@@ -219,7 +226,7 @@ const navigate = (mode) =>
         font-size: 2em;
         padding: 1em;
         /* box-shadow: 0px 0px 10px 0px; */
-        box-shadow: 2px 2px 3px 2px black;
+        /* box-shadow: 2px 2px 3px 2px black; */
     }
 
 }

@@ -46,8 +46,10 @@ let recipeLookup = inject<recipeLookup>("selectRecipe");
 
     <h1>Update Recipe</h1>
     <FormInput />
-    <FormButtons v-if="recipeLookup !== undefined" @click="updateRecipe(recipeLookup.recipeData) && appMode?.change('find')" name="submit update"></FormButtons>
-    <FormButtons @click="appMode?.change('find')" name="cancel" ></FormButtons>
+    <div id="buttonWrapper">
+      <FormButtons v-if="recipeLookup !== undefined" @click="updateRecipe(recipeLookup.recipeData) && appMode?.change('find')" name="submit update"></FormButtons>
+      <FormButtons @click="appMode?.change('find')" name="cancel" ></FormButtons>
+    </div>
   </div>
 </template>
 <style scoped>
@@ -55,7 +57,9 @@ let recipeLookup = inject<recipeLookup>("selectRecipe");
 #component-container-update
 {
   display: flex;
-  border: 3px solid blue;
+  justify-content: center;
+  align-items: center;
+  /* border: 3px solid blue; */
   flex-direction: column;
   box-sizing: border-box;
   padding: 2%;
@@ -106,8 +110,25 @@ h1
   font-size: large;
   
  }
-.buttonWrapper
+#buttonWrapper
 {
-  border: 1px solid black
+  /* border: 1px solid black; */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+@media(min-width: 800px)
+{
+  #buttonWrapper
+  {
+    flex-direction: row;
+  }
+  #component-container-update
+  {
+    width: 50%;
+  }
 }
 </style>

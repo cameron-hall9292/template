@@ -58,8 +58,10 @@ const deleteAndGoHome = (): void =>
 
     <h1>Delete Recipe</h1>
     <FormInput :formSwitch="true" />
-    <FormButtons v-if="recipeLookup !== undefined" @click="deleteAndGoHome" name="delete recipe"></FormButtons>
-    <FormButtons name="cancel" @click="appMode?.change(appModes.find)"></FormButtons>
+    <div id="buttonWrapper">
+      <FormButtons v-if="recipeLookup !== undefined" @click="deleteAndGoHome" name="delete recipe"></FormButtons>
+      <FormButtons name="cancel" @click="appMode?.change(appModes.find)"></FormButtons>
+    </div>
   </div>
 </template>
 <style scoped>
@@ -67,7 +69,7 @@ const deleteAndGoHome = (): void =>
 #component-container-delete
 {
   display: flex;
-  border: 3px solid blue;
+  /* border: 3px solid blue; */
   flex-direction: column;
   box-sizing: border-box;
   padding: 2%;
@@ -85,7 +87,7 @@ h1
 #formWrapper
 {
   display: flex;
-  border: 3px solid black;
+  /* border: 3px solid black; */
   flex-direction: column;
   box-sizing: border-box;
   padding: 2%;
@@ -118,8 +120,28 @@ h1
   font-size: large;
   
  }
-.buttonWrapper
+
+#buttonWrapper
 {
-  border: 1px solid black
+  /* border: 1px solid black; */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+@media(min-width: 800px)
+{
+  #buttonWrapper
+  {
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+  }
+  #component-container-delete
+  {
+    width: 50%;
+  }
 }
 </style>

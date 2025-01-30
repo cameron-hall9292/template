@@ -50,7 +50,7 @@ const props = withDefaults(defineProps<Props>(),
 #form-wrapper
 {
   display: flex;
-  border: 3px solid black;
+  /* border: 3px solid black; */
   flex-direction: column;
   box-sizing: border-box;
   padding: 2%;
@@ -92,7 +92,7 @@ const props = withDefaults(defineProps<Props>(),
 .longForm
  {
   display: flex;
-  border: 3px solid black;
+  /* border: 3px solid black; */
   flex-direction: column;
   box-sizing: border-box;
   padding: 2%;

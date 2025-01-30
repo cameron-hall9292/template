@@ -165,5 +165,14 @@ h1
   padding: 1em;
 
 }
+
+@media(min-width: 800px)
+{
+
+  #component-container-all-recipes
+  {
+    max-width: 35%;
+  }
+}
 </style>
 

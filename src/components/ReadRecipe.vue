@@ -85,10 +85,10 @@ onMounted(() =>
   <div id="component-container-read"> 
     <div id="pdf-container">
 
-      <h2 v-if="props.name">{{ props.name }}</h2>
+      <h1 alt="name of recipe" v-if="props.name">{{ props.name }}</h1>
         <ul class="unordered_list">
           <li @click="checkMarkIngredient" class="list-item"  v-if="props.ingredients" v-for="(item, index) in props.ingredients.split(',')" :id="index" :value="index" :name="item" data-enabled="true"> 
-            {{index + 1}}. {{ item }}
+           {{ item }}
           </li>
         </ul>
       <div id="instruction-container">
@@ -131,32 +131,42 @@ onMounted(() =>
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  border: 2px solid black;
+  max-width: 100%;
+  width: 100%;
+  /* border: 5px solid black; */
 }
 
 .unordered_list 
 {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  /* display: flex;
+  border: 6px solid turquoise;
+  /* display: grid;
+  grid-template-columns: 1fr 1fr; */
+  box-sizing: border-box;
+  display: flex; 
   flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  max-width: calc(2 * 150px + 20px); */
-  list-style: number;
-  padding: 4%;
-  /* border: 2px solid turquoise; */
+  flex-wrap: wrap; 
+  justify-content: center;
+  align-items: center;
+  list-style: disc;
+  padding: 0;
+  margin: 0;
   list-style-position: inside;
-  margin: 2%;
+
+
+   /* justify-content: space-between; */
+   /* max-width: calc(2 * 150px + 20px);  */
 }
 
 .list-item
 {
   /* border: 1px solid black; */
-  display: flex;
-  text-align: center;
-  padding: 4%;
-  margin: 4%;
+   /* display: flex; */
+  box-sizing: border-box;
+  padding: 6%;
+  margin: 4px;
+  /* height: 4em;
+  width: 10em; */
+  /* margin: 0%; */
   overflow-wrap: break-word;
   word-break: break-word;
   box-shadow: 0px 0px 5px 0px; 
@@ -166,6 +176,7 @@ onMounted(() =>
   background-color: #FFFCD0; 
   background-color: #F5A0FF; 
   background-color: #A0FFF5; 
+  cursor: pointer;
 
 }
 
@@ -193,7 +204,7 @@ onMounted(() =>
 
 #button-wrapper
 {
-  border: 1px dotted black;
+  /* border: 1px dotted black; */
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -203,10 +214,25 @@ onMounted(() =>
 
 }
 
-.button
+
+@media(min-width: 800px)
 {
-  margin: 1em;
-  height: 4em;
+  #button-wrapper
+  {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 1em;
+  
+  }
+  #component-container-read
+  {
+    /* border: 2px dotted white; */
+    width: 50%;
+  
+  }
 }
 
 

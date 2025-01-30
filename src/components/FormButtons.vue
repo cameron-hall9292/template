@@ -32,6 +32,10 @@ const { name }= defineProps<Props>()
 
 .form-button
 {
+    display: flex;
+    box-sizing: border-box;
+    justify-content: center;
+    align-items: center;
     color: black;
     font-size: 1em;
     margin: 1em;
@@ -44,7 +48,7 @@ const { name }= defineProps<Props>()
     /* background-color: #F5A0FF; */
     /* box-shadow: 2px 2px 3px 2px;  */
     box-shadow: 0px 0px 5px 0px; 
-    border: 1px solid #ccc;
+    border: 1px solid #F5A0FF;
 
 }
 
