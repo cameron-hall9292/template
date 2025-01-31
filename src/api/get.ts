@@ -17,6 +17,11 @@ export async function fetchData(value: (string | null),  baseUrl: string, callba
     }
     )
 
+    if (value !== null)
+    {
+      value = encodeURIComponent(value);
+    }
+
     const res = await fetch(`${baseUrl}/display?name=${value}`,
       {
         method: "GET",

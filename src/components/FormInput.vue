@@ -12,12 +12,18 @@ import { appModes } from '../interfaces/appModes';
 
 interface Props 
 {
-  formSwitch?: boolean; 
+  name?: boolean;
+  ingredients?: boolean;
+  instructions?: boolean;
+  type?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), 
 {
-  formSwitch: false,
+  name: false,
+  ingredients: false,
+  instructions: false,
+  type: false
 })
 
 </script>
@@ -27,10 +33,10 @@ const props = withDefaults(defineProps<Props>(),
     <div id="form-wrapper"> 
 
       <!-- <div>props.formSwitch: {{ props.formSwitch }}</div> -->
-      <input :disabled="props.formSwitch" id="formName" class="longForm" v-if="recipeLookup !== undefined" v-model=" recipeLookup.recipeData.name" placeholder="enter recipe name">
-      <textarea :disabled="props.formSwitch" id="formIngredients" class="longForm"  v-if="recipeLookup !== undefined" v-model="recipeLookup.recipeData.ingredients" placeholder="enter ingredients" ></textarea>
-      <textarea :disabled="props.formSwitch" id="formInstructions" class="longForm" v-if="recipeLookup !== undefined" v-model="recipeLookup.recipeData.instructions" placeholder="enter instructions"></textarea>
-      <select :disabled="props.formSwitch" class="longForm" placeholder="select recipe type" v-if="recipeLookup !== undefined" v-model="recipeLookup.recipeData.type"  >
+      <input :disabled="props.name" id="formName" class="longForm" v-if="recipeLookup !== undefined" v-model=" recipeLookup.recipeData.name" placeholder="enter recipe name">
+      <textarea :disabled="props.ingredients" id="formIngredients" class="longForm"  v-if="recipeLookup !== undefined" v-model="recipeLookup.recipeData.ingredients" placeholder="enter ingredients" ></textarea>
+      <textarea :disabled="props.instructions" id="formInstructions" class="longForm" v-if="recipeLookup !== undefined" v-model="recipeLookup.recipeData.instructions" placeholder="enter instructions"></textarea>
+      <select :disabled="props.type" class="longForm" placeholder="select recipe type" v-if="recipeLookup !== undefined" v-model="recipeLookup.recipeData.type"  >
         <optgroup label="recipe types">
           <option value="main dish">main dish</option>
           <option value="side dish">side dish</option>

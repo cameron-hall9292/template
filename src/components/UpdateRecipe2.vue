@@ -45,9 +45,9 @@ let recipeLookup = inject<recipeLookup>("selectRecipe");
   <div id="component-container-update">
 
     <h1>Update Recipe</h1>
-    <FormInput />
+    <FormInput :name="true"/>
     <div id="buttonWrapper">
-      <FormButtons v-if="recipeLookup !== undefined" @click="updateRecipe(recipeLookup.recipeData) && appMode?.change('find')" name="submit update"></FormButtons>
+      <FormButtons  v-if="recipeLookup !== undefined" @click="updateRecipe(recipeLookup.recipeData) && appMode?.change('find')" name="submit update"></FormButtons>
       <FormButtons @click="appMode?.change('find')" name="cancel" ></FormButtons>
     </div>
   </div>

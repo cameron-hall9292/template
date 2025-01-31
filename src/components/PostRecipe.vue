@@ -1,7 +1,7 @@
 
 <script setup lang="ts">
 
-import { reactive, inject, onMounted } from 'vue';
+import { reactive, inject, onMounted, ref, computed } from 'vue';
 
 import { type mode } from '../interfaces/interface';
 
@@ -16,6 +16,8 @@ import FormInput from '../components/FormInput.vue'
 import { appModes } from '../interfaces/appModes';
 
 import fetchUserPermissions from '../api/permissions';
+
+
 
 const appMode = inject<mode>("appMode");
 
@@ -65,6 +67,8 @@ onMounted(() =>
 {
   getPermissions()
 });
+
+
 
 
 

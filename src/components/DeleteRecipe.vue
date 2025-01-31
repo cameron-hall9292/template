@@ -57,7 +57,7 @@ const deleteAndGoHome = (): void =>
   <div id="component-container-delete">
 
     <h1>Delete Recipe</h1>
-    <FormInput :formSwitch="true" />
+    <FormInput :name="true" :ingredients="true" :instructions="true" :type="true" />
     <div id="buttonWrapper">
       <FormButtons v-if="recipeLookup !== undefined" @click="deleteAndGoHome" name="delete recipe"></FormButtons>
       <FormButtons name="cancel" @click="appMode?.change(appModes.find)"></FormButtons>
