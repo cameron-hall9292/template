@@ -16,7 +16,8 @@ export async function fetchByType(type: (string | null) )
     {
       //this function encodes the arguments so it will always be 
       //valid as a query string value
-      type = encodeURIComponent(type);
+      // type = encodeURIComponent(type);
+      console.log(`type: ${type}`)
     }
     const token = sessionStorage.getItem('jwtToken');
     console.log("token " + token);

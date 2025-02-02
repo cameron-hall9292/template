@@ -1,7 +1,7 @@
 
 <script setup lang="ts">
 
-import { inject,} from 'vue'
+import { inject, reactive, ref, onMounted} from 'vue'
 
 import { type mode,type recipeLookup } from '../interfaces/interface';
 
@@ -15,29 +15,9 @@ const appMode = inject<mode>("appMode");
 
 import { appModes } from '../interfaces/appModes';
 
+import fetchUserPermissions from '../api/permissions';
+
 let recipeLookup = inject<recipeLookup>("selectRecipe");
-
-//const props = defineProps<Recipe>();
-
-
-//const recipePut: Recipe = reactive
-//(
-
-    //{
-        //name: null,
-        //ingredients: null,
-        //instructions: null,
-        //type: null,
-    //}
-//)
-
-//onMounted(() => {
-  //console.log(`the component is now mounted.`)
-  //recipePut.name = props.name;
-  //recipePut.ingredients = props.ingredients;
-  //recipePut.instructions = props.instructions;
-  //recipePut.type = props.type;
-//})
 
 
 const deleteAndGoHome = (): void =>
@@ -51,6 +31,35 @@ const deleteAndGoHome = (): void =>
 }
 
 
+
+//check if user is logged in and get their user permissions e.g read, write, etc.
+
+let userPermissions = reactive(
+  {
+    permArr: []
+  }
+) 
+
+let permissionToDelete = ref<boolean>(false);
+
+const getPermissions = async () => 
+{
+
+  if (sessionStorage.getItem('jwtToken'))
+  {
+   fetchUserPermissions()
+   .then(data => userPermissions.permArr = data.data)
+   .then(() => permissionToDelete.value = userPermissions.permArr.includes("canDelete"))
+  }
+}
+
+onMounted(() =>
+{
+  getPermissions()
+});
+
+
+
 </script>
 
 <template>
@@ -59,7 +68,7 @@ const deleteAndGoHome = (): void =>
     <h1>Delete Recipe</h1>
     <FormInput :name="true" :ingredients="true" :instructions="true" :type="true" />
     <div id="buttonWrapper">
-      <FormButtons v-if="recipeLookup !== undefined" @click="deleteAndGoHome" name="delete recipe"></FormButtons>
+      <FormButtons v-if="recipeLookup !== undefined" @click="deleteAndGoHome" name="delete recipe" :disabled="!permissionToDelete"></FormButtons>
       <FormButtons name="cancel" @click="appMode?.change(appModes.find)"></FormButtons>
     </div>
   </div>

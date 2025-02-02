@@ -52,6 +52,8 @@ let userPermissions = reactive(
   }
 ) 
 
+let permissionToPost = ref<boolean>(false);
+
 const getPermissions = async () => 
 {
 
@@ -59,14 +61,16 @@ const getPermissions = async () =>
   {
    fetchUserPermissions()
    .then(data => userPermissions.permArr = data.data)
-    console.log(userPermissions.permArr)
+   .then(() => permissionToPost.value = userPermissions.permArr.includes("canAdd"))
   }
 }
+
 
 onMounted(() =>
 {
   getPermissions()
 });
+
 
 
 
@@ -82,10 +86,10 @@ onMounted(() =>
     
     <h1>Add New Recipe</h1>
 
-      <FormInput :formSwitch="!userPermissions.permArr.includes('canAdd')" />
+      <FormInput :name="!permissionToPost" :ingredients="!permissionToPost" :instructions="!permissionToPost" :type="!permissionToPost"/>
 
       <div id="buttonWrapper">
-        <FormButtons @click="postAndGoHome" name="submit recipe" :disabled="!userPermissions.permArr.includes('canAdd')"></FormButtons>
+        <FormButtons @click="postAndGoHome" name="submit recipe" :disabled="!permissionToPost"></FormButtons>
         <FormButtons @click="appMode?.change(appModes.find)" name="cancel" ></FormButtons>
       </div>
 

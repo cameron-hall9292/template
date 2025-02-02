@@ -1,7 +1,7 @@
 
 <script setup lang="ts">
 
-import { inject, reactive, onMounted  } from 'vue'
+import { inject, reactive, onMounted, ref  } from 'vue'
 
 import updateRecipe from '../api/update';
 
@@ -11,31 +11,38 @@ import FormButtons from '../components/FormButtons.vue'
 
 import FormInput from '../components/FormInput.vue'
 
+import fetchUserPermissions from '../api/permissions';
+
 const appMode = inject<mode>("appMode");
 
 let recipeLookup = inject<recipeLookup>("selectRecipe");
 
-//const props = defineProps<Recipe>();
+//check if user is logged in and get their user permissions e.g read, write, etc.
 
+let userPermissions = reactive(
+  {
+    permArr: []
+  }
+) 
 
-//const recipePut: Recipe = reactive
-//(
+let permissionToEdit = ref<boolean>(false);
 
-    //{
-        //name: null,
-        //ingredients: null,
-        //instructions: null,
-        //type: null,
-    //}
-//)
+const getPermissions = async () => 
+{
 
-//onMounted(() => {
-  //console.log(`the component is now mounted.`)
-  //recipePut.name = props.name;
-  //recipePut.ingredients = props.ingredients;
-  //recipePut.instructions = props.instructions;
-  //recipePut.type = props.type;
-//})
+  if (sessionStorage.getItem('jwtToken'))
+  {
+   fetchUserPermissions()
+   .then(data => userPermissions.permArr = data.data)
+   .then(() => permissionToEdit.value = userPermissions.permArr.includes("canEdit"))
+  }
+}
+
+onMounted(() =>
+{
+  getPermissions()
+});
+
 
 
 </script>
@@ -45,9 +52,9 @@ let recipeLookup = inject<recipeLookup>("selectRecipe");
   <div id="component-container-update">
 
     <h1>Update Recipe</h1>
-    <FormInput :name="true"/>
+    <FormInput :name="true" :ingredients="!permissionToEdit" :instructions="!permissionToEdit" :type="!permissionToEdit"/>
     <div id="buttonWrapper">
-      <FormButtons  v-if="recipeLookup !== undefined" @click="updateRecipe(recipeLookup.recipeData) && appMode?.change('find')" name="submit update"></FormButtons>
+      <FormButtons  v-if="recipeLookup !== undefined" @click="updateRecipe(recipeLookup.recipeData) && appMode?.change('find')" name="submit update" :disabled="!permissionToEdit" ></FormButtons>
       <FormButtons @click="appMode?.change('find')" name="cancel" ></FormButtons>
     </div>
   </div>

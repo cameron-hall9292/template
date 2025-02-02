@@ -1,7 +1,7 @@
 
 <script setup lang="ts">
 
-import { inject, withDefaults } from 'vue';
+import { ref, inject, withDefaults } from 'vue';
 
 const appMode = inject<mode>("appMode");
 
@@ -9,6 +9,7 @@ let recipeLookup = inject<recipeLookup>("selectRecipe");
 
 import { appModes } from '../interfaces/appModes';
 
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 interface Props 
 {
@@ -24,7 +25,63 @@ const props = withDefaults(defineProps<Props>(),
   ingredients: false,
   instructions: false,
   type: false
-})
+});
+
+let singleIngredient = ref<string>('');
+
+// let ingredientArr = ref<string[]>([]);
+let ingredientArr;
+
+if (recipeLookup.recipeData.ingredients !== null)
+{
+
+  ingredientArr = ref<string[]>(recipeLookup.recipeData.ingredients.split(','))
+}
+
+else 
+{
+  ingredientArr = ref<string[]>([]);
+}
+
+
+const addIngredient = () =>
+{
+
+    if (singleIngredient.value === null || singleIngredient.value === undefined || singleIngredient.value === '' || singleIngredient.value === ' ') 
+    {
+      throw console.error("ingredient cannot equal " + singleIngredient.value);
+      
+    }
+
+    else
+    {
+
+      //add single ingredient to array
+      ingredientArr.value.push(singleIngredient.value);
+
+      //clear out single ingredient value
+      //before adding another ingredient
+      singleIngredient.value = null;
+
+      //add the data to our final core 
+      //structure
+      recipeLookup.recipeData.ingredients = ingredientArr.value.join(',')
+
+    }
+
+
+    
+}
+
+
+const removeIngredient = (value: number) =>
+{
+  
+  recipeLookup.recipeData.ingredients = ingredientArr.value.filter((item, index) => index !== value).join(',');
+  ingredientArr.value =  ingredientArr.value.filter((item, index) => index !== value);
+    // console.log("removeIngredient called")
+
+}
 
 </script>
 
@@ -32,9 +89,31 @@ const props = withDefaults(defineProps<Props>(),
 
     <div id="form-wrapper"> 
 
+      <div>{{ recipeLookup.recipeData.ingredients }}</div>
+      <div>{{ ingredientArr }}</div>
+      <div>{{ singleIngredient }}</div>
       <!-- <div>props.formSwitch: {{ props.formSwitch }}</div> -->
       <input :disabled="props.name" id="formName" class="longForm" v-if="recipeLookup !== undefined" v-model=" recipeLookup.recipeData.name" placeholder="enter recipe name">
-      <textarea :disabled="props.ingredients" id="formIngredients" class="longForm"  v-if="recipeLookup !== undefined" v-model="recipeLookup.recipeData.ingredients" placeholder="enter ingredients" ></textarea>
+
+      <div id="ingredient-container">
+
+        <ul v-for="(recipe, index) in ingredientArr">
+          <li>  {{ recipe }} 
+            <!-- <FontAwesomeIcon @click="removeIngredient(recipe)" icon="fa-solid fa-trash fa-xs" size="sm" idth="fw" />  -->
+          </li>
+            <FontAwesomeIcon @click="removeIngredient(index)" icon="fa-solid fa-trash fa-xs" size="lg" idth="fw" /> 
+        </ul>
+
+      </div>
+
+      <textarea :disabled="true" id="formIngredients" class="longForm"  v-if="recipeLookup !== undefined" v-model="recipeLookup.recipeData.ingredients" placeholder="enter ingredients" ></textarea>
+
+      <div id="add-container">
+        <input v-model="singleIngredient" class="add-ingredient" placeholder="add ingredient"/>
+        <button @click="addIngredient" class="add-ingredient">+</button>
+      </div>
+
+
       <textarea :disabled="props.instructions" id="formInstructions" class="longForm" v-if="recipeLookup !== undefined" v-model="recipeLookup.recipeData.instructions" placeholder="enter instructions"></textarea>
       <select :disabled="props.type" class="longForm" placeholder="select recipe type" v-if="recipeLookup !== undefined" v-model="recipeLookup.recipeData.type"  >
         <optgroup label="recipe types">
@@ -122,6 +201,37 @@ const props = withDefaults(defineProps<Props>(),
 #buttonWrapper
 {
   border: 1px solid black
+}
+
+#ingredient-container
+{
+  border: 1px solid black;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  box-sizing: border-box;
+  font-size: 1rem;
+}
+
+#ingredient-container > ul  
+{
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: center;
+  align-items: center;
+  list-style: none;
+  border: 1px solid black;
+  margin: 10px;
+  padding: 5px;
+}
+
+#ingredient-container > ul > li
+{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 5px;
+  padding: 5px;
 }
 
 
