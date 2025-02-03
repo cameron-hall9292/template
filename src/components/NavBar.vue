@@ -136,12 +136,21 @@ const navigate = (mode) =>
   align-items: left;
   width: 60%;
   height: 100%;
-  border: 1px solid black;
+  /* border: 1px solid black; */
   position: absolute;
   cursor: pointer;
-  transition: all 0.2s ease-in-out;
-  box-shadow: 2px 2px 5px;
+  animation: mobileNav 4s ease-in;
+
 }
+
+@keyframes mobileNav {
+
+    0% { transform: translateX(-100%); }
+    50% { transform: translateX(100%); }
+    100% { transform: translateX(0); }
+
+}
+
 
 .nav-menu
 {
@@ -163,7 +172,7 @@ const navigate = (mode) =>
     background-color: #FFFAA0;
     position: fixed;
     transition: all 0.2s ease-in-out;
-    box-shadow: 2px 2px 5px;
+    /* box-shadow: 2px 2px 5px; */
     list-style: none;
 }
 
@@ -186,6 +195,13 @@ const navigate = (mode) =>
 }
 
 @media (min-width: 800px) {
+
+    @keyframes desktopNav{
+
+    0% { transform: translateX(0); }
+    50% { transform: translateX(0);}
+    100% { transform: translateX(0);  }
+    }
   .navbar.active {
 
     border: 1px solid black;
@@ -194,6 +210,10 @@ const navigate = (mode) =>
     flex-direction: row;
     width: 100%;
     height: 20%;
+    transform: translateX(0);
+    /* animation: desktopNav 0.2s ease-in-out; */
+    animation: desktopNav 4s ease-in;
+  
   }
     .nav-menu.active
     {

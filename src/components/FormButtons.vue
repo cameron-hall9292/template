@@ -47,8 +47,10 @@ const { name }= defineProps<Props>()
     background-color: #FFFAA0;
     /* background-color: #F5A0FF; */
     /* box-shadow: 2px 2px 3px 2px;  */
-    box-shadow: 0px 0px 5px 0px; 
+    /* box-shadow: 0px 0px 5px 0px;  */
     border: 1px solid #F5A0FF;
+    border: 0;
+    box-shadow: 0;
 
 }
 

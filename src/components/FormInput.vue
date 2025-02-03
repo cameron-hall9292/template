@@ -89,15 +89,16 @@ const removeIngredient = (value: number) =>
 
     <div id="form-wrapper"> 
 
-      <div>{{ recipeLookup.recipeData.ingredients }}</div>
+      <!-- <div>{{ recipeLookup.recipeData.ingredients }}</div>
       <div>{{ ingredientArr }}</div>
-      <div>{{ singleIngredient }}</div>
+      <div>{{ singleIngredient }}</div> -->
       <!-- <div>props.formSwitch: {{ props.formSwitch }}</div> -->
       <input :disabled="props.name" id="formName" class="longForm" v-if="recipeLookup !== undefined" v-model=" recipeLookup.recipeData.name" placeholder="enter recipe name">
 
       <div id="ingredient-container">
 
-        <ul v-for="(recipe, index) in ingredientArr">
+
+        <ul v-if="appMode.mode !== appModes.delete" v-for="(recipe, index) in ingredientArr">
           <li>  {{ recipe }} 
             <!-- <FontAwesomeIcon @click="removeIngredient(recipe)" icon="fa-solid fa-trash fa-xs" size="sm" idth="fw" />  -->
           </li>
@@ -106,15 +107,15 @@ const removeIngredient = (value: number) =>
 
       </div>
 
-      <textarea :disabled="true" id="formIngredients" class="longForm"  v-if="recipeLookup !== undefined" v-model="recipeLookup.recipeData.ingredients" placeholder="enter ingredients" ></textarea>
+      <textarea :disabled="true" id="formIngredients" class="longForm"  v-if="recipeLookup !== undefined && appMode.mode !== appModes.update" v-model="recipeLookup.recipeData.ingredients" placeholder="enter ingredients" ></textarea>
 
-      <div id="add-container">
+      <div v-if="appMode.mode !== appModes.delete" id="add-container">
         <input v-model="singleIngredient" class="add-ingredient" placeholder="add ingredient"/>
         <button @click="addIngredient" class="add-ingredient">+</button>
       </div>
 
 
-      <textarea :disabled="props.instructions" id="formInstructions" class="longForm" v-if="recipeLookup !== undefined" v-model="recipeLookup.recipeData.instructions" placeholder="enter instructions"></textarea>
+      <textarea :disabled="props.instructions"  id="formInstructions" class="longForm" v-if="recipeLookup !== undefined" v-model="recipeLookup.recipeData.instructions" placeholder="enter instructions"></textarea>
       <select :disabled="props.type" class="longForm" placeholder="select recipe type" v-if="recipeLookup !== undefined" v-model="recipeLookup.recipeData.type"  >
         <optgroup label="recipe types">
           <option value="main dish">main dish</option>
@@ -168,11 +169,6 @@ const removeIngredient = (value: number) =>
   height: 100%;
 }
 
-.button
-{
-    color: white; 
-    margin: 5px;
-}
 
 .longForm
  {
@@ -205,8 +201,10 @@ const removeIngredient = (value: number) =>
 
 #ingredient-container
 {
-  border: 1px solid black;
+  /* border: 1px solid black; */
   display: flex;
+  justify-content: center;
+  align-items: center;
   flex-direction: row;
   flex-wrap: wrap;
   box-sizing: border-box;
@@ -220,7 +218,7 @@ const removeIngredient = (value: number) =>
   justify-content: center;
   align-items: center;
   list-style: none;
-  border: 1px solid black;
+  /* border: 1px solid black; */
   margin: 10px;
   padding: 5px;
 }
@@ -234,5 +232,38 @@ const removeIngredient = (value: number) =>
   padding: 5px;
 }
 
+#add-container
+{
+  /* border: 1px solid black; */
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+#add-container > input
+{
+  /* border: 2px dotted green; */
+  display: flex;
+  flex-direction: row;
+  box-sizing: border-box;
+  width: 80%;
+
+}
+
+#add-container > button
+{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  height: 4em;
+  width: 4em;
+  margin: 5px;
+  background-color: #FFFAA0;
+  border-radius: 10px;
+  border: 0;
+}
 
 </style>
