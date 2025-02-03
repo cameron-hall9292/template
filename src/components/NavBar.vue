@@ -123,7 +123,8 @@ const navigate = (mode) =>
   background-color: #FFFAA0;
   /* background-color: #A0A5FF;  */
   box-shadow: 2px 2px 5px;
-  transition: all 0.2s ease-in-out;
+  /* transition: all 0.2s ease-in-out; */
+  animation: mobileNavClose 1s ease-in forwards;
 }
 
 
@@ -136,21 +137,29 @@ const navigate = (mode) =>
   align-items: left;
   width: 60%;
   height: 100%;
-  /* border: 1px solid black; */
-  position: absolute;
+  border: 1px solid black;
+  position: fixed;
   cursor: pointer;
-  animation: mobileNav 4s ease-in;
+  animation: mobileNav 1s ease-in forwards;
+  box-shadow: 2px 2px 5px;
 
 }
 
 @keyframes mobileNav {
 
     0% { transform: translateX(-100%); }
-    50% { transform: translateX(100%); }
-    100% { transform: translateX(0); }
+    /* 50% { transform: translateX(-20%); } */
+    100% { transform: translateX(0%); }
 
 }
 
+@keyframes mobileNavClose {
+
+    0% { transform: translateX(-100%); }
+    /* 50% { transform: translateX(-20%); } */
+    100% { transform: translateX(0%); }
+
+}
 
 .nav-menu
 {
@@ -210,7 +219,7 @@ const navigate = (mode) =>
     flex-direction: row;
     width: 100%;
     height: 20%;
-    transform: translateX(0);
+    position: fixed;
     /* animation: desktopNav 0.2s ease-in-out; */
     animation: desktopNav 4s ease-in;
   
