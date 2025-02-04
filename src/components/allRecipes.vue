@@ -125,9 +125,10 @@ h1
 	display: flex;
   box-sizing: border-box;
   flex-direction: column;
-  align-items: center;
+  overflow: hidden;
+  white-space: nowrap;
   justify-content: center;
-  text-align: left;
+  align-items: left;
   padding: 1px;
   font-size: 1em;
   height: 4em;

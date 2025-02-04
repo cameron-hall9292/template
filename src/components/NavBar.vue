@@ -124,7 +124,7 @@ const navigate = (mode) =>
   /* background-color: #A0A5FF;  */
   box-shadow: 2px 2px 5px;
   /* transition: all 0.2s ease-in-out; */
-  animation: mobileNavClose 1s ease-in forwards;
+  animation: mobileNavClose 0.5s ease-in-out forwards;
 }
 
 
@@ -137,17 +137,21 @@ const navigate = (mode) =>
   align-items: left;
   width: 60%;
   height: 100%;
-  border: 1px solid black;
+  /* border: 1px solid black; */
   position: fixed;
   cursor: pointer;
-  animation: mobileNav 1s ease-in forwards;
-  box-shadow: 2px 2px 5px;
+  animation: mobileNav 0.5s ease-in-out forwards;
+  /* box-shadow: 2px 2px 5px; */
 
 }
 
 @keyframes mobileNav {
 
-    0% { transform: translateX(-100%); }
+    0% { transform: translateX(-200%); }
+
+    /* 25% { transform: translateX(-100%); }
+
+    50% { transform: translateX(-50%); } */
     /* 50% { transform: translateX(-20%); } */
     100% { transform: translateX(0%); }
 
@@ -155,7 +159,7 @@ const navigate = (mode) =>
 
 @keyframes mobileNavClose {
 
-    0% { transform: translateX(-100%); }
+    0% { transform: translateX(-200%); }
     /* 50% { transform: translateX(-20%); } */
     100% { transform: translateX(0%); }
 
@@ -211,17 +215,37 @@ const navigate = (mode) =>
     50% { transform: translateX(0);}
     100% { transform: translateX(0);  }
     }
+    .navbar
+    {
+    display: flex;
+    flex-direction: row;
+    justify-content: right;
+    align-items: center;
+    width: 100%;
+    height: 4em;
+    /* border: 3px solid black; */
+    position: fixed;
+    top: 0;
+    z-index: 1;
+    /* background-color: gray; */
+    background-color: #FFFAA0;
+    /* background-color: #A0A5FF;  */
+    box-shadow: 2px 2px 5px;
+    transition: all 0.2s ease-in-out;
+    animation: desktopNav ease-in-out forwards;
+    }
   .navbar.active {
 
-    border: 1px solid black;
+    /* border: 1px solid black; */
     box-sizing: border-box;
     display: flex;
     flex-direction: row;
     width: 100%;
     height: 20%;
     position: fixed;
+    transition: all 0.2s ease-in-out;
     /* animation: desktopNav 0.2s ease-in-out; */
-    animation: desktopNav 4s ease-in;
+    animation: desktopNav ease-in-out forwards;
   
   }
     .nav-menu.active
@@ -238,7 +262,7 @@ const navigate = (mode) =>
         padding: 0;
         position: fixed;
         z-index: 1;
-        box-shadow: 2px 2px 5px;
+        /* box-shadow: 2px 2px 5px; */
         /* margin: 1em; */
         list-style: none;
     }

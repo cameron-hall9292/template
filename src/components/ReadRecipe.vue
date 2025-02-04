@@ -125,6 +125,15 @@ onMounted(() =>
   
 }
 
+h1 
+{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: center;
+  width: 100%;
+}
+
 #pdf-container
 {
   display: flex;

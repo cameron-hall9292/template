@@ -379,6 +379,8 @@ h1
 .dropdown-item
 {
   display: flex;
+  /* flex: 1; */
+  min-width: 0;
   flex-direction: row;
   box-sizing: border-box;
   max-width: 90%;
@@ -390,6 +392,9 @@ h1
   /* border: 1px solid black; */
   margin: 1em;
   font-size: 1em;
+  white-space: nowrap;
+  overflow: hidden;
+
 }
 
 
