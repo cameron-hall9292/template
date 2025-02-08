@@ -145,8 +145,9 @@ h1
 }
 .recipe-list:hover
 {
-  background-color: blue; 
+  background-color: #191970; 
   color: white;
+  cursor: pointer;
 }
 .longForm:focus
  {

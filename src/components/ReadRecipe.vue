@@ -36,7 +36,7 @@ const getPermissions = async () =>
   {
    fetchUserPermissions()
    .then(data => userPermissions.permArr = data.data)
-    console.log(userPermissions.permArr)
+    //console.log(userPermissions.permArr)
   }
 }
 
@@ -48,21 +48,21 @@ const checkMarkIngredient = (e) =>
 
   const ingredient = document.getElementById(e.target.id);
 
-  console.log(ingredient)
+  //console.log(ingredient)
 
   if (ingredient.dataset.enabled == "true")
   {
 
-    console.log("if")
-    console.log(ingredient.dataset.enabled)
+    //console.log("if")
+    //console.log(ingredient.dataset.enabled)
     ingredient.style.opacity = "0.3" 
     ingredient.dataset.enabled = "false" 
   }
 
   else if (ingredient.dataset.enabled == "false")
   {
-    console.log("else")
-    console.log(ingredient.dataset.enabled)
+    //console.log("else")
+    //console.log(ingredient.dataset.enabled)
     ingredient.style.opacity = "1" 
     ingredient.dataset.enabled = "true" 
 
@@ -147,7 +147,7 @@ h1
 
 .unordered_list 
 {
-  border: 6px solid turquoise;
+  /* border: 6px solid turquoise;
   /* display: grid;
   grid-template-columns: 1fr 1fr; */
   box-sizing: border-box;

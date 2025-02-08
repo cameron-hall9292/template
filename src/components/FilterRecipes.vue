@@ -31,7 +31,7 @@ const handleClickOutsideNav = (): boolean =>
     if (searchBar.value && !searchBar.value.contains(event.target))
     {
         isActive.value = false;
-        console.log(`isActive search: ${isActive.value}`)
+        //console.log(`isActive search: ${isActive.value}`)
 
         //clear out api data array and search string
         filteredApiDataArr.value = [];
@@ -66,7 +66,7 @@ onBeforeUnmount(() => {
         isActive.value = false;
       }
     }
-    console.log(`activateSearchDrop called`)
+    //console.log(`activateSearchDrop called`)
 
  }
 
@@ -95,7 +95,7 @@ if (searchString !== undefined)
       )
 
       const response = await res.json();
-      console.log(response)
+      //console.log(response)
       const filteredData: string[] = [];
 
       if (response.rows === undefined) return;
@@ -106,17 +106,17 @@ if (searchString !== undefined)
           //console.log(i.name)
         }
 
-      console.log(`filteredData ${filteredData}`)
-      console.log(filteredData)
+      //console.log(`filteredData ${filteredData}`)
+      //console.log(filteredData)
 
-      console.log("filterData api func called")
+      //console.log("filterData api func called")
 
 
       if (filteredApiDataArr !== undefined)
       {
         filteredApiDataArr.value = filteredData;
 
-        console.log(filteredApiDataArr.value)
+        //console.log(filteredApiDataArr.value)
       }
 
       //make searchbar drop down if search array contains recipe names
@@ -135,7 +135,7 @@ if (searchString !== undefined)
 
  const modSearchContainer = (val: boolean) =>
  {
-  console.log("mod contain called")
+  //console.log("mod contain called")
 
   //change style prop of search container
 
@@ -271,7 +271,7 @@ const searchBarStyle: Record<string, string> = reactive
   {
     searchString.value =  val;
 
-    console.log("selectSearchItem func called")
+    //console.log("selectSearchItem func called")
 
     //fetch recipe and display it when user clicks recipe name from drop-down
     recipeLookup.fetchData(val)
@@ -285,7 +285,7 @@ const searchBarStyle: Record<string, string> = reactive
 
  const eventTestFunc = () =>
  {
-  console.log("pointer is over item")
+  //console.log("pointer is over item")
  }
 
 
@@ -400,8 +400,9 @@ h1
 
 .dropdown-item:hover
 {
-  background-color: blue;
+  background-color:	#191970;
   color:white;
+  cursor: pointer;
 }
 
 .dropdown-item:blur

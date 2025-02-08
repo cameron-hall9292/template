@@ -17,10 +17,10 @@ export async function fetchByType(type: (string | null) )
       //this function encodes the arguments so it will always be 
       //valid as a query string value
       // type = encodeURIComponent(type);
-      console.log(`type: ${type}`)
+      // console.log(`type: ${type}`)
     }
     const token = sessionStorage.getItem('jwtToken');
-    console.log("token " + token);
+    // console.log("token " + token);
     const res = await fetch(`${baseUrl}/recipesByType?type=${type}`,
       {
         method: 'GET',
@@ -47,7 +47,7 @@ export async function fetchByType(type: (string | null) )
         //console.log(i.name)
       }
 
-      console.log(filteredData);
+      // console.log(filteredData);
 
       return filteredData;
 

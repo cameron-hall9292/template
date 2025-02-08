@@ -39,7 +39,7 @@ const handleClickOutsideNav = (): boolean =>
     if (navbar.value && !navbar.value.contains(event.target))
     {
         isActive.value = false;
-        console.log(`isActive: ${isActive.value}`)
+        //console.log(`isActive: ${isActive.value}`)
         return isActive.value
     }
     else return false;

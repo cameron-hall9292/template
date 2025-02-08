@@ -107,7 +107,6 @@ const removeIngredient = (value: number) =>
 
       </div>
 
-      <textarea :disabled="true" id="formIngredients" class="longForm"  v-if="recipeLookup !== undefined && appMode.mode !== appModes.update" v-model="recipeLookup.recipeData.ingredients" placeholder="enter ingredients" ></textarea>
 
       <div v-if="appMode.mode !== appModes.delete" id="add-container">
         <input v-model="singleIngredient" class="add-ingredient" placeholder="add ingredient"/>
@@ -115,7 +114,6 @@ const removeIngredient = (value: number) =>
       </div>
 
 
-      <textarea :disabled="props.instructions"  id="formInstructions" class="longForm" v-if="recipeLookup !== undefined" v-model="recipeLookup.recipeData.instructions" placeholder="enter instructions"></textarea>
       <select :disabled="props.type" class="longForm" placeholder="select recipe type" v-if="recipeLookup !== undefined" v-model="recipeLookup.recipeData.type"  >
         <optgroup label="recipe types">
           <option value="main dish">main dish</option>
@@ -124,6 +122,8 @@ const removeIngredient = (value: number) =>
           <option value="dessert">dessert</option>
         </optgroup>
       </select>
+
+      <textarea :disabled="props.instructions"  id="form-instructions" class="longForm" v-if="recipeLookup !== undefined" v-model="recipeLookup.recipeData.instructions" placeholder="enter instructions"></textarea>
 
     </div>
 
@@ -180,7 +180,6 @@ const removeIngredient = (value: number) =>
   position: relative;
   max-width: 100%;
   width: 100%;
-  height: 8em;
   font-size: 1.25em;
 }
 
@@ -232,6 +231,7 @@ const removeIngredient = (value: number) =>
   padding: 5px;
 }
 
+
 #add-container
 {
   /* border: 1px solid black; */
@@ -265,5 +265,16 @@ const removeIngredient = (value: number) =>
   border-radius: 10px;
   border: 0;
 }
+
+#form-wrapper > select
+{
+  height: 4em;
+}
+
+#form-instructions
+{
+  height: 8em;
+}
+
 
 </style>

@@ -95,7 +95,7 @@ let recipeLookup = reactive<recipeLookup>(
           //after data has been fetched
     
     appMode?.change(appModes.read);
-          console.log("fetchData func called")
+          //console.log("fetchData func called")
         } 
         catch (error) 
         {
@@ -137,7 +137,7 @@ const handleSignOut = () =>
 const checkAuth = () =>
 {
   const token1 = sessionStorage.getItem("jwtToken");
-  console.log(token1);
+  //console.log(token1);
 
   if (tokenExpir(token1) || !token1)
   {
@@ -150,9 +150,13 @@ const checkAuth = () =>
 
 onUpdated(() => 
 {
-  console.log("component updated!!!!")
+  //console.log("component updated!!!!")
   checkAuth();
 })
+
+//this is testing my environments
+console.log(import.meta.env.VITE_APP_ENV); // "development" or "production"
+console.log(import.meta.env.VITE_API_URL); // API URL based on environment
 
 </script>
 
