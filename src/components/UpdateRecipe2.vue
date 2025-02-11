@@ -13,6 +13,8 @@ import FormInput from '../components/FormInput.vue'
 
 import fetchUserPermissions from '../api/permissions';
 
+import { appModes } from '../interfaces/appModes';
+
 const appMode = inject<mode>("appMode");
 
 let recipeLookup = inject<recipeLookup>("selectRecipe");
@@ -38,6 +40,35 @@ const getPermissions = async () =>
   }
 }
 
+const updateAndSubmit = (): void =>
+{
+
+  if (recipeLookup === undefined) return;
+
+  //check if any value is blank and if so
+  //alert user that all fields are required
+
+  let fieldBlank: boolean = false;
+  
+  for (let property in recipeLookup.recipeData)
+  {
+    if (recipeLookup.recipeData[property] === "" || recipeLookup.recipeData[property] === null || recipeLookup.recipeData === undefined )
+    {
+      alert("you must complete all fields");
+      fieldBlank = true;
+      break;
+
+    }
+  };
+  if (!fieldBlank)
+  {
+    updateRecipe(recipeLookup.recipeData);
+
+    //return to home screen
+    appMode.change(appModes.find);
+  };
+}
+
 onMounted(() =>
 {
   getPermissions()
@@ -54,7 +85,7 @@ onMounted(() =>
     <h1>Update Recipe</h1>
     <FormInput :name="true" :ingredients="!permissionToEdit" :instructions="!permissionToEdit" :type="!permissionToEdit"/>
     <div id="buttonWrapper">
-      <FormButtons  v-if="recipeLookup !== undefined" @click="updateRecipe(recipeLookup.recipeData) && appMode?.change('find')" name="submit update" :disabled="!permissionToEdit" ></FormButtons>
+      <FormButtons  v-if="recipeLookup !== undefined" @click="updateAndSubmit" name="submit update" :disabled="!permissionToEdit" ></FormButtons>
       <FormButtons @click="appMode?.change('find')" name="cancel" ></FormButtons>
     </div>
   </div>

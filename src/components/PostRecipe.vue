@@ -38,10 +38,29 @@ recipeLookup.recipeData.type = "main dish";
 
 const postAndGoHome = (): void =>
 {
-  postData(recipeLookup.recipeData);
+  //check if any value is blank and if so
+  //alert user that all fields are required
 
-  //return to home screen
-  appMode.change(appModes.find);
+  let fieldBlank: boolean = false;
+  for (let property in recipeLookup.recipeData)
+  {
+    if (recipeLookup.recipeData[property] === "" || recipeLookup.recipeData[property] === null || recipeLookup.recipeData === undefined )
+    {
+      alert("you must complete all fields");
+      fieldBlank = true;
+      break;
+
+    }
+
+  }
+  if (!fieldBlank)
+  {
+    postData(recipeLookup.recipeData);
+
+    //return to home screen
+    appMode.change(appModes.find);
+  };
+
 }
 
 //check if user is logged in and get their user permissions e.g read, write, etc.
