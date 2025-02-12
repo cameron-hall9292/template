@@ -167,8 +167,8 @@ if (searchString !== undefined)
         <label class="forScreenReaders" value="searchbar">searchbar for finding recipes</label>
           <div class="searchItemWrapper">
             <div class="dropdown-list" id="dropdownList" >
-              <div :class="{ active: isActive }" class="dropdown-item" v-for="item in filteredApiDataArr" :key="item" :value="item" @click="selectSearchItem(item)" > {{ item }}</div>
-                <!-- <FontAwesomeIcon icon="fa-solid fa-magnifying-glass" size="sm" width="fw"  />  &nbsp  -->
+              <div :class="{ active: isActive }" class="dropdown-item" v-for="item in filteredApiDataArr" :key="item" :value="item" @click="selectSearchItem(item)" ><span id="icon-wrapper"><FontAwesomeIcon icon="fa-solid fa-magnifying-glass" size="sm" width="fw" style="margin-right: 5px;"  /> </span> {{ item }}</div>
+                
             </div>
         </div>
       </div>
@@ -246,10 +246,16 @@ h1
 
 .dropdown-list
 {
-  border: 3px solid black;
+  /* border: 3px solid black; */
   max-width: 100%;
   width: 100%;
   box-sizing: border-box;
+}
+
+#icon-wrapper
+{
+  display: flex;
+  align-items: center;
 }
 
 .dropdown-item
@@ -332,7 +338,7 @@ h1
 
 @media (max-width: 800px) {
   .dropdown-item {
-    margin: 0; /* Reduce margin on mobile */
+    margin: 0.5em; /* Reduce margin on mobile */
     width: 100%; /* Ensure full width */
   }
     #search-container {
