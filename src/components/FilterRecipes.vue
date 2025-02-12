@@ -393,18 +393,20 @@ h1
 
 .dropdown-item
 {
+  margin: 0;
+  padding: 0;
   border: 1px solid black;
   display: flex;
+  text-align: left;
   /* flex: 1; */
   min-width: 0;
-  flex-direction: row;
   box-sizing: border-box;
   max-width: 90%;
   width: 100%;
   height: 2em;
   visibility: visible;
   /* border: 1px solid black; */
-  margin: 1em;
+  margin-top: 1em;
   font-size: 1em;
   white-space: nowrap;
   overflow: hidden;
