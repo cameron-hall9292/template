@@ -332,7 +332,7 @@ h1
 
 @media (max-width: 800px) {
   .dropdown-item {
-    margin: 0.5em; /* Reduce margin on mobile */
+    margin: 0; /* Reduce margin on mobile */
     width: 100%; /* Ensure full width */
   }
     #search-container {
