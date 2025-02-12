@@ -300,7 +300,7 @@ const searchBarStyle: Record<string, string> = reactive
         <label class="forScreenReaders" value="searchbar">searchbar for finding recipes</label>
           <div class="searchItemWrapper">
             <div class="dropdown-list" id="dropdownList" >
-              <div :class="{ active: isActive }" class="dropdown-item" v-for="item in filteredApiDataArr" :key="item" :value="item" @click="selectSearchItem(item)" ><FontAwesomeIcon icon="fa-solid fa-magnifying-glass" size="sm" width="fw"  />  &nbsp  {{ item }}</div>
+              <div :class="{ active: isActive }" class="dropdown-item" v-for="item in filteredApiDataArr" :key="item" :value="item" @click="selectSearchItem(item)" ><FontAwesomeIcon icon="fa-solid fa-magnifying-glass" size="sm" width="fw"  />  {{ item }}</div>
                 
             </div>
         </div>
@@ -386,7 +386,7 @@ h1
   box-sizing: border-box;
   display:  flex;
   flex-direction: column;
-  justify-content: left;
+  justify-content: flex-start;
   align-items: left;
   text-align: left;
 }
@@ -406,7 +406,7 @@ h1
   height: 2em;
   visibility: visible;
   /* border: 1px solid black; */
-  margin-top: 1em;
+  margin: 1em;
   font-size: 1em;
   white-space: nowrap;
   overflow: hidden;
