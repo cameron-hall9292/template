@@ -247,6 +247,9 @@ h1
 .dropdown-list
 {
   border: 3px solid black;
+  max-width: 100%;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .dropdown-item
@@ -256,7 +259,7 @@ h1
   min-width: 0;
   flex-direction: row;
   box-sizing: border-box;
-  max-width: 90%;
+  max-width: 100%;
   width: 100%;
   height: 2em;
   justify-content: left;
@@ -326,4 +329,16 @@ h1
   }
 
 }
+
+@media (max-width: 800px) {
+  .dropdown-item {
+    margin: 0.5em; /* Reduce margin on mobile */
+    width: 100%; /* Ensure full width */
+  }
+    #search-container {
+    width: 90%; /* Adjust width for small screens */
+    max-width: 100%;
+  }
+}
+
 </style>
