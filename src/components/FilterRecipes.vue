@@ -133,137 +133,9 @@ if (searchString !== undefined)
 }
 
 
- const modSearchContainer = (val: boolean) =>
- {
-  //console.log("mod contain called")
-
-  //change style prop of search container
-
-  if (val)
-  {
-    searchContainerStyle.border = "5px solid purple"
-    searchContainerStyle.backgroundColor = "#FFFFFF"
-    searchContainerStyle.borderRadius = "30px"
-    //searchContainerStyle.height  = `${filteredApiDataArr.value.length * 4}em`;
-    searchItemStyle.visibility = "visible"
-  }
-  else 
-  {
-
-    searchContainerStyle.border = "5px solid red"
-    searchContainerStyle.backgroundColor = "#FFFAA0"
-    searchContainerStyle.borderRadius = "0px"
-    
-    //searchContainerStyle.height = "0px"
-    //searchItemStyle.visibility = "hidden"
-  }
-
-  return;
-
- }
-
  const input = ref<HTMLInputElement>();
 
- const blurSearchContainer = () =>
- {
 
-    searchContainerStyle.border = "5px solid red"
-    searchContainerStyle.backgroundColor = "#FFFAA0"
-    searchContainerStyle.borderRadius = "0px"
-    //reset search filter
-    //filteredApiDataArr.value = [];
-    searchItemStyle.visibility = "hidden"
-    //register a click event
-    if (input.value !== null && input.value !== undefined)
-    {
-      input.value.blur()
-    }
-    else
-    {
-      //do nothing
-    }
- }
-//expand search box based on number of items fetched by the search string
-
-//watch(filteredApiDataArr, () => 
-//{
-
-    //const initialSearchBarHeight = 2.5 //em
-    //const itemDivHeight = searchItemHeight + searchItemPadding * 2
-    //searchContainerStyle.height  = `${initialSearchBarHeight + itemDivHeight + (filteredApiDataArr.value.length * (itemDivHeight))}em`;
-    //console.log(searchContainerStyle.height)
-//})
-
- const searchContainerStyle: Record<string, string> = reactive
- (
-  {
-    //display: "flex",
-    //border: "5px dotted red",
-    //width: "100%",
-    //maxWidth: "100%",
-    //maxHeight: "100%", 
-    //backgroundColor:"#FFFAA0",
-    //borderRadius: "0px",
-    //boxShadow: "0 0 8px rgba(76, 175, 80, 0.5)", /* Green glow */
-    //borderWidth: "6px",
-    //position: "relative"
-
-
-
-    display: "flex",
-    // border: "3px dotted red",
-    flexDirection: "column",
-    boxSizing: "border-box",
-    padding: "2%",
-    position: "relative",
-    maxWidth: "100%",
-    width: "100%",
-    height: "100%",
-  }
- )
-
- const searchItemHeight = 1;
-
- const searchItemPadding = 0.5;
-
- const searchItemStyle: Record<string, string> = reactive
- (
-
-  {
-    //height: `${searchItemHeight}em`,
-    //padding: `${searchItemPadding}em`,
-
-    display: "flex",
-    flexDirection: "column",
-    boxSizing: "border-box",
-    maxWidth: "100%",
-    width: "100%",
-    justifyContent: "center",
-    alignItems: "center",
-    visibility: "visible"
-  }
- )
-
-
-const searchBarStyle: Record<string, string> = reactive
-(
-  {
-
-    display: "flex",
-    flexDirection: "column",
-    boxSizing: "border-box",
-    padding: "2%",
-    position: "relative",
-    maxWidth: "100%",
-    width: "100%",
-    height: "4em",
-    border: "2px solid #ccc",
-    borderRadius: "35px",
-    outline: "none",
-    transition: "border-color 0.3s, box-shadow 0.3s",
-
-  }
-)
  const selectSearchItem = (val: string ) =>
  {
 
@@ -283,11 +155,6 @@ const searchBarStyle: Record<string, string> = reactive
  }
 
 
- const eventTestFunc = () =>
- {
-  //console.log("pointer is over item")
- }
-
 
 </script>
 
@@ -295,12 +162,12 @@ const searchBarStyle: Record<string, string> = reactive
 
     <h1>Search Recipes</h1>
       <div id="search-container" tabindex="0" ref="searchBar" :class="{ active: isActive}" 
-        @pointerleave="blurSearchContainer"   >
-        <input ref="input" :class="{ active: isActive }" :style="searchBarStyle" @keydown.enter=" searchString !== undefined && recipeLookup?.fetchData(searchString)"  v-model="searchString" id="searchbar" type="search" name="q"  placeholder="search recipe" autocomplete="off">
+          >
+        <input ref="input" :class="{ active: isActive }"  @keydown.enter=" searchString !== undefined && recipeLookup?.fetchData(searchString)"  v-model="searchString" id="searchbar" type="search" name="q"  placeholder=" search recipe" autocomplete="off">
         <label class="forScreenReaders" value="searchbar">searchbar for finding recipes</label>
           <div class="searchItemWrapper">
             <div class="dropdown-list" id="dropdownList" >
-              <div :class="{ active: isActive }" class="dropdown-item" v-for="item in filteredApiDataArr" :key="item" :value="item" @click="selectSearchItem(item)" ><FontAwesomeIcon icon="fa-solid fa-magnifying-glass" size="sm" width="fw"  />  {{ item }}</div>
+              <div :class="{ active: isActive }" class="dropdown-item" v-for="item in filteredApiDataArr" :key="item" :value="item" @click="selectSearchItem(item)" ><FontAwesomeIcon icon="fa-solid fa-magnifying-glass" size="sm" width="fw"  />  &nbsp  {{ item }}</div>
                 
             </div>
         </div>
@@ -349,7 +216,6 @@ h1
 
     /* border: 5px solid purple; */
     background-color:  #FFFFFF;
-    box-sizing: border-box;
     border-radius: 30px;
     box-shadow: 2px 2px 5px;
     /* transition: all 0.2s ease-in-out; */
@@ -369,7 +235,8 @@ h1
     width: 100%;
     height: 4em;
     /* border: 5px solid #ccc; */
-    border-radius: 25px;
+    border-radius: 35px;
+    border: none;
     outline: none;
     /* box-shadow: 2px 2px 5px; */
     box-shadow: 0px 0px 5px 0px; 
@@ -379,31 +246,21 @@ h1
 
 .dropdown-list
 {
-  border: 1px solid red;
-  padding: 0;
-  margin: 0;
-  max-width: 100%;
-  box-sizing: border-box;
-  display:  flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: left;
-  text-align: left;
+  border: 3px solid black;
 }
 
 .dropdown-item
 {
-  margin: 0;
-  padding: 0;
-  border: 1px solid black;
   display: flex;
-  text-align: left;
   /* flex: 1; */
   min-width: 0;
+  flex-direction: row;
   box-sizing: border-box;
   max-width: 90%;
   width: 100%;
   height: 2em;
+  justify-content: left;
+  align-items: center;
   visibility: visible;
   /* border: 1px solid black; */
   margin: 1em;
