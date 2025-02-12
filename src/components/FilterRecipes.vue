@@ -376,6 +376,18 @@ h1
     transition: border-color 0.3s, box-shadow 0.3s;
 }
 
+.dropdown-list
+{
+  padding: 0;
+  margin: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+  display:  flex;
+  flex-direction: column;
+  justify-content: left;
+  align-items: left;
+}
+
 .dropdown-item
 {
   display: flex;
@@ -386,8 +398,6 @@ h1
   max-width: 90%;
   width: 100%;
   height: 2em;
-  justify-content: left;
-  align-items: center;
   visibility: visible;
   /* border: 1px solid black; */
   margin: 1em;

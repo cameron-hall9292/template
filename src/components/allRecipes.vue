@@ -19,17 +19,24 @@ let recipeNameArr = ref<string[]>([]);
 
 let chooseRecipeType = ref<string>('');
 
-const getRecipes = async (val: string) =>
+
+const getRecipes = async (event: Event) =>
 {
-   //console.log(fetchByType(val))_
-   const data = await fetchByType(val)
+
+   const target = event.target as HTMLSelectElement;
+
+   if (target !== undefined) 
+   {
+    const data = await fetchByType(target.value)
+   
    if (data !== undefined)
    {
     recipeNameArr.value = data;
    }
 
-}
+  }
 
+}
 const recipeTypes = ref<string[]>(["main dish", "side dish", "soup/chili", "dessert"]);
 
 </script>
@@ -41,10 +48,10 @@ const recipeTypes = ref<string[]>(["main dish", "side dish", "soup/chili", "dess
 
     <h1>Recipe Index</h1>
 
-    <select class="select" placeholder="select recipe type" v-model="chooseRecipeType"  >
+    <select class="select" placeholder="select recipe type" v-model="chooseRecipeType" @change="getRecipes" >
       <optgroup label="recipe types">
         <option value="" disabled>select a recipe type</option>
-        <option class="select-option" v-for="item in recipeTypes" @click="getRecipes(item)" :value="item">{{ item }}</option>
+        <option class="select-option" v-for="item in recipeTypes"  :value="item">{{ item }}</option>
       </optgroup>
     </select>
     <ul id="list-container" >
