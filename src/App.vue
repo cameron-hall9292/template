@@ -155,8 +155,9 @@ onUpdated(() =>
 })
 
 //this is testing my environments
-console.log(import.meta.env.VITE_APP_ENV); // "development" or "production"
-console.log(import.meta.env.VITE_API_URL); // API URL based on environment
+
+// console.log(import.meta.env.VITE_APP_ENV); // "development" or "production"
+// console.log(import.meta.env.VITE_API_URL); // API URL based on environment
 
 </script>
 
