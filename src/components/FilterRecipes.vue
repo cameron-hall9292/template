@@ -349,6 +349,7 @@ h1
 
     /* border: 5px solid purple; */
     background-color:  #FFFFFF;
+    box-sizing: border-box;
     border-radius: 30px;
     box-shadow: 2px 2px 5px;
     /* transition: all 0.2s ease-in-out; */
@@ -378,6 +379,7 @@ h1
 
 .dropdown-list
 {
+  border: 1px solid red;
   padding: 0;
   margin: 0;
   max-width: 100%;
@@ -386,10 +388,12 @@ h1
   flex-direction: column;
   justify-content: left;
   align-items: left;
+  text-align: left;
 }
 
 .dropdown-item
 {
+  border: 1px solid black;
   display: flex;
   /* flex: 1; */
   min-width: 0;
