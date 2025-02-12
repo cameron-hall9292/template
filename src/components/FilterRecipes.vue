@@ -167,8 +167,8 @@ if (searchString !== undefined)
         <label class="forScreenReaders" value="searchbar">searchbar for finding recipes</label>
           <div class="searchItemWrapper">
             <div class="dropdown-list" id="dropdownList" >
-              <div :class="{ active: isActive }" class="dropdown-item" v-for="item in filteredApiDataArr" :key="item" :value="item" @click="selectSearchItem(item)" ><FontAwesomeIcon icon="fa-solid fa-magnifying-glass" size="sm" width="fw"  />  &nbsp  {{ item }}</div>
-                
+              <div :class="{ active: isActive }" class="dropdown-item" v-for="item in filteredApiDataArr" :key="item" :value="item" @click="selectSearchItem(item)" > {{ item }}</div>
+                <!-- <FontAwesomeIcon icon="fa-solid fa-magnifying-glass" size="sm" width="fw"  />  &nbsp  -->
             </div>
         </div>
       </div>
