@@ -17,7 +17,7 @@ import { appModes } from '../interfaces/appModes';
 
 import fetchUserPermissions from '../api/permissions';
 
-
+import { fetchData } from '../api/get';
 
 const appMode = inject<mode>("appMode");
 
@@ -36,30 +36,61 @@ recipeLookup.recipeData.type = "main dish";
 
 
 
-const postAndGoHome = (): void =>
+const postAndGoHome = async (): Promise<void> =>
 {
   //check if any value is blank and if so
   //alert user that all fields are required
 
   let fieldBlank: boolean = false;
+
   for (let property in recipeLookup.recipeData)
   {
     if (recipeLookup.recipeData[property] === "" || recipeLookup.recipeData[property] === null || recipeLookup.recipeData === undefined )
     {
-      alert("you must complete all fields");
       fieldBlank = true;
       break;
 
     }
-
   }
-  if (!fieldBlank)
-  {
-    postData(recipeLookup.recipeData);
 
-    //return to home screen
-    appMode.change(appModes.find);
-  };
+  //exit function if all input fields are not complete
+  if (fieldBlank)
+  {
+
+      alert("You must complete all fields.");
+      return;
+  }
+
+  //check if recipe name already exists in db 
+  //and post if it does not, exit func otherwise
+
+  await fetchData(recipeLookup.recipeData.name)
+  .then((data) => 
+  {
+
+    if (data === 404) //if entry is not found in db
+    {
+
+      postData(recipeLookup.recipeData);
+
+      //switch to read mode
+      if (appMode !== undefined) appMode.change(appModes.read);
+
+    }
+
+    else if (data !== undefined)
+    {
+
+      alert("Recipe name already exists. Please try a different name.");
+    }
+
+    else 
+    {
+      alert("internal server error")
+    }
+    
+
+  })
 
 }
 

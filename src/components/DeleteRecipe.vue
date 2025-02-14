@@ -69,7 +69,7 @@ onMounted(() =>
     <FormInput :name="true" :ingredients="true" :instructions="true" :type="true" />
     <div id="buttonWrapper">
       <FormButtons v-if="recipeLookup !== undefined" @click="deleteAndGoHome" name="delete recipe" :disabled="!permissionToDelete"></FormButtons>
-      <FormButtons name="cancel" @click="appMode?.change(appModes.find)"></FormButtons>
+      <FormButtons name="cancel" @click="appMode?.change(appModes.read)"></FormButtons>
     </div>
   </div>
 </template>

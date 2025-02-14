@@ -64,8 +64,8 @@ const updateAndSubmit = (): void =>
   {
     updateRecipe(recipeLookup.recipeData);
 
-    //return to home screen
-    appMode.change(appModes.find);
+    //switch to read mode
+    appMode.change(appModes.read);
   };
 }
 
@@ -86,7 +86,7 @@ onMounted(() =>
     <FormInput :name="true" :ingredients="!permissionToEdit" :instructions="!permissionToEdit" :type="!permissionToEdit"/>
     <div id="buttonWrapper">
       <FormButtons  v-if="recipeLookup !== undefined" @click="updateAndSubmit" name="submit update" :disabled="!permissionToEdit" ></FormButtons>
-      <FormButtons @click="appMode?.change('find')" name="cancel" ></FormButtons>
+      <FormButtons @click="appMode?.change(appModes.read)" name="cancel" ></FormButtons>
     </div>
   </div>
 </template>

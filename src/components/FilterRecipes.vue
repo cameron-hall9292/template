@@ -266,7 +266,7 @@ h1
   flex-direction: row;
   box-sizing: border-box;
   max-width: 100%;
-  width: 100%;
+  width: 90%;
   height: 2em;
   justify-content: left;
   align-items: center;
